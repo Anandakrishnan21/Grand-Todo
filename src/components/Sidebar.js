@@ -2,9 +2,13 @@
 import Link from "next/link";
 import React from "react";
 import Header from "./Header";
-import { Calendar, Home, Inbox, PlusCircle, Search } from "lucide-react";
-import { IoToday } from "react-icons/io5";
 import { useSelectedLayoutSegment } from "next/navigation";
+import {
+  AiOutlineCalendar,
+  AiOutlineDashboard,
+  AiOutlineInbox,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import AddTask from "./AddTask";
 
 function classNames(...classes) {
@@ -16,33 +20,33 @@ function Sidebar() {
 
   const sidebarOptions = [
     {
-      name: "Home",
+      name: "Dashboard",
       href: "/home",
-      icon: Home,
+      icon: AiOutlineDashboard,
       current: !segment || segment == "home",
     },
     {
       name: "Inbox",
       href: "/inbox",
-      icon: Inbox,
+      icon: AiOutlineInbox,
       current: segment === "inbox",
     },
     {
       name: "Search",
       href: "/search",
-      icon: Search,
+      icon: AiOutlineSearch,
       current: segment === "search",
     },
     {
       name: "Today",
       href: "/today",
-      icon: IoToday,
+      icon: AiOutlineCalendar,
       current: segment === "today",
     },
     {
       name: "Upcoming",
       href: "/upcoming",
-      icon: Calendar,
+      icon: AiOutlineCalendar,
       current: segment === "upcoming",
     },
   ];
