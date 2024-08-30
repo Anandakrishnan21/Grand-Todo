@@ -16,7 +16,8 @@ export const POST = async (req) => {
 export const GET = async (req) => {
   try {
     await connection();
-    const todo = await Todo.find();
+    const today = new Date().toLocaleDateString("en-GB");
+    const todo = await Todo.find({ date: today.replace(/\//g, "-") });
     return new NextResponse(JSON.stringify(todo), { status: 200 });
   } catch (error) {
     return new NextResponse("Error in fetching data" + error, { status: 500 });

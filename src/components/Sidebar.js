@@ -57,7 +57,7 @@ function Sidebar() {
     "text-black hover:bg-[#ececec] transition-color duration-300";
 
   return (
-    <aside className="z-10 hidden w-52 flex-col border-[1px] border-neutral-300 sm:flex">
+    <aside className="sticky left-0 top-0 z-10 hidden w-52 flex-col border-[1px] border-neutral-300 sm:flex h-screen overflow-hidden">
       <Header />
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <AddTask />
