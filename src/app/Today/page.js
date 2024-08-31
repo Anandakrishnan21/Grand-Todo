@@ -21,15 +21,19 @@ function Today() {
     };
     fetchData();
   }, []);
+
+  const today = new Date().toLocaleDateString("en-GB");
+
   return (
     <div>
       <p>Today's Todo Tasks</p>
-      {todo.map((item, index) => (
-        <div key={index}>
-          <p>{item.description}</p>
-          <p>{item.date}</p>
-        </div>
-      ))}
+      {todo
+        .filter((item) => item.date === today.replace(/\//g, "-"))
+        .map((item, index) => (
+          <div key={index}>
+            <p>{item.description}</p>
+          </div>
+        ))}
     </div>
   );
 }
