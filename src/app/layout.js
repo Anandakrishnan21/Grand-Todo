@@ -1,8 +1,8 @@
-import { Poppins } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
-const poppins = Poppins({ subsets: ["latin"], weight: '400' });
+const nunito = Nunito_Sans({ subsets: ["latin"], weight: '400' });
 
 export const metadata = {
   title: "Create Next App",
@@ -12,7 +12,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={nunito.className}>
         <div className="flex min-h-screen justify-between">
           <Sidebar />
           <div className="w-full">

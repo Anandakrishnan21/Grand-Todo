@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Button, DatePicker, Form, Modal, Select, TimePicker } from "antd";
+import { DatePicker, Form, Modal, Select, TimePicker } from "antd";
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import Input from "antd/es/input/Input";
@@ -53,7 +53,7 @@ const AddTask = () => {
 
     if (match) {
       let hour = parseInt(match[1], 10);
-      const period = match[2]?.toLowerCase();
+      let period = match[2]?.toLowerCase();
 
       if (period === "pm" && hour !== 12) {
         hour += 12;
@@ -62,23 +62,21 @@ const AddTask = () => {
       }
 
       const now = dayjs();
-      let selectedTime = dayjs().hour(hour).minute(0).second(0);
+      let newSelectedTime = dayjs().hour(hour).minute(0).second(0);
 
-      if (selectedTime.isBefore(now)) {
+      if (newSelectedTime.isBefore(now)) {
         setSelectedDate(dayjs().add(1, "day"));
       } else {
         setSelectedDate(dayjs());
       }
-      setSelectedTime(selectedTime);
+      setSelectedTime(newSelectedTime);
     }
   };
 
   const router = useRouter();
 
   const handleSubmit = async () => {
-    const dueDate = selectedDate
-      ? dayjs(selectedDate).format("DD-MM-YYYY")
-      : null;
+    const dueDate = selectedDate ? selectedDate.format("DD-MM-YYYY") : null;
     const dueTime = selectedTime ? selectedTime.format("HH:mm:ss") : null;
     try {
       const res = await fetch("/api/today", {
@@ -173,7 +171,7 @@ const AddTask = () => {
                 rules={[
                   {
                     required: true,
-                    message: "select a priority!",
+                    message: "Select a priority!",
                   },
                 ]}
               >

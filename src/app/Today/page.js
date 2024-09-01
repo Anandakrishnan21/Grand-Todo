@@ -23,17 +23,22 @@ function Today() {
   }, []);
 
   const today = new Date().toLocaleDateString("en-GB");
+  const todayTodos = todo.filter(
+    (item) => item.date == today.replace(/\//g, "-")
+  );
 
   return (
-    <div>
-      <p>Today's Todo Tasks</p>
-      {todo
-        .filter((item) => item.date === today.replace(/\//g, "-"))
-        .map((item, index) => (
-          <div key={index}>
+    <div className="flex justify-center items-center pt-4">
+      <div className="w-[60%] h-[60%]">
+        <h1 className="font-bold text-xl">Today</h1>
+        <span className="text-gray-600">{todayTodos.length} tasks</span>
+        {todayTodos.map((item, index) => (
+          <div key={index} className="flex items-center gap-2 border-b p-2">
+            <div className="w-4 h-4 rounded-full border-[1px] border-gray-600"></div>
             <p>{item.description}</p>
           </div>
         ))}
+      </div>
     </div>
   );
 }
