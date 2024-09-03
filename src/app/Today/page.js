@@ -28,7 +28,7 @@ function Today() {
   const todayTodos = todo.filter(
     (item) => item.date == today.replace(/\//g, "-")
   );
-
+  
   const colorChange = (priority) => {
     if (priority == "high") {
       return "red-500";
