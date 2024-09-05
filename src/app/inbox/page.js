@@ -17,14 +17,18 @@ function InboxPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch("/api/today", {
-        cache: "no-cache",
-      });
-      if (!res.ok) {
-        return console.error;
+      try {
+        const res = await fetch("/api/today", {
+          cache: "no-cache",
+        });
+        if (!res.ok) {
+          return console.error;
+        }
+        const data = await res.json();
+        setInbox(data);
+      } catch (err) {
+        console.error(err);
       }
-      const data = await res.json();
-      setInbox(data);
     };
     fetchData();
   }, []);
@@ -52,16 +56,17 @@ function InboxPage() {
       <div className="w-[60%] h-[60%]">
         <h1 className="font-bold text-xl">Inbox</h1>
         <span className="text-gray-600 pb-2">{inbox.length} tasks</span>
-        <div className="flex justify-end gap-1">
+        <div className="flex justify-end">
           <button
             onClick={handleButtonLeft}
-            className="p-1 border-[1px] border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-md"
+            className="p-1 border-[1px] border-r-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-l-md"
           >
             <AiOutlineLeft />
           </button>
+          <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">Task</div>
           <button
             onClick={handleButtonRight}
-            className="p-1 border-[1px] border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-md"
+            className="p-1 border-[1px] border-l-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-r-md"
           >
             <AiOutlineRight />
           </button>
