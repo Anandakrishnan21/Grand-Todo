@@ -52,7 +52,7 @@ function Sidebar() {
   ];
 
   const active =
-    "bg-[#ececec] font-bold text-blue-500 transition-color duration-300";
+    "bg-[#ececec] font-bold text-blue-800 transition-color duration-300";
   const inactive =
     "text-black hover:bg-[#ececec] transition-color duration-300";
 

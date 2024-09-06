@@ -1,11 +1,6 @@
 "use client";
-import { Checkbox, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
-import {
-  AiOutlineClockCircle,
-  AiOutlineLeft,
-  AiOutlineRight,
-} from "react-icons/ai";
+import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 import { RiDraggable } from "react-icons/ri";
 
@@ -22,7 +17,7 @@ function InboxPage() {
           cache: "no-cache",
         });
         if (!res.ok) {
-          return console.error;
+          return console.error("error fetching data");
         }
         const data = await res.json();
         setInbox(data);
@@ -51,6 +46,26 @@ function InboxPage() {
     }
   };
 
+  const deleteTodo = async (idToDelete) => {
+    try {
+      const res = await fetch("/api/today", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: idToDelete }),
+      });
+
+      if (res.ok) {
+        setInbox((prevInbox) =>
+          prevInbox.filter((item) => item._id !== idToDelete)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center pt-4">
       <div className="w-[60%] h-[60%]">
@@ -63,7 +78,9 @@ function InboxPage() {
           >
             <AiOutlineLeft />
           </button>
-          <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">Task</div>
+          <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">
+            Task
+          </div>
           <button
             onClick={handleButtonRight}
             className="p-1 border-[1px] border-l-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-r-md"
@@ -72,12 +89,13 @@ function InboxPage() {
           </button>
         </div>
         {paginationInbox.map((item, index) => (
-          <div key={index} className="flex justify-between border-b p-2">
+          <div key={index} className="flex justify-between border-b-[2px] p-2">
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
               <div
                 className={`w-4 h-4 rounded-full border-[2px] border-violet-600`}
-              ></div>
+                onClick={() => deleteTodo(item._id)}
+              />
               <div className="flex flex-col">
                 <p>{item.description}</p>
                 <span className="text-sm text-gray-600">#inbox</span>
@@ -87,16 +105,16 @@ function InboxPage() {
               <p
                 className={`${
                   item.priority === "high"
-                    ? "bg-red-100"
+                    ? "text-red-500"
                     : item.priority === "Medium"
-                    ? "bg-yellow-100"
-                    : "bg-green-100"
+                    ? "text-yellow-500"
+                    : "text-green-500"
                 } rounded-md px-1`}
               >
                 {item.priority}
               </p>
-              <p className="text-sm">2:00:00 Pm</p>
-              <AiOutlineClockCircle />
+              <p className="text-sm">2:00 PM</p>
+              <LuAlarmClock />
             </div>
           </div>
         ))}

@@ -7,6 +7,7 @@ import Input from "antd/es/input/Input";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
+import { AiOutlinePlus } from "react-icons/ai";
 dayjs.extend(customParseFormat);
 
 const AddTask = () => {
@@ -17,6 +18,7 @@ const AddTask = () => {
   const [assignee, setAssignee] = useState("Anandakrishnan");
   const [priority, setPriority] = useState("Low");
   const [form] = Form.useForm();
+  const format = "HH:mm";
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -62,7 +64,7 @@ const AddTask = () => {
       }
 
       const now = dayjs();
-      let newSelectedTime = dayjs().hour(hour).minute(0).second(0);
+      let newSelectedTime = dayjs().hour(hour).minute(0);
 
       if (newSelectedTime.isBefore(now)) {
         setSelectedDate(dayjs().add(1, "day"));
@@ -77,7 +79,7 @@ const AddTask = () => {
 
   const handleSubmit = async () => {
     const dueDate = selectedDate ? selectedDate.format("DD-MM-YYYY") : null;
-    const dueTime = selectedTime ? selectedTime.format("HH:mm:ss") : null;
+    const dueTime = selectedTime ? selectedTime.format("HH:mm") : null;
     try {
       const res = await fetch("/api/today", {
         method: "POST",
@@ -107,10 +109,10 @@ const AddTask = () => {
     <>
       <Link
         href="#"
-        className="flex items-start font-bold text-sm text-blue-500 gap-4 p-2"
+        className="flex items-start font-bold text-sm text-blue-800 gap-4 p-2"
         onClick={showModal}
       >
-        <PlusCircle size={20} />
+        <AiOutlinePlus size={20} />
         Add Todo
       </Link>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
@@ -134,7 +136,7 @@ const AddTask = () => {
             >
               <div>
                 <p>Description</p>
-                <Input placeholder="Task name" onChange={handleInput} />
+                <Input placeholder="Task name" onChange={handleInput}/>
               </div>
             </Form.Item>
             <div className="flex justify-between gap-2">
@@ -185,11 +187,20 @@ const AddTask = () => {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="time">
+              <Form.Item
+                name="time"
+                rules={[
+                  {
+                    required: true,
+                    message: "Select a time!",
+                  },
+                ]}
+              >
                 <TimePicker
                   onChange={onTimeChange}
                   value={selectedTime}
-                  defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
+                  defaultOpenValue={dayjs("00:00", format)}
+                  format={format}
                 />
               </Form.Item>
             </div>

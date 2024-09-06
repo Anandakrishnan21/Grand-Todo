@@ -2,9 +2,20 @@
 import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
+import { message } from "antd";
 
 function Today() {
   const [todo, setTodo] = useState([]);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const showNotification = () => {
+    messageApi.open({
+      type: "success",
+      content:
+        "This is a prompt message for success, and it will disappear in 10 seconds",
+      duration: 10,
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,21 +37,36 @@ function Today() {
 
   const today = new Date().toLocaleDateString("en-GB");
   const todayTodos = todo.filter(
-    (item) => item.date == today.replace(/\//g, "-")
+    (item) => item.date === today.replace(/\//g, "-")
   );
-  
+
   const colorChange = (priority) => {
-    if (priority == "high") {
+    if (priority === "high") {
       return "red-500";
-    } else if (priority == "medium") {
+    } else if (priority === "medium") {
       return "yellow-500";
     } else {
       return "green-500";
     }
   };
 
+  const now = new Date().toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  console.log(now);
+
+  useEffect(() => {
+    todayTodos.forEach((todo) => {
+      if (todo.due === now) {
+        showNotification();
+      }
+    });
+  }, [now, todayTodos]);
+
   return (
     <div className="flex justify-center items-center pt-4">
+      {contextHolder}
       <div className="w-[60%] h-[60%]">
         <h1 className="font-bold text-xl">Today</h1>
         <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
@@ -54,9 +80,11 @@ function Today() {
                 <span className="text-sm text-gray-600">#inbox</span>
               </div>
             </div>
-            <div className="flex gap-2">
-              <p className={`text-${colorChange(item.priority)}`}>{item.priority}</p>
-              <p>2:00:00 Pm</p>
+            <div className="flex gap-2 text-sm">
+              <p className={`text-${colorChange(item.priority)}`}>
+                {item.priority}
+              </p>
+              {item?.due ? item.due : "02:00"}
               <LuAlarmClock size={20} />
             </div>
           </div>

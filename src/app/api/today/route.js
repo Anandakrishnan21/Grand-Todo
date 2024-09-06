@@ -22,3 +22,14 @@ export const GET = async (req) => {
     return new NextResponse("Error in fetching data" + error, { status: 500 });
   }
 };
+
+export const DELETE = async (req) => {
+  try {
+    await connection();
+    await Todo.findByIdAndDelete();
+    const todo = await Todo.find();
+    return new NextResponse(JSON.stringify(todo), { status: 200 });
+  } catch (error) {
+    return new NextResponse("Error in deleting data" + error, { status: 500 });
+  }
+};
