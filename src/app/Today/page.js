@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
 import { message } from "antd";
+import Delete from "@/components/Delete";
 
 function Today() {
   const [todo, setTodo] = useState([]);
@@ -20,7 +21,7 @@ function Today() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/today", {
+        const res = await fetch("/api/today", {
           cache: "no-cache",
         });
         if (!res.ok) {
@@ -40,21 +41,10 @@ function Today() {
     (item) => item.date === today.replace(/\//g, "-")
   );
 
-  const colorChange = (priority) => {
-    if (priority === "high") {
-      return "red-500";
-    } else if (priority === "medium") {
-      return "yellow-500";
-    } else {
-      return "green-500";
-    }
-  };
-
   const now = new Date().toLocaleTimeString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
   });
-  console.log(now);
 
   useEffect(() => {
     todayTodos.forEach((todo) => {
@@ -74,16 +64,17 @@ function Today() {
           <div key={index} className="flex justify-between border-b p-2">
             <div className="flex gap-2">
               <RiDraggable size={20} />
-              <div className="w-4 h-4 rounded-full border-[1px] border-gray-600"></div>
+              <Delete id={item._id} setData={setTodo} />
               <div className="flex flex-col">
-                <p>{item.description}</p>
+                <div className="flex gap-2">
+                  <p>{item.description}</p>
+                  <span className="text-sm text-gray-500">{item.tags}</span>
+                </div>
                 <span className="text-sm text-gray-600">#inbox</span>
               </div>
             </div>
             <div className="flex gap-2 text-sm">
-              <p className={`text-${colorChange(item.priority)}`}>
-                {item.priority}
-              </p>
+              <p>{item.priority}</p>
               {item?.due ? item.due : "02:00"}
               <LuAlarmClock size={20} />
             </div>

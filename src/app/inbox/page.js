@@ -1,4 +1,5 @@
 "use client";
+import Delete from "@/components/Delete";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
@@ -46,26 +47,6 @@ function InboxPage() {
     }
   };
 
-  const deleteTodo = async (idToDelete) => {
-    try {
-      const res = await fetch("/api/today", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id: idToDelete }),
-      });
-
-      if (res.ok) {
-        setInbox((prevInbox) =>
-          prevInbox.filter((item) => item._id !== idToDelete)
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="flex justify-center items-center pt-4">
       <div className="w-[60%] h-[60%]">
@@ -92,10 +73,7 @@ function InboxPage() {
           <div key={index} className="flex justify-between border-b-[2px] p-2">
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
-              <div
-                className={`w-4 h-4 rounded-full border-[2px] border-violet-600`}
-                onClick={() => deleteTodo(item._id)}
-              />
+              <Delete />
               <div className="flex flex-col">
                 <p>{item.description}</p>
                 <span className="text-sm text-gray-600">#inbox</span>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import { DatePicker, Form, Modal, Select, TimePicker } from "antd";
-import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import Input from "antd/es/input/Input";
 import dayjs from "dayjs";
@@ -12,13 +11,11 @@ dayjs.extend(customParseFormat);
 
 const AddTask = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [assignee, setAssignee] = useState("Anandakrishnan");
-  const [priority, setPriority] = useState("Low");
   const [form] = Form.useForm();
   const format = "HH:mm";
+  const router = useRouter();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -38,18 +35,8 @@ const AddTask = () => {
     setSelectedTime(time);
   };
 
-  const handleAssigneeChange = (value) => {
-    setAssignee(value);
-  };
-
-  const handlePriorityChange = (value) => {
-    setPriority(value);
-  };
-
   const handleInput = (e) => {
     const input = e.target.value;
-    setDescription(input);
-
     const timeRegex = /(\d{1,2})(am|pm)?/i;
     const match = input.match(timeRegex);
 
@@ -68,18 +55,27 @@ const AddTask = () => {
 
       if (newSelectedTime.isBefore(now)) {
         setSelectedDate(dayjs().add(1, "day"));
+        form.setFieldsValue({
+          date: dayjs().add(1, "day"),
+        });
       } else {
         setSelectedDate(dayjs());
+        form.setFieldsValue({
+          date: dayjs(),
+        });
       }
       setSelectedTime(newSelectedTime);
+      form.setFieldsValue({
+        time: newSelectedTime,
+      });
     }
   };
 
-  const router = useRouter();
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
+    const { description, tags, assignee, priority } = values;
     const dueDate = selectedDate ? selectedDate.format("DD-MM-YYYY") : null;
     const dueTime = selectedTime ? selectedTime.format("HH:mm") : null;
+
     try {
       const res = await fetch("/api/today", {
         method: "POST",
@@ -88,6 +84,7 @@ const AddTask = () => {
         },
         body: JSON.stringify({
           description,
+          tags: tags.join(","),
           date: dueDate,
           assignee,
           priority,
@@ -99,11 +96,23 @@ const AddTask = () => {
         setIsModalOpen(false);
         router.push("/today");
         form.resetFields();
+      } else {
+        console.error("Error submitting form:", await res.json());
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
+
+  const options = [
+    { label: "#Food", value: "#Food" },
+    { label: "#study", value: "#study" },
+    { label: "#sleep", value: "#sleep" },
+    { label: "#workout", value: "#workout" },
+    { label: "#work", value: "#work" },
+    { label: "#practice", value: "#practice" },
+    { label: "#happy", value: "#happy" },
+  ];
 
   return (
     <>
@@ -120,8 +129,8 @@ const AddTask = () => {
           form={form}
           onFinish={handleSubmit}
           initialValues={{
-            assignee: assignee,
-            priority: priority,
+            assignee: "Anandakrishnan",
+            priority: "Low",
           }}
         >
           <div className="flex flex-col gap-2 p-3">
@@ -136,8 +145,18 @@ const AddTask = () => {
             >
               <div>
                 <p>Description</p>
-                <Input placeholder="Task name" onChange={handleInput}/>
+                <Input placeholder="Task name" onChange={handleInput} />
               </div>
+            </Form.Item>
+            <Form.Item name="tags">
+              <Select
+                mode="multiple"
+                style={{
+                  width: "100%",
+                }}
+                placeholder="select tags"
+                options={options}
+              />
             </Form.Item>
             <div className="flex justify-between gap-2">
               <Form.Item
@@ -149,7 +168,10 @@ const AddTask = () => {
                   },
                 ]}
               >
-                <DatePicker onChange={onDateChange} value={selectedDate} />
+                <DatePicker
+                  onChange={onDateChange}
+                  value={selectedDate ? dayjs(selectedDate) : null}
+                />
               </Form.Item>
               <Form.Item
                 name="assignee"
@@ -162,7 +184,6 @@ const AddTask = () => {
               >
                 <Select
                   style={{ width: 120 }}
-                  onChange={handleAssigneeChange}
                   options={[
                     { value: "Anandakrishnan", label: "Anandakrishnan" },
                   ]}
@@ -179,7 +200,6 @@ const AddTask = () => {
               >
                 <Select
                   style={{ width: 120 }}
-                  onChange={handlePriorityChange}
                   options={[
                     { value: "Low", label: "Low" },
                     { value: "Medium", label: "Medium" },

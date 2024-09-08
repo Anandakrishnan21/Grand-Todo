@@ -6,6 +6,7 @@ const todoSchema = new Schema(
       type: String,
       required: true,
     },
+    tags: { type: String },
     date: {
       type: String,
       required: true,

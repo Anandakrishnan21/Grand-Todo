@@ -1,6 +1,7 @@
 "use client";
+import Delete from "@/components/Delete";
 import React, { useEffect, useState, useMemo } from "react";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { CiMenuKebab } from "react-icons/ci";
 import { LuAlarmClock } from "react-icons/lu";
 
@@ -101,9 +102,7 @@ function UpcomingPage() {
                   key={index}
                   className="w-64 flex border-[2px] border-gray-300 rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
                 >
-                  <div
-                    className={`w-4 h-4 rounded-full border-[2px] border-blue-800 p-1`}
-                  />
+                 <Delete id={todo._id} setData={setUpcomingTodo} className="p-2" />
                   <div className="w-full flex flex-col justify-center gap-1">
                     <p>{todo.description}</p>
                     {todo.due ? (
@@ -113,10 +112,10 @@ function UpcomingPage() {
                       </div>
                     ) : null}
                     <span className="text-sm text-gray-500">
-                      #inbox #study #food
+                      #inbox {todo.tags}
                     </span>
                   </div>
-                  <CiMenuKebab size={24} />
+                  <AiOutlineEdit size={24} color="gray" />
                 </div>
               ))}
             </div>

@@ -74,7 +74,7 @@ function Sidebar() {
                 <option.icon
                   className={
                     option.current
-                      ? "h-5 w-5 shrink-0"
+                      ? "h-5 w-5 text-blue-800 shrink-0"
                       : "dark:text-neutral-600 h-5 w-5 shrink-0"
                   }
                 />
