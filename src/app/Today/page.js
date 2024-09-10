@@ -54,6 +54,24 @@ function Today() {
     });
   }, [now, todayTodos]);
 
+  const handleUpdate = async (id, field, value) => {
+    const updateTodo = todo.map((item) =>
+      item._id === id ? { ...item, [field]: value } : item
+    );
+    setTodo(updateTodo);
+    try {
+      const res = await fetch("/api/today", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, [field]: value }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex justify-center items-center pt-4">
       {contextHolder}
@@ -67,7 +85,15 @@ function Today() {
               <Delete id={item._id} setData={setTodo} />
               <div className="flex flex-col">
                 <div className="flex gap-2">
-                  <p>{item.description}</p>
+                  <p
+                    contentEditable
+                    suppressHydrationWarning={true}
+                    onBlur={(e) =>
+                      handleUpdate(item._id, "description", e.target.innerText)
+                    }
+                  >
+                    {item.description}
+                  </p>
                   <span className="text-sm text-gray-500">{item.tags}</span>
                 </div>
                 <span className="text-sm text-gray-600">#inbox</span>

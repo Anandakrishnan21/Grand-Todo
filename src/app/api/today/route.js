@@ -26,12 +26,31 @@ export const GET = async (req) => {
 
 export const DELETE = async (req) => {
   try {
-    const {id} = await req.json();
+    const { id } = await req.json();
     await connection();
     await Todo.findByIdAndDelete(id);
     const todo = await Todo.find();
     return new NextResponse(JSON.stringify(todo), { status: 200 });
   } catch (error) {
     return new NextResponse("Error in deleting data" + error, { status: 500 });
+  }
+};
+
+export const PUT = async (req) => {
+  try {
+    const { id, description, tags, date, assignee, priority, due } =
+      await req.json();
+    await connection();
+    const updateTodo = await Todo.findByIdAndUpdate(
+      id,
+      { description, tags, date, assignee, priority, due },
+      { new: true }
+    );
+    return new NextResponse.json(
+      { message: "Todo updated successfully", todo: updateTodo },
+      { status: 200 }
+    );
+  } catch (error) {
+    return new NextResponse("Error in update data" + error, { status: 500 });
   }
 };
