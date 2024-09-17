@@ -1,7 +1,7 @@
 "use client";
-import Delete from "@/components/Delete";
+import Pagination from "@/components/Pagination";
+import { Inbox } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 import { RiDraggable } from "react-icons/ri";
 
@@ -29,54 +29,37 @@ function InboxPage() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    setPaginationInbox(inbox.slice(startIndex, endIndex));
-  }, [inbox, currentPage]);
-
-  const handleButtonLeft = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleButtonRight = () => {
-    if (currentPage < Math.ceil(inbox.length / itemsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
   return (
     <div className="flex justify-center items-center pt-4">
-      <div className="w-[60%] h-[60%]">
+      <div className="w-screen lg:w-[60%] lg:h-[60%] p-2">
         <h1 className="font-bold text-xl">Inbox</h1>
         <span className="text-gray-600 pb-2">{inbox.length} tasks</span>
-        <div className="flex justify-end">
-          <button
-            onClick={handleButtonLeft}
-            className="p-1 border-[1px] border-r-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-l-md"
-          >
-            <AiOutlineLeft />
-          </button>
-          <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">
-            Task
-          </div>
-          <button
-            onClick={handleButtonRight}
-            className="p-1 border-[1px] border-l-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-r-md"
-          >
-            <AiOutlineRight />
-          </button>
-        </div>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          inbox={inbox}
+          setPaginationInbox={setPaginationInbox}
+        />
         {paginationInbox.map((item, index) => (
           <div key={index} className="flex justify-between border-b-[2px] p-2">
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
-              <Delete />
+              <div
+                className={`${
+                  item.status === "Done"
+                    ? "border-green-500"
+                    : item.status == "Inprogress"
+                    ? "border-violet-500"
+                    : "border-gray-500"
+                } w-4 h-4 rounded-full border-[2px] cursor-pointer p-2`}
+              />
               <div className="flex flex-col">
                 <p>{item.description}</p>
-                <span className="text-sm text-gray-600">#inbox</span>
+                <span className="flex gap-1 items-center text-sm text-gray-600">
+                  <Inbox size={16} /> inbox
+                </span>
+                <span className="text-sm text-gray-800">{item.tags}</span>
               </div>
             </div>
             <div className="flex gap-2 items-center">
@@ -91,7 +74,7 @@ function InboxPage() {
               >
                 {item.priority}
               </p>
-              <p className="text-sm">2:00 PM</p>
+              <p className="text-sm">{item.due}</p>
               <LuAlarmClock />
             </div>
           </div>

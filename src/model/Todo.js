@@ -23,6 +23,10 @@ const todoSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      default: "Todo",
+    },
   },
   { timestamps: true }
 );

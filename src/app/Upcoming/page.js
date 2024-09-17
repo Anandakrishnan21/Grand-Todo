@@ -1,8 +1,9 @@
 "use client";
 import Delete from "@/components/Delete";
+import Pagination from "@/components/Pagination";
+import { Inbox} from "lucide-react";
 import React, { useEffect, useState, useMemo } from "react";
-import { AiOutlineEdit, AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { CiMenuKebab } from "react-icons/ci";
+import { AiOutlineEdit } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 
 function UpcomingPage() {
@@ -53,46 +54,18 @@ function UpcomingPage() {
     });
   }, [upcomingTodo]);
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    setUpcomingTodoPage(sortedTodo.slice(startIndex, endIndex));
-  }, [sortedTodo, currentPage]);
-
-  const handleButtonLeft = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleButtonRight = () => {
-    if (currentPage < Math.ceil(sortedTodo.length / itemsPerPage)) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
   return (
     <div className="flex justify-center items-center pt-4">
       <div className="w-[80%] h-[60%] flex flex-col gap-2">
         <h1 className="font-bold text-xl">Upcoming</h1>
         <span className="text-gray-600 pb-2">Tasks</span>
-        <div className="flex justify-end">
-          <button
-            onClick={handleButtonLeft}
-            className="p-1 border-[1px] border-r-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-l-md"
-          >
-            <AiOutlineLeft />
-          </button>
-          <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">
-            Date
-          </div>
-          <button
-            onClick={handleButtonRight}
-            className="p-1 border-[1px] border-l-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-r-md"
-          >
-            <AiOutlineRight />
-          </button>
-        </div>
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          inbox={sortedTodo}
+          setPaginationInbox={setUpcomingTodoPage}
+        />
         <div className="flex gap-4">
           {upcomingTodoPage.map(([date, todos]) => (
             <div key={date} className="flex flex-col gap-2">
@@ -100,9 +73,13 @@ function UpcomingPage() {
               {todos.map((todo, index) => (
                 <div
                   key={index}
-                  className="w-64 flex border-[2px] border-gray-300 rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
+                  className="w-80 md:w-64 flex border-[2px] border-gray-300 rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
                 >
-                 <Delete id={todo._id} setData={setUpcomingTodo} className="p-2" />
+                  <Delete
+                    id={todo._id}
+                    setData={setUpcomingTodo}
+                    className="p-2"
+                  />
                   <div className="w-full flex flex-col justify-center gap-1">
                     <p>{todo.description}</p>
                     {todo.due ? (
@@ -111,9 +88,10 @@ function UpcomingPage() {
                         <LuAlarmClock />
                       </div>
                     ) : null}
-                    <span className="text-sm text-gray-500">
-                      #inbox {todo.tags}
+                    <span className="flex gap-1 items-center text-sm text-gray-600">
+                      <Inbox size={16} /> inbox
                     </span>
+                    <span className="text-sm text-gray-800">{todo.tags}</span>
                   </div>
                   <AiOutlineEdit size={24} color="gray" />
                 </div>

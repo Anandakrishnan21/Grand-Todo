@@ -4,10 +4,10 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
   try {
-    const { description, tags, date, assignee, priority, due } =
+    const { description, tags, date, assignee, priority, due, status } =
       await req.json();
     await connection();
-    await Todo.create({ description, tags, date, assignee, priority, due });
+    await Todo.create({ description, tags, date, assignee, priority, due, status });
     return NextResponse.json({ message: "todo added" }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
@@ -38,19 +38,30 @@ export const DELETE = async (req) => {
 
 export const PUT = async (req) => {
   try {
-    const { id, description, tags, date, assignee, priority, due } =
+    const { id, description, tags, date, assignee, priority, due, status } =
       await req.json();
+
     await connection();
+
     const updateTodo = await Todo.findByIdAndUpdate(
       id,
-      { description, tags, date, assignee, priority, due },
+      { description, tags, date, assignee, priority, due, status },
       { new: true }
     );
-    return new NextResponse.json(
+
+    if (!updateTodo) {
+      return NextResponse.json({ message: "Todo not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(
       { message: "Todo updated successfully", todo: updateTodo },
       { status: 200 }
     );
   } catch (error) {
-    return new NextResponse("Error in update data" + error, { status: 500 });
+    console.error("Error in update data:", error);
+    return NextResponse.json(
+      { message: "Error in update data", error: error.message },
+      { status: 500 }
+    );
   }
 };

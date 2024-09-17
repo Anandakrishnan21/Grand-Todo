@@ -84,7 +84,7 @@ const AddTask = () => {
         },
         body: JSON.stringify({
           description,
-          tags: tags.join(","),
+          tags: tags ? tags.join(" ") : "",
           date: dueDate,
           assignee,
           priority,
@@ -148,7 +148,14 @@ const AddTask = () => {
                 <Input placeholder="Task name" onChange={handleInput} />
               </div>
             </Form.Item>
-            <Form.Item name="tags">
+            <Form.Item
+              rules={[
+                {
+                  required: false,
+                },
+              ]}
+              name="tags"
+            >
               <Select
                 mode="multiple"
                 style={{

@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
-import { message } from "antd";
+import { message, Select } from "antd";
 import Delete from "@/components/Delete";
+import { Inbox, InboxIcon } from "lucide-react";
 
 function Today() {
   const [todo, setTodo] = useState([]);
+  const [editingItemId, setEditingItemId] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
 
   const showNotification = () => {
@@ -25,12 +27,12 @@ function Today() {
           cache: "no-cache",
         });
         if (!res.ok) {
-          console.error("error");
+          console.error("Error fetching data");
         }
         const data = await res.json();
         setTodo(data);
       } catch (error) {
-        console.error("error");
+        console.error("Error:", error);
       }
     };
     fetchData();
@@ -54,11 +56,12 @@ function Today() {
     });
   }, [now, todayTodos]);
 
-  const handleUpdate = async (id, field, value) => {
-    const updateTodo = todo.map((item) =>
-      item._id === id ? { ...item, [field]: value } : item
-    );
-    setTodo(updateTodo);
+  const handleFocus = (id) => {
+    setEditingItemId(id);
+  };
+
+  const handleBlur = async (id, field, value) => {
+    setEditingItemId(null);
     try {
       const res = await fetch("/api/today", {
         method: "PUT",
@@ -67,40 +70,82 @@ function Today() {
         },
         body: JSON.stringify({ id, [field]: value }),
       });
+      if (!res.ok) {
+        throw new Error("Failed to update the todo");
+      }
+      setTodo((prevTodos) =>
+        prevTodos.map((item) =>
+          item._id === id ? { ...item, [field]: value } : item
+        )
+      );
     } catch (error) {
-      console.error(error);
+      console.error("Error updating todo:", error);
     }
   };
 
   return (
     <div className="flex justify-center items-center pt-4">
       {contextHolder}
-      <div className="w-[60%] h-[60%]">
+      <div className="w-screen lg:w-[60%] lg:h-[60%] p-2">
         <h1 className="font-bold text-xl">Today</h1>
         <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
         {todayTodos.map((item, index) => (
           <div key={index} className="flex justify-between border-b p-2">
             <div className="flex gap-2">
               <RiDraggable size={20} />
-              <Delete id={item._id} setData={setTodo} />
+              {item.status != "Done" ? (
+                <Delete id={item._id} setData={setTodo} />
+              ) : (
+                ""
+              )}
               <div className="flex flex-col">
-                <div className="flex gap-2">
-                  <p
-                    contentEditable
-                    suppressHydrationWarning={true}
-                    onBlur={(e) =>
-                      handleUpdate(item._id, "description", e.target.innerText)
-                    }
-                  >
-                    {item.description}
-                  </p>
-                  <span className="text-sm text-gray-500">{item.tags}</span>
-                </div>
-                <span className="text-sm text-gray-600">#inbox</span>
+                <p
+                  contentEditable
+                  suppressHydrationWarning={true}
+                  onFocus={() => handleFocus(item._id)}
+                  onBlur={(e) =>
+                    handleBlur(item._id, "description", e.target.innerText)
+                  }
+                  className={`${
+                    editingItemId === item._id
+                      ? "bg-blue-400 text-white p-1 border-dashed"
+                      : ""
+                  }`}
+                >
+                  {item.description}
+                </p>
+                <span className="flex gap-1 items-center text-sm text-gray-600">
+                  <Inbox size={16} /> inbox
+                </span>
+                <span className="text-sm text-gray-800">{item.tags}</span>
               </div>
             </div>
-            <div className="flex gap-2 text-sm">
-              <p>{item.priority}</p>
+            <div className="flex items-center gap-2 text-sm">
+              <Select
+                defaultValue={item.status}
+                style={{ width: 120 }}
+                options={
+                  item.status != "Done"
+                    ? [
+                        { value: "Todo", label: "Todo" },
+                        { value: "Inprogress", label: "Inprogress" },
+                        { value: "Done", label: "Done" },
+                      ]
+                    : [{ value: "Done", label: "Done" }]
+                }
+                onChange={(value) => handleBlur(item._id, "status", value)}
+              />
+              <p
+                className={`${
+                  item.priority === "high"
+                    ? "text-red-500"
+                    : item.priority === "Medium"
+                    ? "text-yellow-500"
+                    : "text-green-500"
+                } rounded-md px-1`}
+              >
+                {item.priority}
+              </p>
               {item?.due ? item.due : "02:00"}
               <LuAlarmClock size={20} />
             </div>
