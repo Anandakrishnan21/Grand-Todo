@@ -1,19 +1,22 @@
 "use client";
-import Pagination from "@/components/Pagination";
+import Pagination from "@/components/common/Pagination";
 import { Inbox } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { LuAlarmClock } from "react-icons/lu";
 import { RiDraggable } from "react-icons/ri";
+import Loading from "../Loading";
 
 function InboxPage() {
   const [inbox, setInbox] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationInbox, setPaginationInbox] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 8;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         const res = await fetch("/api/today", {
           cache: "no-cache",
         });
@@ -22,12 +25,17 @@ function InboxPage() {
         }
         const data = await res.json();
         setInbox(data);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
   }, []);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex justify-center items-center pt-4">

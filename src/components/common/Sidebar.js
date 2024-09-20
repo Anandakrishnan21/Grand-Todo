@@ -10,6 +10,8 @@ import {
   AiOutlineSearch,
 } from "react-icons/ai";
 import AddTask from "./AddTask";
+import { signOut, useSession } from "next-auth/react";
+import { Button } from "antd";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -17,13 +19,14 @@ function classNames(...classes) {
 
 function Sidebar() {
   const segment = useSelectedLayoutSegment();
+  const { data: session } = useSession();
 
   const sidebarOptions = [
     {
       name: "Dashboard",
       href: "/home",
       icon: AiOutlineDashboard,
-      current: !segment || segment == "home",
+      current: segment == "home",
     },
     {
       name: "Inbox",
@@ -57,9 +60,9 @@ function Sidebar() {
     "text-black hover:bg-[#ececec] transition-color duration-300";
 
   return (
-    <aside className="sticky left-0 top-0 z-10 hidden w-52 flex-col border-[1px] border-neutral-300 sm:flex h-screen overflow-hidden">
-      <Header />
+    <aside className="sticky left-0 top-0 z-10 hidden w-52 flex-col justify-between border-[1px] border-neutral-300 sm:flex h-screen overflow-hidden py-2">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
+        <Header />
         <AddTask />
         <ul className="w-full flex flex-col gap-2">
           {sidebarOptions.map((option) => (
@@ -84,6 +87,19 @@ function Sidebar() {
           ))}
         </ul>
       </nav>
+      <div className="flex flex-col items-center justify-center">
+        <p className="font-semibold">{session?.user?.name}</p>
+        <Button
+          type="primary"
+          danger
+          onClick={() => signOut()}
+          style={{
+            width: "10rem",
+          }}
+        >
+          SignOut
+        </Button>
+      </div>
     </aside>
   );
 }

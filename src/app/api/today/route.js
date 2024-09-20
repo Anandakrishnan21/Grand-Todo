@@ -1,13 +1,27 @@
 import Todo from "@/model/Todo";
 import { connection } from "@/utils/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import { authOptions } from "../auth/[...nextauth]/route";
+import User from "@/model/User";
 
 export const POST = async (req) => {
   try {
     const { description, tags, date, assignee, priority, due, status } =
       await req.json();
+    const session = await getServerSession(authOptions);
+    const email = session?.user?.email;
     await connection();
-    await Todo.create({ description, tags, date, assignee, priority, due, status });
+    await Todo.create({
+      email,
+      description,
+      tags,
+      date,
+      assignee,
+      priority,
+      due,
+      status,
+    });
     return NextResponse.json({ message: "todo added" }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
@@ -17,7 +31,11 @@ export const POST = async (req) => {
 export const GET = async (req) => {
   try {
     await connection();
-    const todo = await Todo.find();
+    const session = await getServerSession(authOptions);
+    const email = session?.user?.email;
+
+    const user = await User.findOne({ email });
+    const todo = await Todo.find({ email: user.email });
     return new NextResponse(JSON.stringify(todo), { status: 200 });
   } catch (error) {
     return new NextResponse("Error in fetching data" + error, { status: 500 });

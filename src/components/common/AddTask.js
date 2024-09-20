@@ -1,18 +1,20 @@
 "use client";
 import React, { useState } from "react";
-import { DatePicker, Form, Modal, Select, TimePicker } from "antd";
+import { DatePicker, Form, message, Modal, Select, TimePicker } from "antd";
 import Link from "next/link";
 import Input from "antd/es/input/Input";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useSession } from "next-auth/react";
 dayjs.extend(customParseFormat);
 
 const AddTask = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const { data: session } = useSession();
   const [form] = Form.useForm();
   const format = "HH:mm";
   const router = useRouter();
@@ -96,8 +98,9 @@ const AddTask = () => {
         setIsModalOpen(false);
         router.push("/today");
         form.resetFields();
+        message.success("Task added successfully!");
       } else {
-        console.error("Error submitting form:", await res.json());
+        message.error("Failed to add task!");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -129,7 +132,7 @@ const AddTask = () => {
           form={form}
           onFinish={handleSubmit}
           initialValues={{
-            assignee: "Anandakrishnan",
+            assignee: session?.user?.name,
             priority: "Low",
           }}
         >
@@ -189,12 +192,7 @@ const AddTask = () => {
                   },
                 ]}
               >
-                <Select
-                  style={{ width: 120 }}
-                  options={[
-                    { value: "Anandakrishnan", label: "Anandakrishnan" },
-                  ]}
-                />
+                <Select style={{ width: 120 }} />
               </Form.Item>
               <Form.Item
                 name="priority"
