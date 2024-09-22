@@ -1,11 +1,26 @@
-import React from "react";
-import { IoNotificationsCircleOutline } from "react-icons/io5";
+import React, { useState } from "react";
+import { IoIosMenu } from "react-icons/io";
+import DrawerComponent from "./DrawerComponent";
+import { useSession } from "next-auth/react";
+import AddTask from "./AddTask";
 
 function Header() {
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const { data: session } = useSession();
+  const drawerClose = () => {
+    setIsDrawerVisible(false);
+  };
   return (
-    <div className="flex justify-between z-10 p-2">
-      <header className="font-semibold text-red-500">Grand Todo</header>
-    </div>
+    <header className="flex lg:hidden items-center gap-4 text-xl z-10 p-2 border-[1px] border-b-neutral-200">
+      <IoIosMenu size={20} onClick={() => setIsDrawerVisible(true)} />
+      <p className="font-semibold text-red-500">Grand Todo</p>
+      <DrawerComponent
+        session={session}
+        isDrawerVisible={isDrawerVisible}
+        drawerClose={drawerClose}
+      />
+      <AddTask />
+    </header>
   );
 }
 

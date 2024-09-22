@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import { redirect, usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
+import Header from "./Header";
 
 function ClientWrapper({ children }) {
   const pathname = usePathname();
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   const showSidebar = [
     "/home",
@@ -27,7 +28,10 @@ function ClientWrapper({ children }) {
     <div className="flex min-h-screen justify-between">
       {showSidebar && <Sidebar />}
       <div className="w-full">
-        <div className="box-border dark:bg-neutral-950">{children}</div>
+        <div className="box-border dark:bg-neutral-950">
+          <Header />
+          {children}
+        </div>
       </div>
     </div>
   );

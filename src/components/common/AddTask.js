@@ -1,12 +1,20 @@
 "use client";
 import React, { useState } from "react";
-import { DatePicker, Form, message, Modal, Select, TimePicker } from "antd";
+import {
+  DatePicker,
+  FloatButton,
+  Form,
+  message,
+  Modal,
+  Select,
+  TimePicker,
+} from "antd";
 import Link from "next/link";
 import Input from "antd/es/input/Input";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
-import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useSession } from "next-auth/react";
 dayjs.extend(customParseFormat);
 
@@ -121,12 +129,16 @@ const AddTask = () => {
     <>
       <Link
         href="#"
-        className="flex items-start font-bold text-sm text-blue-800 gap-4 p-2"
+        className="hidden lg:flex items-start font-bold text-sm text-blue-800 gap-4 p-2"
         onClick={showModal}
       >
-        <AiOutlinePlus size={20} />
+        <AiOutlinePlusCircle size={20} />
         Add Todo
       </Link>
+      <FloatButton
+        icon={<AiOutlinePlusCircle />}
+        onClick={showModal}
+      />
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form
           form={form}
@@ -168,7 +180,7 @@ const AddTask = () => {
                 options={options}
               />
             </Form.Item>
-            <div className="flex justify-between gap-2">
+            <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
               <Form.Item
                 name="date"
                 rules={[
@@ -179,6 +191,9 @@ const AddTask = () => {
                 ]}
               >
                 <DatePicker
+                  style={{
+                    width: "100%",
+                  }}
                   onChange={onDateChange}
                   value={selectedDate ? dayjs(selectedDate) : null}
                 />
@@ -192,7 +207,7 @@ const AddTask = () => {
                   },
                 ]}
               >
-                <Select style={{ width: 120 }} />
+                <Select />
               </Form.Item>
               <Form.Item
                 name="priority"
@@ -204,7 +219,6 @@ const AddTask = () => {
                 ]}
               >
                 <Select
-                  style={{ width: 120 }}
                   options={[
                     { value: "Low", label: "Low" },
                     { value: "Medium", label: "Medium" },
@@ -222,6 +236,9 @@ const AddTask = () => {
                 ]}
               >
                 <TimePicker
+                  style={{
+                    width: "100%",
+                  }}
                   onChange={onTimeChange}
                   value={selectedTime}
                   defaultOpenValue={dayjs("00:00", format)}
