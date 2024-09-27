@@ -1,7 +1,8 @@
 import { useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
+import { Avatar, Badge, Button, Drawer } from "antd";
 import { getSidebarOptions } from "../utils/data";
-import { Button, Drawer } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 
@@ -50,19 +51,28 @@ function DrawerComponent({ session, drawerClose, isDrawerVisible }) {
           ))}
         </ul>
       </nav>
-      <div className="w-full flex flex-col items-center justify-center">
-        <p className="font-semibold">{session?.user?.name}</p>
-        <Button
-          type="primary"
-          danger
-          onClick={() => signOut()}
-          style={{
-            width: "100%",
-          }}
-        >
-          SignOut
-        </Button>
-      </div>
+      {session?.user ? (
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex items-center gap-2">
+            <Badge dot color="green">
+              <Avatar shape="square" icon={<UserOutlined />} size={24} />
+            </Badge>
+            <p className="font-semibold">{session?.user?.name}</p>
+          </div>
+          <Button
+            type="primary"
+            danger
+            onClick={() => signOut()}
+            style={{
+              width: "100%",
+            }}
+          >
+            SignOut
+          </Button>
+        </div>
+      ) : (
+        ""
+      )}
     </Drawer>
   );
 }

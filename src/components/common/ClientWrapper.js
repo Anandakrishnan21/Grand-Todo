@@ -27,8 +27,8 @@ function ClientWrapper({ children }) {
   return (
     <div className="flex min-h-screen justify-between">
       {showSidebar && <Sidebar />}
-      <div className="w-full">
-        <div className="box-border dark:bg-neutral-950">
+      <div className="w-screen">
+        <div className="box-border h-screen">
           <Header />
           {children}
         </div>

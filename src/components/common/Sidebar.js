@@ -3,8 +3,9 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import AddTask from "./AddTask";
 import { signOut, useSession } from "next-auth/react";
-import { Button } from "antd";
+import { Avatar, Badge, Button } from "antd";
 import { getSidebarOptions } from "../utils/data";
+import { UserOutlined } from "@ant-design/icons";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -60,19 +61,28 @@ function Sidebar() {
               ))}
             </ul>
           </nav>
-          <div className="flex flex-col items-center justify-center">
-            <p className="font-semibold">{session?.user?.name}</p>
-            <Button
-              type="primary"
-              danger
-              onClick={() => signOut()}
-              style={{
-                width: "10rem",
-              }}
-            >
-              SignOut
-            </Button>
-          </div>
+          {session?.user ? (
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="flex items-center gap-2">
+                <Badge dot color="green">
+                  <Avatar shape="square" icon={<UserOutlined />} size={24} />
+                </Badge>
+                <p className="font-semibold">{session?.user?.name}</p>
+              </div>
+              <Button
+                type="primary"
+                danger
+                onClick={() => signOut()}
+                style={{
+                  width: "10rem",
+                }}
+              >
+                SignOut
+              </Button>
+            </div>
+          ) : (
+            ""
+          )}
         </aside>
       )}
     </>
