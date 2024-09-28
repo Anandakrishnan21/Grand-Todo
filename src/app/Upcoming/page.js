@@ -7,6 +7,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 import Loading from "../Loading";
+import UpdateTask from "@/components/common/UpdateTask";
 
 function UpcomingPage() {
   const [upcomingTodo, setUpcomingTodo] = useState([]);
@@ -88,7 +89,7 @@ function UpcomingPage() {
                 {todos.map((todo, index) => (
                   <div
                     key={index}
-                    className="w-80 md:w-64 flex border-[2px] border-gray-300 rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
+                    className="w-80 md:w-64 flex bg-purple-200 text-black rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
                   >
                     <Delete
                       id={todo._id}
@@ -103,12 +104,12 @@ function UpcomingPage() {
                           <LuAlarmClock />
                         </div>
                       ) : null}
-                      <span className="flex gap-1 items-center text-sm text-gray-600">
+                      <span className="flex gap-1 items-center text-sm">
                         <Inbox size={16} /> inbox
                       </span>
-                      <span className="text-sm text-gray-800">{todo.tags}</span>
+                      <span className="text-sm">{todo.tags}</span>
                     </div>
-                    <AiOutlineEdit size={24} color="gray" />
+                    <UpdateTask todayTodo={todo} />
                   </div>
                 ))}
               </div>
