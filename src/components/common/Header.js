@@ -11,7 +11,7 @@ function Header() {
     setIsDrawerVisible(false);
   };
   return (
-    <header className="flex lg:hidden items-center gap-4 text-xl z-10 p-2 border-[1px] border-b-neutral-200">
+    <header className="flex top-0 sticky lg:hidden bg-white items-center gap-4 text-xl z-10 p-2 border-[1px] border-b-neutral-200">
       <IoIosMenu size={20} onClick={() => setIsDrawerVisible(true)} />
       <p className="font-semibold text-red-500">Grand Todo</p>
       <DrawerComponent

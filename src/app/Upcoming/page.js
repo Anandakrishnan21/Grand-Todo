@@ -82,14 +82,14 @@ function UpcomingPage() {
           setPaginationInbox={setUpcomingTodoPage}
         />
         {sortedTodo.length > 0 ? (
-          <div className="flex gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             {upcomingTodoPage.map(([date, todos]) => (
               <div key={date} className="flex flex-col gap-2">
                 <h3 className="font-semibold">{date}</h3>
                 {todos.map((todo, index) => (
                   <div
                     key={index}
-                    className="w-80 md:w-64 flex bg-purple-200 text-black rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
+                    className="w-full md:w-64 flex bg-purple-200 text-black rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
                   >
                     <Delete
                       id={todo._id}

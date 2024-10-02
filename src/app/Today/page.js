@@ -15,6 +15,7 @@ function Today() {
   const [editingItemId, setEditingItemId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
+  const [editingText, setEditingText] = useState({});
 
   const showNotification = () => {
     messageApi.open({
@@ -62,12 +63,14 @@ function Today() {
     });
   }, [now, todayTodos]);
 
-  const handleFocus = (id) => {
+  const handleFocus = (id, text) => {
     setEditingItemId(id);
+    setEditingText({ ...editingText, [id]: text });
   };
 
-  const handleBlur = async (id, field, value) => {
+  const handleBlur = async (id, field) => {
     setEditingItemId(null);
+    const value = editingText[id];
     try {
       const res = await fetch("/api/today", {
         method: "PUT",
@@ -102,7 +105,7 @@ function Today() {
   return (
     <div className="flex justify-center items-center pt-4">
       {contextHolder}
-      <div className="w-screen lg:w-[60%] lg:h-[60%] p-2">
+      <div className="w-[80%] lg:w-[60%] lg:h-[60%] p-2">
         <h1 className="font-bold text-xl">Today</h1>
         <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
         {todayTodos.length > 0 ? (
@@ -121,27 +124,28 @@ function Today() {
               >
                 <div className="flex items-center gap-2">
                   <RiDraggable size={20} />
-                  {item.status != "Done" ? (
+                  {item.status !== "Done" ? (
                     <Delete id={item._id} setData={setTodo} />
                   ) : (
                     ""
                   )}
                   <div className="flex flex-col">
-                    <p
-                      contentEditable
-                      suppressHydrationWarning={true}
-                      onFocus={() => handleFocus(item._id)}
-                      onBlur={(e) =>
-                        handleBlur(item._id, "description", e.target.innerText)
+                    <input
+                      value={editingText[item._id] || item.description}
+                      onFocus={() => handleFocus(item._id, item.description)}
+                      onChange={(e) =>
+                        setEditingText({
+                          ...editingText,
+                          [item._id]: e.target.value,
+                        })
                       }
+                      onBlur={() => handleBlur(item._id, "description")}
                       className={`${
                         editingItemId === item._id
                           ? "bg-blue-400 text-white p-1 border-dashed"
                           : ""
                       }`}
-                    >
-                      {item.description}
-                    </p>
+                    />
                     <div className="flex flex-row lg:flex-col gap-2">
                       <span className="flex gap-1 items-center text-sm text-gray-600">
                         <Inbox size={16} className="text-gray-600" /> inbox
@@ -168,14 +172,14 @@ function Today() {
                       width: 120,
                     }}
                     status={
-                      item.status == "Done"
+                      item.status === "Done"
                         ? "success"
-                        : item.status == "Inprogress"
+                        : item.status === "Inprogress"
                         ? "warning"
                         : "error"
                     }
                     options={
-                      item.status != "Done"
+                      item.status !== "Done"
                         ? [
                             { value: "Todo", label: "Todo" },
                             { value: "Inprogress", label: "Inprogress" },
