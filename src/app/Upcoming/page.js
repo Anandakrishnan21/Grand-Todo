@@ -85,11 +85,13 @@ function UpcomingPage() {
           <div className="flex flex-col md:flex-row gap-4">
             {upcomingTodoPage.map(([date, todos]) => (
               <div key={date} className="flex flex-col gap-2">
-                <h3 className="font-semibold">{date}</h3>
+                <h3 className="text-center text-sm font-semibold border-2 p-1 rounded-full">
+                  {date}
+                </h3>
                 {todos.map((todo, index) => (
                   <div
                     key={index}
-                    className="w-full md:w-64 flex bg-purple-200 text-black rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
+                    className="w-full md:w-64 flex bg-neutral-100 border rounded-md p-2 gap-2 cursor-pointer active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out"
                   >
                     <Delete
                       id={todo._id}
@@ -98,12 +100,25 @@ function UpcomingPage() {
                     />
                     <div className="w-full flex flex-col justify-center gap-1">
                       <p>{todo.description}</p>
-                      {todo.due ? (
-                        <div className="flex items-center gap-1 text-sm">
-                          <span className="text-green-500">{todo.due}</span>
-                          <LuAlarmClock />
-                        </div>
-                      ) : null}
+                      <div className="flex text-sm gap-1">
+                        <p
+                          className={`${
+                            todo.priority === "Low"
+                              ? "bg-yellow-500"
+                              : todo.priority == "Medium"
+                              ? "bg-violet-500"
+                              : "bg-red-500"
+                          } px-1 rounded-md`}
+                        >
+                          {todo.priority}
+                        </p>
+                        {todo.due ? (
+                          <div className="flex items-center gap-1">
+                            <span className="text-green-500">{todo.due}</span>
+                            <LuAlarmClock />
+                          </div>
+                        ) : null}
+                      </div>
                       <span className="flex gap-1 items-center text-sm">
                         <Inbox size={16} /> inbox
                       </span>

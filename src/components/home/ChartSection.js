@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, ResponsiveContainer, XAxis } from "recharts";
 
-export default function Component({ todo }) {
+export default function BarChartComponent({ todo }) {
   const [todoCounts, setTodoCounts] = useState([]);
 
   useEffect(() => {

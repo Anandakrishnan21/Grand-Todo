@@ -4,7 +4,6 @@ import { RiDraggable } from "react-icons/ri";
 import { LuAlarmClock } from "react-icons/lu";
 import { message, Select } from "antd";
 import Delete from "@/components/common/Delete";
-import { Inbox } from "lucide-react";
 import FileNotFound from "@/components/common/FileNotFound";
 import Loading from "../Loading";
 import UpdateTask from "@/components/common/UpdateTask";
@@ -103,9 +102,9 @@ function Today() {
   }
 
   return (
-    <div className="flex justify-center items-center pt-4">
+    <div className="flex justify-center items-center p-4">
       {contextHolder}
-      <div className="w-[80%] lg:w-[60%] lg:h-[60%] p-2">
+      <div className="w-full lg:w-[80%] flex flex-col gap-2">
         <h1 className="font-bold text-xl">Today</h1>
         <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
         {todayTodos.length > 0 ? (
@@ -113,14 +112,14 @@ function Today() {
             values={todayTodos}
             onReorder={handleReorder}
             as="div"
-            className="space-y-4"
+            className="w-full space-y-4 bg-neutral-100 border p-2 rounded-md"
           >
             {todayTodos.map((item, index) => (
               <Reorder.Item
                 key={index}
                 value={item}
                 as="div"
-                className="flex flex-col md:flex-row justify-between border-b-[2px] p-2"
+                className="flex flex-col md:flex-row justify-between"
               >
                 <div className="flex items-center gap-2">
                   <RiDraggable size={20} />
@@ -146,12 +145,7 @@ function Today() {
                           : ""
                       }`}
                     />
-                    <div className="flex flex-row lg:flex-col gap-2">
-                      <span className="flex gap-1 items-center text-sm text-gray-600">
-                        <Inbox size={16} className="text-gray-600" /> inbox
-                      </span>
-                      <span className="text-sm text-gray-800">{item.tags}</span>
-                    </div>
+                    <span className="text-sm text-gray-800">{item.tags}</span>
                   </div>
                 </div>
                 <div className="flex justify-around items-center gap-2 text-sm">

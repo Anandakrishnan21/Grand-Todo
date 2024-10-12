@@ -1,3 +1,4 @@
+import { Flex, Progress } from "antd";
 import React, { useEffect, useState } from "react";
 import { MdAutoFixHigh } from "react-icons/md";
 import { RiProgress1Fill, RiTodoFill } from "react-icons/ri";
@@ -12,30 +13,56 @@ function Count({ todo }) {
     };
     todo.forEach((task) => {
       if (task.status === "Todo") counts.Todo++;
-      if (task.status === "InProgress") counts.InProgress++;
+      if (task.status === "Inprogress") counts.InProgress++;
       if (task.status === "Done") counts.Done++;
     });
 
     setStatusCount(counts);
   }, [todo]);
+  console.log(todo);
+  console.log(statusCount);
+
+  const totalCount = todo.length;
+
+  const TodoPercentage = totalCount
+    ? Math.round((statusCount.Todo / totalCount) * 100)
+    : 0;
+  const InProgressPercentage = totalCount
+    ? Math.round((statusCount.InProgress / totalCount) * 100)
+    : 0;
+  const DonePercentage = totalCount
+    ? Math.round((statusCount.Done / totalCount) * 100)
+    : 0;
 
   return (
-    <div className="flex flex-row md:flex-col text-sm font-semibold gap-2">
-      {Object.entries(statusCount).map(([status, counts]) => (
-        <div key={status} className="flex items-center gap-2 p-1 bg-neutral-200 rounded-md">
-          {status === "Done" ? (
-            <RiProgress1Fill size={16} />
-          ) : status === "InProgress" ? (
-            <MdAutoFixHigh size={16} />
-          ) : (
-            <RiTodoFill size={16} />
-          )}
-          <p className="flex items-center gap-2">
-            {status} <span>{counts}</span>
-          </p>
-        </div>
-      ))}
-    </div>
+    <Flex gap="small" vertical>
+      <Progress
+        percent={`Todo ` + TodoPercentage}
+        percentPosition={{
+          align: "start",
+          type: "inner",
+        }}
+        size={[300, 25]}
+        strokeColor="#E2E2E2"
+      />
+      <Progress
+        percent={`InProgress ` + InProgressPercentage}
+        percentPosition={{
+          align: "start",
+          type: "inner",
+        }}
+        size={[300, 25]}
+      />
+      <Progress
+        percent={`Done ` + DonePercentage}
+        percentPosition={{
+          align: "start",
+          type: "inner",
+        }}
+        size={[300, 25]}
+        strokeColor="#B7EB8F"
+      />
+    </Flex>
   );
 }
 

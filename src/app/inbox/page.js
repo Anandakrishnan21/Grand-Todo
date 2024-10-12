@@ -38,19 +38,21 @@ function InboxPage() {
   }
 
   return (
-    <div className="flex justify-center items-center pt-4">
-      <div className="w-screen lg:w-[60%] lg:h-[60%] p-2">
-        <h1 className="font-bold text-xl">Inbox</h1>
-        <span className="text-gray-600 pb-2">{inbox.length} tasks</span>
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          inbox={inbox}
-          setPaginationInbox={setPaginationInbox}
-        />
+    <div className="flex justify-center items-center p-4">
+      <div className="w-screen lg:w-[80%] flex flex-col gap-2 p-2">
+        <div>
+          <h1 className="font-bold text-xl">Inbox</h1>
+          <span className="text-gray-600 pb-2">{inbox.length} tasks</span>
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            inbox={inbox}
+            setPaginationInbox={setPaginationInbox}
+          />
+        </div>
         {paginationInbox.map((item, index) => (
-          <div key={index} className="flex justify-between border-b-[2px] p-2">
+          <div key={index} className="flex justify-between bg-neutral-100 border p-2 rounded-md">
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
               <div

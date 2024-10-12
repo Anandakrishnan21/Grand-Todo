@@ -15,7 +15,7 @@ function DrawerComponent({ session, drawerClose, isDrawerVisible }) {
   const sidebarOptions = getSidebarOptions(segment);
 
   const active =
-    "bg-[#ececec] font-bold text-blue-800 transition-color duration-300";
+    "bg-[#ececec] border-2 font-bold text-blue-800 transition-color duration-300";
   const inactive =
     "text-black hover:bg-[#ececec] transition-color duration-300";
 

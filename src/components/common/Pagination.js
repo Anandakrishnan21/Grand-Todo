@@ -27,21 +27,15 @@ function Pagination({
   };
   return (
     <div className="flex justify-end">
-      <button
-        onClick={handleButtonLeft}
-        className="p-1 border-[1px] border-r-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-l-md"
-      >
-        <AiOutlineLeft />
-      </button>
-      <div className="p-1 border-t-[1px] border-b-[1px] border-gray-500 text-sm font-bold">
-        Task
+      <div className="flex gap-1 border-2 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out p-1 rounded-full">
+        <button onClick={handleButtonLeft}>
+          <AiOutlineLeft />
+        </button>
+        <div className="text-sm font-bold">Task</div>
+        <button onClick={handleButtonRight}>
+          <AiOutlineRight />
+        </button>
       </div>
-      <button
-        onClick={handleButtonRight}
-        className="p-1 border-[1px] border-l-0 border-gray-500 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out rounded-r-md"
-      >
-        <AiOutlineRight />
-      </button>
     </div>
   );
 }
