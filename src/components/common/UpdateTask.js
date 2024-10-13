@@ -77,7 +77,7 @@ function UpdateTask({ todayTodo }) {
 
   return (
     <div>
-      <AiOutlineEdit size={20} onClick={showModal} />
+      <AiOutlineEdit size={16} onClick={showModal} />
       <Modal open={isModalOpen} footer={null} onCancel={hideModal}>
         <Form
           form={form}

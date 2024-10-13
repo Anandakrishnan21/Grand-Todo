@@ -104,17 +104,17 @@ function UpcomingPage() {
                         <p
                           className={`${
                             todo.priority === "Low"
-                              ? "bg-yellow-500"
+                              ? "bg-yellow-300"
                               : todo.priority == "Medium"
-                              ? "bg-violet-500"
-                              : "bg-red-500"
+                              ? "bg-violet-300"
+                              : "bg-red-300"
                           } px-1 rounded-md`}
                         >
                           {todo.priority}
                         </p>
                         {todo.due ? (
                           <div className="flex items-center gap-1">
-                            <span className="text-green-500">{todo.due}</span>
+                            <span>{todo.due}</span>
                             <LuAlarmClock />
                           </div>
                         ) : null}

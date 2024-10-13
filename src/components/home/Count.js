@@ -19,8 +19,6 @@ function Count({ todo }) {
 
     setStatusCount(counts);
   }, [todo]);
-  console.log(todo);
-  console.log(statusCount);
 
   const totalCount = todo.length;
 
@@ -36,32 +34,41 @@ function Count({ todo }) {
 
   return (
     <Flex gap="small" vertical>
-      <Progress
-        percent={`Todo ` + TodoPercentage}
-        percentPosition={{
-          align: "start",
-          type: "inner",
-        }}
-        size={[300, 25]}
-        strokeColor="#E2E2E2"
-      />
-      <Progress
-        percent={`InProgress ` + InProgressPercentage}
-        percentPosition={{
-          align: "start",
-          type: "inner",
-        }}
-        size={[300, 25]}
-      />
-      <Progress
-        percent={`Done ` + DonePercentage}
-        percentPosition={{
-          align: "start",
-          type: "inner",
-        }}
-        size={[300, 25]}
-        strokeColor="#B7EB8F"
-      />
+      <div>
+        <p className="text-sm font-semibold">Todo</p>
+        <Progress
+          percent={TodoPercentage}
+          percentPosition={{
+            align: "start",
+            type: "inner",
+          }}
+          size={[300, 25]}
+          strokeColor="#E2E2E2"
+        />
+      </div>
+      <div>
+        <p className="text-sm font-semibold">InProgress</p>
+        <Progress
+          percent={InProgressPercentage}
+          percentPosition={{
+            align: "start",
+            type: "inner",
+          }}
+          size={[300, 25]}
+        />
+      </div>
+      <div>
+        <p className="text-sm font-semibold">Done</p>
+        <Progress
+          percent={DonePercentage}
+          percentPosition={{
+            align: "start",
+            type: "inner",
+          }}
+          size={[300, 25]}
+          strokeColor="#B7EB8F"
+        />
+      </div>
     </Flex>
   );
 }

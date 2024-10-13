@@ -25,13 +25,15 @@ function ClientWrapper({ children }) {
   }, [showSidebar, status]);
 
   return (
-    <div className="flex min-h-screen justify-between">
-      {showSidebar && <Sidebar />}
-      <div className="w-screen">
-        <div className="box-border h-screen">
-          <Header />
-          {children}
+    <div className="flex h-screen">
+      {showSidebar && (
+        <div className="flex-shrink-0">
+          <Sidebar />
         </div>
+      )}
+      <div className="w-full overflow-auto">
+        <Header />
+        <div className="h-full">{children}</div>
       </div>
     </div>
   );

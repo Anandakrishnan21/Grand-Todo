@@ -52,7 +52,10 @@ function InboxPage() {
           />
         </div>
         {paginationInbox.map((item, index) => (
-          <div key={index} className="flex justify-between bg-neutral-100 border p-2 rounded-md">
+          <div
+            key={index}
+            className="flex justify-between bg-neutral-100 border p-2 rounded-md"
+          >
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
               <div
@@ -72,20 +75,24 @@ function InboxPage() {
                 <span className="text-sm text-gray-800">{item.tags}</span>
               </div>
             </div>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 text-sm items-center">
               <p
                 className={`${
-                  item.priority === "high"
-                    ? "text-red-500"
+                  item.priority === "High"
+                    ? "bg-red-300"
                     : item.priority === "Medium"
-                    ? "text-yellow-500"
-                    : "text-green-500"
+                    ? "bg-violet-300"
+                    : "bg-yellow-300"
                 } rounded-md px-1`}
               >
                 {item.priority}
               </p>
-              <p className="text-sm">{item.due}</p>
-              <LuAlarmClock />
+              {item.due ? (
+                <div className="flex items-center gap-1">
+                  <span>{item.due}</span>
+                  <LuAlarmClock />
+                </div>
+              ) : null}
             </div>
           </div>
         ))}

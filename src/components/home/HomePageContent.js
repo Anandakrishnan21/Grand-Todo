@@ -57,9 +57,9 @@ function HomePageContent() {
             </div>
             <ProgressSection todo={todo} />
           </div>
-          <div className="flex flex-col h-full w-full md:w-[80%] items-center border-2 border-neutral-300 gap-4 p-4 rounded-lg">
+          <div className="flex flex-col h-full w-full md:w-[80%] items-center border-2 gap-4 p-4 rounded-lg">
             <p className="text-lg font-semibold">Overall Statistic Analysis</p>
-            <div className="w-full flex flex-col-reverse md:flex-row items-center">
+            <div className="w-full flex flex-col-reverse md:flex-row justify-center items-center">
               <Count todo={todo} />
               <BarChartComponent todo={todo} />
             </div>

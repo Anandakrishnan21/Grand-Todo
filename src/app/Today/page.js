@@ -119,16 +119,16 @@ function Today() {
                 key={index}
                 value={item}
                 as="div"
-                className="flex flex-col md:flex-row justify-between"
+                className="w-full flex flex-col md:flex-row justify-between"
               >
-                <div className="flex items-center gap-2">
+                <div className="w-full md:w-[60%] flex items-center gap-2">
                   <RiDraggable size={20} />
                   {item.status !== "Done" ? (
                     <Delete id={item._id} setData={setTodo} />
                   ) : (
                     ""
                   )}
-                  <div className="flex flex-col">
+                  <div className="w-full flex flex-col gap-1">
                     <input
                       value={editingText[item._id] || item.description}
                       onFocus={() => handleFocus(item._id, item.description)}
@@ -142,8 +142,8 @@ function Today() {
                       className={`${
                         editingItemId === item._id
                           ? "bg-blue-400 text-white p-1 border-dashed"
-                          : ""
-                      }`}
+                          : "p-1"
+                      } w-full rounded-md`}
                     />
                     <span className="text-sm text-gray-800">{item.tags}</span>
                   </div>
@@ -152,10 +152,10 @@ function Today() {
                   <p
                     className={`${
                       item.priority === "high"
-                        ? "text-red-500"
+                        ? "bg-red-300"
                         : item.priority === "Medium"
-                        ? "text-yellow-500"
-                        : "text-green-500"
+                        ? "bg-violet-300"
+                        : "bg-yellow-300"
                     } rounded-md px-1`}
                   >
                     {item.priority}
@@ -185,7 +185,7 @@ function Today() {
                   />
                   {item?.due ? (
                     <div className="flex gap-1">
-                      {item.due} <LuAlarmClock size={20} />
+                      {item.due} <LuAlarmClock size={16} />
                     </div>
                   ) : (
                     ""

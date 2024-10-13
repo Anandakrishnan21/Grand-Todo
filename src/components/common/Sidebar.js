@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import AddTask from "./AddTask";
@@ -14,16 +14,6 @@ function classNames(...classes) {
 function Sidebar() {
   const segment = useSelectedLayoutSegment();
   const { data: session } = useSession();
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth <= 640);
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const active =
     "bg-[#ececec] border-2 font-bold text-blue-800 transition-color duration-300";
@@ -33,8 +23,7 @@ function Sidebar() {
 
   return (
     <>
-      {!isSmallScreen && (
-        <aside className="sticky left-0 top-0 z-10 hidden w-52 flex-col justify-between border-[1px] border-neutral-300 sm:flex h-screen overflow-hidden py-2">
+        <aside className="sticky left-0 top-0 z-10 hidden w-52 h-screen md:flex flex-col justify-between border-[1px] border-neutral-300 sm:flex overflow-hidden py-2">
           <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
             <header className="font-semibold text-red-500">Grand Todo</header>
             <AddTask />
@@ -84,7 +73,6 @@ function Sidebar() {
             ""
           )}
         </aside>
-      )}
     </>
   );
 }
