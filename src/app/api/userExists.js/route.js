@@ -1,6 +1,6 @@
+import User from "@/model/User";
 import { connection } from "@/utils/db";
 import { NextResponse } from "next/server";
-import User from "@/models/User";
 
 export async function POST(req) {
   try {
