@@ -92,7 +92,7 @@ function RegistrationPageContent() {
           </Form.Item>
         </Form>
         <p className="w-full justify-start">
-          Have an account ? <Link href="/" className="bg-blue-500">Login</Link>
+          Have an account ? <Link href="/" className="text-blue-600">Login</Link>
         </p>
       </div>
     </div>

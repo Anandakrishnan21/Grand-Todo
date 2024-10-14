@@ -79,7 +79,7 @@ const LoginPageContent = () => {
           </Form.Item>
         </Form>
         <p className="w-full justify-start">
-          Don&apos;t have an account? <Link href="/register" className="bg-blue-500">Register</Link>
+          Don&apos;t have an account? <Link href="/register" className="text-blue-600">Register</Link>
         </p>
       </div>
     </div>
