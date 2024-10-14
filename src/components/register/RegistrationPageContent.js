@@ -87,12 +87,12 @@ function RegistrationPageContent() {
                 width: "100%",
               }}
             >
-              Login
+              Register
             </Button>
           </Form.Item>
         </Form>
         <p className="w-full justify-start">
-          Have an account ? <Link href="/">Login</Link>
+          Have an account ? <Link href="/" className="bg-blue-500">Login</Link>
         </p>
       </div>
     </div>

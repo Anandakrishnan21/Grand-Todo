@@ -57,7 +57,7 @@ function UpcomingPage() {
       const dateB = new Date(b[0]);
       return dateA - dateB;
     });
-  }, [upcomingTodo]);
+  }, [upcomingTodo, today]);
 
   useEffect(() => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -70,8 +70,8 @@ function UpcomingPage() {
   }
 
   return (
-    <div className="flex justify-center items-center pt-4">
-      <div className="w-[80%] h-[60%] flex flex-col gap-2">
+    <div className="flex justify-center items-center p-4">
+      <div className="w-full lg:w-[80%] h-[60%] flex flex-col gap-2">
         <h1 className="font-bold text-xl">Upcoming</h1>
         <span className="text-gray-600 pb-2">Tasks</span>
         <Pagination

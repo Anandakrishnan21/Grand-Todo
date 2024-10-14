@@ -43,7 +43,7 @@ function Count({ todo }) {
             type: "inner",
           }}
           size={[300, 25]}
-          strokeColor="#E2E2E2"
+          strokeColor="rgb(239 68 68)"
         />
       </div>
       <div>
@@ -55,6 +55,7 @@ function Count({ todo }) {
             type: "inner",
           }}
           size={[300, 25]}
+          strokeColor="rgb(139 92 246)"
         />
       </div>
       <div>
@@ -66,7 +67,7 @@ function Count({ todo }) {
             type: "inner",
           }}
           size={[300, 25]}
-          strokeColor="#B7EB8F"
+          strokeColor="rgb(34 197 94)"
         />
       </div>
     </Flex>

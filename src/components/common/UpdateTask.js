@@ -77,7 +77,12 @@ function UpdateTask({ todayTodo }) {
 
   return (
     <div>
-      <AiOutlineEdit size={16} onClick={showModal} />
+      <div
+        className="p-1 bg-neutral-600 text-white rounded"
+        onClick={showModal}
+      >
+        <AiOutlineEdit size={16} />
+      </div>
       <Modal open={isModalOpen} footer={null} onCancel={hideModal}>
         <Form
           form={form}
@@ -103,7 +108,7 @@ function UpdateTask({ todayTodo }) {
             >
               <div>
                 <p>Description</p>
-                <Input placeholder="Task name" />
+                <Input id="task" name="task" placeholder="Task name" defaultValue={task} />
               </div>
             </Form.Item>
             <Form.Item

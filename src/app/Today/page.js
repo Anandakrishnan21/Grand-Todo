@@ -60,7 +60,7 @@ function Today() {
         showNotification();
       }
     });
-  }, [now, todayTodos]);
+  }, [now, todayTodos, showNotification]);
 
   const handleFocus = (id, text) => {
     setEditingItemId(id);

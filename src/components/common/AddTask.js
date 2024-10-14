@@ -160,7 +160,7 @@ const AddTask = () => {
             >
               <div>
                 <p>Description</p>
-                <Input placeholder="Task name" onChange={handleInput} />
+                <Input id="task" name="task" placeholder="Task name" onChange={handleInput} />
               </div>
             </Form.Item>
             <Form.Item
