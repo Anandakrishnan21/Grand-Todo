@@ -57,13 +57,13 @@ function UpcomingPage() {
       const dateB = new Date(b[0]);
       return dateA - dateB;
     });
-  }, [upcomingTodo, today]);
+  }, [upcomingTodo]);
 
   useEffect(() => {
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     setUpcomingTodoPage(sortedTodo.slice(start, end));
-  }, [sortedTodo, currentPage, itemsPerPage]);
+  }, [sortedTodo, currentPage]);
 
   if (isLoading) {
     return <Loading />;
@@ -74,13 +74,6 @@ function UpcomingPage() {
       <div className="w-full lg:w-[80%] h-[60%] flex flex-col gap-2">
         <h1 className="font-bold text-xl">Upcoming</h1>
         <span className="text-gray-600 pb-2">Tasks</span>
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          inbox={sortedTodo}
-          setPaginationInbox={setUpcomingTodoPage}
-        />
         {sortedTodo.length > 0 ? (
           <div className="flex flex-col md:flex-row gap-4">
             {upcomingTodoPage.map(([date, todos]) => (

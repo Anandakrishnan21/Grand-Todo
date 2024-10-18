@@ -7,24 +7,52 @@ import User from "@/model/User";
 
 export const POST = async (req) => {
   try {
-    const { description, tags, date, assignee, priority, due, status } =
-      await req.json();
+    const {
+      description,
+      tags,
+      date,
+      assignee,
+      priority,
+      startTime,
+      endTime,
+      status,
+    } = await req.json();
+
+    console.log({
+      description,
+      tags,
+      date,
+      assignee,
+      priority,
+      startTime,
+      endTime,
+    });
+
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
+
+    console.log("User email:", email);
+
     await connection();
-    await Todo.create({
+
+    const todo = await Todo.create({
       email,
       description,
       tags,
       date,
       assignee,
       priority,
-      due,
+      startTime,
+      endTime,
       status,
     });
-    return NextResponse.json({ message: "todo added" }, { status: 201 });
+
+    console.log("Task Created:", todo);
+
+    return NextResponse.json({ message: "Todo added" }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    console.error("Error in POST request:", error);
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 };
 
@@ -56,14 +84,32 @@ export const DELETE = async (req) => {
 
 export const PUT = async (req) => {
   try {
-    const { id, description, tags, date, assignee, priority, due, status } =
-      await req.json();
+    const {
+      id,
+      description,
+      tags,
+      date,
+      assignee,
+      priority,
+      startTime,
+      endTime,
+      status,
+    } = await req.json();
 
     await connection();
 
     const updateTodo = await Todo.findByIdAndUpdate(
       id,
-      { description, tags, date, assignee, priority, due, status },
+      {
+        description,
+        tags,
+        date,
+        assignee,
+        priority,
+        startTime,
+        endTime,
+        status,
+      },
       { new: true }
     );
 

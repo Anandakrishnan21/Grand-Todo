@@ -27,13 +27,13 @@ function ClientWrapper({ children }) {
   return (
     <div className="flex h-screen">
       {showSidebar && (
-        <div className="flex-shrink-0">
+        <div className="flex">
           <Sidebar />
         </div>
       )}
       <div className="w-full overflow-auto">
         <Header />
-        <div className="h-full">{children}</div>
+        <div className="h-full bg-stone-50">{children}</div>
       </div>
     </div>
   );

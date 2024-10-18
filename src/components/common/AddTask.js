@@ -21,7 +21,7 @@ dayjs.extend(customParseFormat);
 const AddTask = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTimeRange, setSelectedTimeRange] = useState(null);
   const { data: session } = useSession();
   const [form] = Form.useForm();
   const format = "HH:mm";
@@ -41,50 +41,19 @@ const AddTask = () => {
     setSelectedDate(date);
   };
 
-  const onTimeChange = (time) => {
-    setSelectedTime(time);
-  };
-
-  const handleInput = (e) => {
-    const input = e.target.value;
-    const timeRegex = /(\d{1,2})(am|pm)?/i;
-    const match = input.match(timeRegex);
-
-    if (match) {
-      let hour = parseInt(match[1], 10);
-      let period = match[2]?.toLowerCase();
-
-      if (period === "pm" && hour !== 12) {
-        hour += 12;
-      } else if (period === "am" && hour === 12) {
-        hour = 0;
-      }
-
-      const now = dayjs();
-      let newSelectedTime = dayjs().hour(hour).minute(0);
-
-      if (newSelectedTime.isBefore(now)) {
-        setSelectedDate(dayjs().add(1, "day"));
-        form.setFieldsValue({
-          date: dayjs().add(1, "day"),
-        });
-      } else {
-        setSelectedDate(dayjs());
-        form.setFieldsValue({
-          date: dayjs(),
-        });
-      }
-      setSelectedTime(newSelectedTime);
-      form.setFieldsValue({
-        time: newSelectedTime,
-      });
-    }
+  const onTimeChange = (times) => {
+    setSelectedTimeRange(times);
   };
 
   const handleSubmit = async (values) => {
     const { description, tags, assignee, priority } = values;
     const dueDate = selectedDate ? selectedDate.format("DD-MM-YYYY") : null;
-    const dueTime = selectedTime ? selectedTime.format("HH:mm") : null;
+    const startTime = selectedTimeRange
+      ? selectedTimeRange[0].format("HH:mm")
+      : null;
+    const endTime = selectedTimeRange
+      ? selectedTimeRange[1].format("HH:mm")
+      : null;
 
     try {
       const res = await fetch("/api/today", {
@@ -98,7 +67,8 @@ const AddTask = () => {
           date: dueDate,
           assignee,
           priority,
-          due: dueTime,
+          startTime: startTime,
+          endTime: endTime,
         }),
       });
 
@@ -108,10 +78,12 @@ const AddTask = () => {
         form.resetFields();
         message.success("Task added successfully!");
       } else {
-        message.error("Failed to add task!");
+        const data = await res.json();
+        message.error(data.message || "Failed to add task!");
       }
     } catch (error) {
       console.error("Error submitting form:", error);
+      message.error("Error submitting form. Please try again.");
     }
   };
 
@@ -135,10 +107,7 @@ const AddTask = () => {
         <AiOutlinePlusCircle size={20} />
         Add Todo
       </Link>
-      <FloatButton
-        icon={<AiOutlinePlusCircle />}
-        onClick={showModal}
-      />
+      <FloatButton icon={<AiOutlinePlusCircle />} onClick={showModal} />
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form
           form={form}
@@ -151,72 +120,45 @@ const AddTask = () => {
           <div className="flex flex-col gap-2 p-3">
             <Form.Item
               name="description"
-              rules={[
-                {
-                  required: true,
-                  message: "Enter the description!",
-                },
-              ]}
+              rules={[{ required: true, message: "Enter the description!" }]}
             >
               <div>
                 <p>Description</p>
-                <Input id="task" name="task" placeholder="Task name" onChange={handleInput} />
+                <Input id="task" name="task" placeholder="Task name" />
               </div>
             </Form.Item>
-            <Form.Item
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              name="tags"
-            >
+
+            <Form.Item name="tags">
               <Select
                 mode="multiple"
-                style={{
-                  width: "100%",
-                }}
+                style={{ width: "100%" }}
                 placeholder="select tags"
                 options={options}
               />
             </Form.Item>
+
             <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
               <Form.Item
                 name="date"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select the date!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select the date!" }]}
               >
                 <DatePicker
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                   onChange={onDateChange}
                   value={selectedDate ? dayjs(selectedDate) : null}
                 />
               </Form.Item>
+
               <Form.Item
                 name="assignee"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select an assignee!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select an assignee!" }]}
               >
                 <Select />
               </Form.Item>
+
               <Form.Item
                 name="priority"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select a priority!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select a priority!" }]}
               >
                 <Select
                   options={[
@@ -226,27 +168,21 @@ const AddTask = () => {
                   ]}
                 />
               </Form.Item>
+
               <Form.Item
                 name="time"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select a time!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select a time!" }]}
               >
-                <TimePicker
-                  style={{
-                    width: "100%",
-                  }}
+                <TimePicker.RangePicker
+                  style={{ width: "100%" }}
                   onChange={onTimeChange}
-                  value={selectedTime}
-                  defaultOpenValue={dayjs("00:00", format)}
+                  value={selectedTimeRange}
                   format={format}
                 />
               </Form.Item>
             </div>
           </div>
+
           <div className="flex justify-end gap-2 p-3">
             <button
               type="button"

@@ -23,7 +23,11 @@ const todoSchema = new Schema(
       type: String,
       required: true,
     },
-    due: {
+    startTime: {
+      type: String,
+      required: true,
+    },
+    endTime: {
       type: String,
       required: true,
     },

@@ -1,7 +1,5 @@
 import { Flex, Progress } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdAutoFixHigh } from "react-icons/md";
-import { RiProgress1Fill, RiTodoFill } from "react-icons/ri";
 
 function Count({ todo }) {
   const [statusCount, setStatusCount] = useState([]);
@@ -42,7 +40,7 @@ function Count({ todo }) {
             align: "start",
             type: "inner",
           }}
-          size={[300, 25]}
+          size={[300, 20]}
           strokeColor="rgb(239 68 68)"
         />
       </div>
@@ -54,7 +52,7 @@ function Count({ todo }) {
             align: "start",
             type: "inner",
           }}
-          size={[300, 25]}
+          size={[300, 20]}
           strokeColor="rgb(139 92 246)"
         />
       </div>
@@ -66,7 +64,7 @@ function Count({ todo }) {
             align: "start",
             type: "inner",
           }}
-          size={[300, 25]}
+          size={[300, 20]}
           strokeColor="rgb(34 197 94)"
         />
       </div>

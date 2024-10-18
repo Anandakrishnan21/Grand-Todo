@@ -29,13 +29,14 @@ function RegistrationPageContent() {
   };
   return (
     <div className="h-screen flex flex-col justify-center items-center p-2">
-      <p>
+      <p className="text-lg font-medium mb-4">
         Welcome to <span className="font-bold text-red-500">Grand Todo</span>
       </p>
-      <div className="w-[100%] md:w-[50%] px-4">
+      <div className="w-full md:w-1/2 lg:w-1/3 px-4">
         <Form onFinish={onFinish}>
           <Form.Item
             name="name"
+            label="Full Name"
             rules={[
               {
                 required: true,
@@ -43,14 +44,12 @@ function RegistrationPageContent() {
               },
             ]}
           >
-            <div>
-              <p>Username</p>
-              <Input placeholder="Full Name" />
-            </div>
+            <Input placeholder="Full Name" autoComplete="off" />
           </Form.Item>
 
           <Form.Item
             name="email"
+            label="Email"
             rules={[
               {
                 required: true,
@@ -58,14 +57,12 @@ function RegistrationPageContent() {
               },
             ]}
           >
-            <div>
-              <p>Email</p>
-              <Input placeholder="Email" type="email" />
-            </div>
+            <Input placeholder="Email" type="email" autoComplete="off" />
           </Form.Item>
 
           <Form.Item
             name="password"
+            label="Password"
             rules={[
               {
                 required: true,
@@ -73,10 +70,7 @@ function RegistrationPageContent() {
               },
             ]}
           >
-            <div>
-              <p>Password</p>
-              <Input.Password placeholder="Password" />
-            </div>
+            <Input.Password placeholder="Password" autoComplete="off" />
           </Form.Item>
 
           <Form.Item>
@@ -91,8 +85,11 @@ function RegistrationPageContent() {
             </Button>
           </Form.Item>
         </Form>
-        <p className="w-full justify-start">
-          Have an account ? <Link href="/" className="text-blue-600">Login</Link>
+        <p className="text-sm mt-4">
+          Have an account?{" "}
+          <Link href="/" className="text-blue-600 hover:underline">
+            Login
+          </Link>
         </p>
       </div>
     </div>

@@ -102,24 +102,26 @@ function Today() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center p-4 pt-0 md:p-4">
       {contextHolder}
       <div className="w-full lg:w-[80%] flex flex-col gap-2">
-        <h1 className="font-bold text-xl">Today</h1>
-        <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
+        <div className="sticky  bg-white">
+          <h1 className="font-bold text-xl">Today</h1>
+          <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
+        </div>
         {todayTodos.length > 0 ? (
           <Reorder.Group
             values={todayTodos}
             onReorder={handleReorder}
             as="div"
-            className="w-full space-y-4 bg-neutral-100 border p-2 rounded-md"
+            className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2"
           >
             {todayTodos.map((item, index) => (
               <Reorder.Item
                 key={index}
                 value={item}
                 as="div"
-                className="w-full flex flex-col md:flex-row justify-between"
+                className="w-full flex flex-col md:flex-row justify-between gap-2"
               >
                 <div className="w-full md:w-[60%] flex items-center gap-2">
                   <RiDraggable size={20} />
@@ -128,7 +130,7 @@ function Today() {
                   ) : (
                     ""
                   )}
-                  <div className="w-full flex flex-col gap-1">
+                  <div className="w-full flex flex-col">
                     <input
                       value={editingText[item._id] || item.description}
                       onFocus={() => handleFocus(item._id, item.description)}
@@ -141,22 +143,25 @@ function Today() {
                       onBlur={() => handleBlur(item._id, "description")}
                       className={`${
                         editingItemId === item._id
-                          ? "bg-blue-400 text-white p-1 border-dashed"
+                          ? "bg-blue-400 p-1 border-dashed"
                           : "p-1"
-                      } w-full rounded-md`}
+                      } w-full font-semibold capitalize rounded-md`}
                     />
                     <span className="text-sm text-gray-800">{item.tags}</span>
+                    <span className="w-40 flex justify-center border-[1px] border-neutral-300 shadow-sm rounded-md">
+                      {item.startTime} - {item.endTime}
+                    </span>
                   </div>
                 </div>
                 <div className="flex justify-around items-center gap-2 text-sm">
                   <p
                     className={`${
                       item.priority === "high"
-                        ? "bg-red-300"
+                        ? "border-red-300"
                         : item.priority === "Medium"
-                        ? "bg-violet-300"
-                        : "bg-yellow-300"
-                    } rounded-md px-1`}
+                        ? "border-violet-300"
+                        : "border-yellow-300"
+                    } border-[1px] w-full flex justify-center items-center rounded-md p-1`}
                   >
                     {item.priority}
                   </p>
@@ -183,13 +188,6 @@ function Today() {
                     }
                     onChange={(value) => handleBlur(item._id, "status", value)}
                   />
-                  {item?.due ? (
-                    <div className="flex gap-1">
-                      {item.due} <LuAlarmClock size={16} />
-                    </div>
-                  ) : (
-                    ""
-                  )}
                   <UpdateTask todayTodo={item} />
                 </div>
               </Reorder.Item>

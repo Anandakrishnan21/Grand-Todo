@@ -28,6 +28,7 @@ export default function BarChartComponent({ todo }) {
         countsByDay[dayOfWeek] += 1;
       }
     });
+    
     const totalCount = todo.length;
     const chartData = Object.entries(countsByDay).map(([day, count]) => ({
       day,
@@ -38,8 +39,8 @@ export default function BarChartComponent({ todo }) {
   }, [todo]);
 
   return (
-    <div className="w-screen lg:w-[500px] flex justify-center items-center h-full rounded-lg">
-      <div className="w-[80%] h-60 text-sm font-semibold">
+    <div className="w-full lg:w-[500px] flex justify-center items-center h-full border-[1px] border-neutral-300 shadow-sm rounded-md rounded-lg">
+      <div className="w-1/2 md:w-2/3 h-40 md:h-60 text-sm font-semibold">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={todoCounts}>
             <XAxis
@@ -47,12 +48,12 @@ export default function BarChartComponent({ todo }) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
+              className="hidden md:flex"
             />
             <Bar
               dataKey="percentage"
               fill="rgb(29 78 216)"
-              radius={25}
-              background={{ fill: "#d3d3d3", radius: 25 }}
+              radius={4}
             />
           </BarChart>
         </ResponsiveContainer>

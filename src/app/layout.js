@@ -1,8 +1,9 @@
-import { Poppins } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
 import ClientWrapper from "@/components/common/ClientWrapper";
-const poppins = Poppins({ subsets: ["latin"], weight: "400" });
+import { SidebarProvider } from "@/context/SidebarContext";
+const dm_sans = DM_Sans({ subsets: ["latin"], weight: "400" });
 
 export const metadata = {
   title: "Create Next App",
@@ -12,9 +13,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
+      <body className={dm_sans.className} suppressHydrationWarning={true}>
         <AuthProvider>
-          <ClientWrapper>{children}</ClientWrapper>
+          <SidebarProvider>
+            <ClientWrapper>{children}</ClientWrapper>
+          </SidebarProvider>
         </AuthProvider>
       </body>
     </html>

@@ -38,7 +38,7 @@ function InboxPage() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4">
+    <div className="flex justify-center items-center p-4 pt-0">
       <div className="w-screen lg:w-[80%] flex flex-col gap-2 p-2">
         <div>
           <h1 className="font-bold text-xl">Inbox</h1>
@@ -54,7 +54,7 @@ function InboxPage() {
         {paginationInbox.map((item, index) => (
           <div
             key={index}
-            className="flex justify-between bg-neutral-100 border p-2 rounded-md"
+            className="flex justify-between bg-white border-[1px] border-neutral-300 shadow-sm hover:border-neutral-600 transition-border duration-300 p-2 rounded-md"
           >
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
@@ -77,13 +77,13 @@ function InboxPage() {
             </div>
             <div className="flex gap-2 text-sm items-center">
               <p
-                className={`${
+                className={`border-[1px] ${
                   item.priority === "High"
-                    ? "bg-red-300"
+                    ? "border-red-300"
                     : item.priority === "Medium"
-                    ? "bg-violet-300"
-                    : "bg-yellow-300"
-                } rounded-md px-1`}
+                    ? "border-violet-300"
+                    : "border-yellow-300"
+                } border-[1px] w-full flex justify-center items-center rounded-md p-1`}
               >
                 {item.priority}
               </p>

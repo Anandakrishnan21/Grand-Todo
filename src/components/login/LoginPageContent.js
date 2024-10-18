@@ -30,56 +30,54 @@ const LoginPageContent = () => {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center p-2">
-      <p>
+      <p className="text-lg font-medium mb-4">
         Welcome to <span className="font-bold text-red-500">Grand Todo</span>
       </p>
-      <div className="w-[100%] md:w-[50%] px-4">
+      <div className="w-full md:w-1/2 lg:w-1/3 px-4">
         <Form onFinish={onFinish}>
           <Form.Item
             name="email"
+            label="Email"
             rules={[
               {
-                type: "email",
                 required: true,
-                message: "Please input your email!",
+                message: "Please input a valid email!",
               },
             ]}
           >
-            <div>
-              <p>Email</p>
-              <Input placeholder="Email" type="email" />
-            </div>
+            <Input
+              placeholder="Enter your email"
+              type="email"
+              autoComplete="off"
+            />
           </Form.Item>
 
           <Form.Item
             name="password"
+            label="Password"
             rules={[
               {
                 required: true,
+                type: "password",
                 message: "Please input your password!",
               },
             ]}
           >
-            <div>
-              <p>Password</p>
-              <Input.Password placeholder="Password" />
-            </div>
+            <Input.Password placeholder="Password" autoComplete="off" />
           </Form.Item>
 
           <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              style={{
-                width: "100%",
-              }}
-            >
+            <Button type="primary" htmlType="submit" className="w-full">
               Login
             </Button>
           </Form.Item>
         </Form>
-        <p className="w-full justify-start">
-          Don&apos;t have an account? <Link href="/register" className="text-blue-600">Register</Link>
+
+        <p className="text-sm mt-4">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-blue-600 hover:underline">
+            Register
+          </Link>
         </p>
       </div>
     </div>

@@ -8,7 +8,7 @@ import {
   TimePicker,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { AiOutlineEdit } from "react-icons/ai";
+import { PiPencilCircleLight } from "react-icons/pi";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
@@ -78,10 +78,10 @@ function UpdateTask({ todayTodo }) {
   return (
     <div>
       <div
-        className="p-1 bg-neutral-600 text-white rounded"
+        className="p-1  border-[1px] border-neutral-300 shadow-sm rounded-full"
         onClick={showModal}
       >
-        <AiOutlineEdit size={16} />
+        <PiPencilCircleLight size={24} />
       </div>
       <Modal open={isModalOpen} footer={null} onCancel={hideModal}>
         <Form
@@ -108,7 +108,12 @@ function UpdateTask({ todayTodo }) {
             >
               <div>
                 <p>Description</p>
-                <Input id="task" name="task" placeholder="Task name" defaultValue={task} />
+                <Input
+                  id="task"
+                  name="task"
+                  placeholder="Task name"
+                  defaultValue={task}
+                />
               </div>
             </Form.Item>
             <Form.Item
