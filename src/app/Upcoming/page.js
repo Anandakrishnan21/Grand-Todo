@@ -1,42 +1,44 @@
 "use client";
 import Delete from "@/components/common/Delete";
 import FileNotFound from "@/components/common/FileNotFound";
-import Pagination from "@/components/common/Pagination";
 import { Inbox } from "lucide-react";
 import React, { useEffect, useState, useMemo } from "react";
-import { AiOutlineEdit } from "react-icons/ai";
 import { LuAlarmClock } from "react-icons/lu";
 import Loading from "../Loading";
 import UpdateTask from "@/components/common/UpdateTask";
 
 function UpcomingPage() {
   const [upcomingTodo, setUpcomingTodo] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [upcomingTodoPage, setUpcomingTodoPage] = useState([]);
-  const itemsPerPage = 4;
+  const [isMounted, setIsMounted] = useState(false);
   const today = new Date();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        const res = await fetch("/api/today", {
-          cache: "no-cache",
-        });
-        if (!res.ok) {
-          console.error("Failed to fetch data");
-          return;
-        }
-        const data = await res.json();
-        setUpcomingTodo(data);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
+    setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const fetchData = async () => {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const res = await fetch("/api/today", {
+            cache: "no-cache",
+          });
+          if (!res.ok) {
+            console.error("Failed to fetch data");
+            return;
+          }
+          const data = await res.json();
+          setUpcomingTodo(data);
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchData();
+    }
+  }, [isMounted]);
 
   const sortedTodo = useMemo(() => {
     const groupedTodo = {};
@@ -57,17 +59,13 @@ function UpcomingPage() {
       const dateB = new Date(b[0]);
       return dateA - dateB;
     });
-  }, [upcomingTodo]);
-
-  useEffect(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    setUpcomingTodoPage(sortedTodo.slice(start, end));
-  }, [sortedTodo, currentPage]);
+  }, [upcomingTodo, today]);
 
   if (isLoading) {
     return <Loading />;
   }
+
+  if (!isMounted) return null;
 
   return (
     <div className="flex justify-center items-center p-4">
@@ -76,7 +74,7 @@ function UpcomingPage() {
         <span className="text-gray-600 pb-2">Tasks</span>
         {sortedTodo.length > 0 ? (
           <div className="flex flex-col md:flex-row gap-4">
-            {upcomingTodoPage.map(([date, todos]) => (
+            {sortedTodo.map(([date, todos]) => (
               <div key={date} className="flex flex-col gap-2">
                 <h3 className="text-center text-sm font-semibold border-2 p-1 rounded-full">
                   {date}
@@ -98,7 +96,7 @@ function UpcomingPage() {
                           className={`${
                             todo.priority === "Low"
                               ? "bg-yellow-300"
-                              : todo.priority == "Medium"
+                              : todo.priority === "Medium"
                               ? "bg-violet-300"
                               : "bg-red-300"
                           } px-1 rounded-md`}

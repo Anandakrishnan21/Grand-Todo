@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
-import { LuAlarmClock } from "react-icons/lu";
 import { message, Select } from "antd";
 import Delete from "@/components/common/Delete";
 import FileNotFound from "@/components/common/FileNotFound";
@@ -15,6 +14,8 @@ function Today() {
   const [isLoading, setIsLoading] = useState(true);
   const [messageApi, contextHolder] = message.useMessage();
   const [editingText, setEditingText] = useState({});
+  const [todayTodos, setTodayTodos] = useState([]);
+  const [currentTime, setCurrentTime] = useState("");
 
   const showNotification = () => {
     messageApi.open({
@@ -44,23 +45,30 @@ function Today() {
     fetchData();
   }, []);
 
-  const today = new Date().toLocaleDateString("en-GB");
-  const todayTodos = todo.filter(
-    (item) => item.date === today.replace(/\//g, "-")
-  );
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    setTodayTodos(todo.filter((item) => item.date === today));
+  }, [todo]);
 
-  const now = new Date().toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setCurrentTime(now);
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     todayTodos.forEach((todo) => {
-      if (todo.due === now) {
+      if (todo.due === currentTime) {
         showNotification();
       }
     });
-  }, [now, todayTodos, showNotification]);
+  }, [currentTime, todayTodos]);
 
   const handleFocus = (id, text) => {
     setEditingItemId(id);
@@ -105,7 +113,7 @@ function Today() {
     <div className="flex justify-center items-center p-4 pt-0 md:p-4">
       {contextHolder}
       <div className="w-full lg:w-[80%] flex flex-col gap-2">
-        <div className="sticky  bg-white">
+        <div className="sticky bg-white">
           <h1 className="font-bold text-xl">Today</h1>
           <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
         </div>
