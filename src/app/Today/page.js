@@ -51,23 +51,31 @@ function Today() {
   }, [todo]);
 
   useEffect(() => {
+    const now = new Date().toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    setCurrentTime(now);
+
     const interval = setInterval(() => {
-      const now = new Date().toLocaleTimeString("en-GB", {
+      const newNow = new Date().toLocaleTimeString("en-GB", {
         hour: "2-digit",
         minute: "2-digit",
       });
-      setCurrentTime(now);
+      setCurrentTime(newNow);
     }, 60000);
 
     return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    todayTodos.forEach((todo) => {
-      if (todo.due === currentTime) {
-        showNotification();
-      }
-    });
+    if (currentTime) {
+      todayTodos.forEach((todo) => {
+        if (todo.due === currentTime) {
+          showNotification();
+        }
+      });
+    }
   }, [currentTime, todayTodos]);
 
   const handleFocus = (id, text) => {
