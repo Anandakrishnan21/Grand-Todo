@@ -1,13 +1,19 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { Select, message } from "antd";
 import Delete from "@/components/common/Delete";
 import UpdateTask from "@/components/common/UpdateTask";
+import FileNotFound from "../common/FileNotFound";
 
-function TodoItem({ item, setTodo }) {
+function TodoItem({ todayTodos, todo, setTodayTodos }) {
   const [editingItemId, setEditingItemId] = useState(null);
   const [editingText, setEditingText] = useState({});
+
+  useEffect(() => {
+    const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+    setTodayTodos(todo.filter((item) => item.date === today));
+  }, [todo]);
 
   const handleFocus = (id, text) => {
     setEditingItemId(id);
@@ -41,54 +47,68 @@ function TodoItem({ item, setTodo }) {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between gap-2">
-      <div className="flex items-center gap-2">
-        <RiDraggable size={20} />
-        {item.status !== "Done" && <Delete id={item._id} setData={setTodo} />}
-        <div className="flex text-sm flex-col">
-          <input
-            value={editingText[item._id] || item.description}
-            onFocus={() => handleFocus(item._id, item.description)}
-            onChange={(e) => setEditingText({ [item._id]: e.target.value })}
-            onBlur={() => handleBlur(item._id, "description")}
-            className={`${
-              editingItemId === item._id ? "bg-blue-400 p-1" : "p-1"
-            } w-full font-semibold capitalize rounded-md`}
-          />
-          <span className="text-gray-800">{item.tags}</span>
-          <p>
-            Time:{" "}
-            <span>
-              {item.startTime} - {item.endTime}
-            </span>
-          </p>
+    <>
+      {todayTodos.length > 0 ? (
+        <div className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2">
+          {todayTodos.map((item) => (
+            <div className="flex flex-col md:flex-row justify-between gap-2">
+              <div className="flex items-center gap-2">
+                <RiDraggable size={20} />
+                {item.status !== "Done" && (
+                  <Delete id={item._id} setData={setTodo} />
+                )}
+                <div className="flex text-sm flex-col">
+                  <input
+                    value={editingText[item._id] || item.description}
+                    onFocus={() => handleFocus(item._id, item.description)}
+                    onChange={(e) =>
+                      setEditingText({ [item._id]: e.target.value })
+                    }
+                    onBlur={() => handleBlur(item._id, "description")}
+                    className={`${
+                      editingItemId === item._id ? "bg-blue-400 p-1" : "p-1"
+                    } w-full font-semibold capitalize rounded-md`}
+                  />
+                  <span className="text-gray-800">{item.tags}</span>
+                  <p>
+                    Time:{" "}
+                    <span>
+                      {item.startTime} - {item.endTime}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-around items-center gap-2 text-sm">
+                <p
+                  className={`w-20 border-[1px] flex justify-center items-center rounded-md p-1 ${
+                    item.priority === "high"
+                      ? "bg-red-300"
+                      : item.priority === "Medium"
+                      ? "border-violet-300"
+                      : "border-yellow-300"
+                  }`}
+                >
+                  {item.priority}
+                </p>
+                <Select
+                  defaultValue={item.status}
+                  style={{ width: 120 }}
+                  options={[
+                    { value: "Todo", label: "Todo" },
+                    { value: "Inprogress", label: "Inprogress" },
+                    { value: "Done", label: "Done" },
+                  ]}
+                  onChange={(value) => handleBlur(item._id, "status", value)}
+                />
+                <UpdateTask todayTodo={item} />
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-      <div className="flex justify-around items-center gap-2 text-sm">
-        <p
-          className={`w-20 border-[1px] flex justify-center items-center rounded-md p-1 ${
-            item.priority === "high"
-              ? "bg-red-300"
-              : item.priority === "Medium"
-              ? "border-violet-300"
-              : "border-yellow-300"
-          }`}
-        >
-          {item.priority}
-        </p>
-        <Select
-          defaultValue={item.status}
-          style={{ width: 120 }}
-          options={[
-            { value: "Todo", label: "Todo" },
-            { value: "Inprogress", label: "Inprogress" },
-            { value: "Done", label: "Done" },
-          ]}
-          onChange={(value) => handleBlur(item._id, "status", value)}
-        />
-        <UpdateTask todayTodo={item} />
-      </div>
-    </div>
+      ) : (
+        <FileNotFound />
+      )}
+    </>
   );
 }
 

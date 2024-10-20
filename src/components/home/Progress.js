@@ -33,7 +33,7 @@ export function ProgressComponent({ todo }) {
       <ResponsiveContainer width="100%" height="100%">
         <RadialBarChart
           innerRadius={60}
-          outerRadius={100}
+          outerRadius={80}
           barSize={10}
           data={chartData}
           startAngle={90}

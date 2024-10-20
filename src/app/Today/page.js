@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import Loading from "../Loading";
-import FileNotFound from "@/components/common/FileNotFound";
 import TodoItem from "@/components/today/TodoItem";
 
 function TodayTodos() {
@@ -31,11 +30,6 @@ function TodayTodos() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
-    setTodayTodos(todo.filter((item) => item.date === today));
-  }, [todo]);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -48,15 +42,7 @@ function TodayTodos() {
           <h1 className="font-bold text-xl">Today</h1>
           <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>
         </div>
-        {todayTodos.length > 0 ? (
-          <div className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2">
-            {todayTodos.map((item) => (
-              <TodoItem key={item._id} item={item} setTodo={setTodo} />
-            ))}
-          </div>
-        ) : (
-          <FileNotFound />
-        )}
+        <TodoItem todayTodos={todayTodos} setTodayTodos={setTodayTodos} todo={todo} />
       </div>
     </div>
   );
