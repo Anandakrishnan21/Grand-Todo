@@ -13,7 +13,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
   useEffect(() => {
     const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
     setTodayTodos(todo.filter((item) => item.date === today));
-  }, [todo]);
+  }, [todo, setTodayTodos]);
 
   const handleFocus = (id, text) => {
     setEditingItemId(id);
@@ -36,7 +36,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       } else {
         message.error("Failed to update todo");
       }
-      setTodo((prevTodos) =>
+      setTodayTodos((prevTodos) =>
         prevTodos.map((item) =>
           item._id === id ? { ...item, [field]: value } : item
         )
@@ -51,11 +51,11 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       {todayTodos.length > 0 ? (
         <div className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2">
           {todayTodos.map((item) => (
-            <div className="flex flex-col md:flex-row justify-between gap-2">
+            <div key={item._id} className="flex flex-col md:flex-row justify-between gap-2">
               <div className="flex items-center gap-2">
                 <RiDraggable size={20} />
                 {item.status !== "Done" && (
-                  <Delete id={item._id} setData={setTodo} />
+                  <Delete id={item._id} setData={setTodayTodos} />
                 )}
                 <div className="flex text-sm flex-col">
                   <input
