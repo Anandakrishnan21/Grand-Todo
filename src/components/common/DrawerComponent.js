@@ -17,7 +17,7 @@ function DrawerComponent() {
     "text-black hover:bg-[#ececec] transition-color duration-300";
 
   return (
-    <nav className="sticky top-14 bg-white flex md:hidden items-center scrollbar gap-4 z-10 overflow-x-auto py-2">
+    <nav className="sticky top-14 z-24 bg-white flex md:hidden items-center scrollbar gap-4 z-10 overflow-x-auto py-2">
       <ul className="flex w-full gap-2">
         {sidebarOptions.map((option) => (
           <li key={option.name} className="min-w-[120px]">

@@ -54,7 +54,7 @@ function InboxPage() {
         {paginationInbox.map((item, index) => (
           <div
             key={index}
-            className="flex justify-between bg-white border-[1px] border-neutral-300 shadow-sm hover:border-neutral-600 transition-border duration-300 p-2 rounded-md"
+            className="text-sm flex flex-col md:flex-row justify-between bg-white border-[1px] border-neutral-300 shadow-sm hover:border-neutral-600 transition-border duration-300 p-2 rounded-md"
           >
             <div className="flex gap-2 items-center">
               <RiDraggable size={20} />
@@ -68,31 +68,33 @@ function InboxPage() {
                 } w-4 h-4 rounded-full border-[2px] cursor-pointer p-2`}
               />
               <div className="flex flex-col">
-                <p>{item.description}</p>
-                <span className="flex gap-1 items-center text-sm text-gray-600">
-                  <Inbox size={16} /> inbox
+                <p className="capitalize font-semibold">{item.description}</p>
+                <span className="flex gap-1 items-center text-sm">
+                  Date: {item.date}
                 </span>
-                <span className="text-sm text-gray-800">{item.tags}</span>
+                <span className="text-gray-800">{item.tags}</span>
               </div>
             </div>
             <div className="flex gap-2 text-sm items-center">
               <p
-                className={`border-[1px] ${
+                className={`w-20 border-[1px] ${
                   item.priority === "High"
                     ? "border-red-300"
                     : item.priority === "Medium"
                     ? "border-violet-300"
                     : "border-yellow-300"
-                } border-[1px] w-full flex justify-center items-center rounded-md p-1`}
+                } border-[1px] flex justify-center items-center rounded-md p-1`}
               >
                 {item.priority}
               </p>
-              {item.due ? (
-                <div className="flex items-center gap-1">
-                  <span>{item.due}</span>
-                  <LuAlarmClock />
-                </div>
-              ) : null}
+              {item.startTime && (
+                <p>
+                  Time:{" "}
+                  <span>
+                    {item.startTime} - {item.endTime}
+                  </span>
+                </p>
+              )}
             </div>
           </div>
         ))}
