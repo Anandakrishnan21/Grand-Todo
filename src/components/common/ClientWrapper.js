@@ -13,6 +13,7 @@ function ClientWrapper({ children }) {
   const showSidebar = [
     "/home",
     "/inbox",
+    "/testing",
     "/search",
     "/today",
     "/upcoming",

@@ -13,6 +13,12 @@ export const getSidebarOptions = (segment) => [
     current: segment === "home",
   },
   {
+    name: "Testing",
+    href: "/testing",
+    icon: AiOutlineDashboard,
+    current: segment === "testing",
+  },
+  {
     name: "Inbox",
     href: "/inbox",
     icon: AiOutlineInbox,
