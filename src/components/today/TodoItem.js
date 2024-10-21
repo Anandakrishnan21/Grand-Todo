@@ -11,8 +11,15 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
   const [editingText, setEditingText] = useState({});
 
   useEffect(() => {
-    const today = new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
-    setTodayTodos(todo.filter((item) => item.date === today));
+    const today = new Date();
+    const formattedDate =
+      String(today.getDate()).padStart(2, "0") +
+      "-" +
+      String(today.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      today.getFullYear();
+      
+    setTodayTodos(todo.filter((item) => item.date === formattedDate));
   }, [todo, setTodayTodos]);
 
   const handleFocus = (id, text) => {
@@ -51,7 +58,10 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       {todayTodos.length > 0 ? (
         <div className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2">
           {todayTodos.map((item) => (
-            <div key={item._id} className="flex flex-col md:flex-row justify-between gap-2">
+            <div
+              key={item._id}
+              className="flex flex-col md:flex-row justify-between gap-2"
+            >
               <div className="flex items-center gap-2">
                 <RiDraggable size={20} />
                 {item.status !== "Done" && (
