@@ -107,7 +107,10 @@ const AddTask = () => {
         <AiOutlinePlusCircle size={20} />
         Add Todo
       </Link>
-      <FloatButton icon={<AiOutlinePlusCircle size={20} />} onClick={showModal} />
+      {/* <FloatBtn showModal={showModal} /> */}
+      <div>
+        <FloatButton trigger="click" onClick={showModal} />
+      </div>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form
           form={form}

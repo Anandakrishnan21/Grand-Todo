@@ -43,13 +43,6 @@ function InboxPage() {
         <div>
           <h1 className="font-bold text-xl">Inbox</h1>
           <span className="text-gray-600 pb-2">{inbox.length} tasks</span>
-          <Pagination
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            inbox={inbox}
-            setPaginationInbox={setPaginationInbox}
-          />
         </div>
         {paginationInbox.map((item, index) => (
           <div
@@ -81,21 +74,17 @@ function InboxPage() {
                   </p>
                 )}
               </div>
-              <p
-                // className={`w-20 border-[1px] ${
-                //   item.priority === "High"
-                //     ? "border-red-300"
-                //     : item.priority === "Medium"
-                //     ? "border-violet-300"
-                //     : "border-yellow-300"
-                // } border-[1px] flex justify-center items-center rounded-md p-1`}
-                className="text-blue-800 font-medium"
-              >
-                {item.priority}
-              </p>
+              <p className="text-blue-800 font-medium">{item.priority}</p>
             </div>
           </div>
         ))}
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          inbox={inbox}
+          setPaginationInbox={setPaginationInbox}
+        />
       </div>
     </div>
   );

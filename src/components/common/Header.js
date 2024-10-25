@@ -2,6 +2,7 @@ import React from "react";
 import { signOut, useSession } from "next-auth/react";
 import Navbar from "./Navbar";
 import { Avatar, Popover } from "antd";
+import AddTask from "./AddTask";
 
 function Header() {
   const { data: session } = useSession();
@@ -27,16 +28,21 @@ function Header() {
         <div className="top-0 sticky z-20">
           <header className="flex justify-between bg-white items-center gap-4 text-xl z-24 p-2 border-[1px] border-b-neutral-200">
             <p className="font-semibold text-red-500">Grand Todo</p>
-            <Popover content={content}>
-              <Avatar
-                style={{
-                  backgroundColor: "#1677ff",
-                }}
-                gap={2}
-              >
-                {session?.user?.name?.charAt(0).toUpperCase()}
-              </Avatar>
-            </Popover>
+            <div>
+              <Popover content={content}>
+                <Avatar
+                  style={{
+                    backgroundColor: "#1677ff",
+                  }}
+                  gap={2}
+                >
+                  {session?.user?.name?.charAt(0).toUpperCase()}
+                </Avatar>
+              </Popover>
+              <div className="lg:hidden">
+                <AddTask />
+              </div>
+            </div>
           </header>
           <Navbar session={session} />
         </div>

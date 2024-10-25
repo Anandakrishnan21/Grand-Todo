@@ -26,16 +26,25 @@ function Pagination({
     }
   };
   return (
-    <div className="flex justify-end">
-      <div className="flex gap-1 border-2 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out p-1 rounded-full">
-        <button onClick={handleButtonLeft}>
-          <AiOutlineLeft />
-        </button>
-        <div className="text-sm font-bold">Task</div>
-        <button onClick={handleButtonRight}>
-          <AiOutlineRight />
-        </button>
-      </div>
+    <div className="flex justify-center text-sm gap-1">
+      <button
+        onClick={handleButtonLeft}
+        className={`${
+          currentPage === 1 ? "text-neutral-500" : "hover:border-blue-500 transition-colors duration-300"
+        } border-[1px] border-[#dbdbdb] shadow-sm p-1 px-2 rounded-md`}
+      >
+        Prev
+      </button>
+      <button
+        onClick={handleButtonRight}
+        className={`${
+          currentPage < Math.ceil(inbox.length / itemsPerPage)
+            ? "hover:border-blue-500 transition-colors duration-300"
+            : "text-neutral-500"
+        } border-[1px] border-[#dbdbdb] shadow-sm p-1 px-2 rounded-md`}
+      >
+        Next
+      </button>
     </div>
   );
 }
