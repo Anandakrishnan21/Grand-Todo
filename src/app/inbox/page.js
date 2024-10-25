@@ -54,10 +54,10 @@ function InboxPage() {
         {paginationInbox.map((item, index) => (
           <div
             key={index}
-            className="text-sm flex flex-col md:flex-row justify-between bg-white border-[1px] border-neutral-300 shadow-sm hover:border-neutral-600 transition-border duration-300 p-2 rounded-md"
+            className="text-sm flex justify-between bg-white border-[1px] gap-2 border-[#dbdbdb] shadow-sm p-4 rounded-md"
           >
             <div className="flex gap-2 items-center">
-              <RiDraggable size={20} />
+              {/* <RiDraggable size={20} /> */}
               <div
                 className={`${
                   item.status === "Done"
@@ -67,34 +67,32 @@ function InboxPage() {
                     : "border-gray-500"
                 } w-4 h-4 rounded-full border-[2px] cursor-pointer p-2`}
               />
-              <div className="flex flex-col">
-                <p className="capitalize font-semibold">{item.description}</p>
+            </div>
+            <div className="w-full flex flex-row gap-2 text-sm justify-between">
+              <div className="flex flex-col gap-1">
+                <p className="capitalize font-medium">{item.description}</p>
                 <span className="flex gap-1 items-center text-sm">
                   Date: {item.date}
                 </span>
-                <span className="text-gray-800">{item.tags}</span>
+                <span className="text-neutral-500">{item.tags}</span>
+                {item.startTime && (
+                  <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                    {item.startTime} - {item.endTime}
+                  </p>
+                )}
               </div>
-            </div>
-            <div className="flex gap-2 text-sm items-center">
               <p
-                className={`w-20 border-[1px] ${
-                  item.priority === "High"
-                    ? "border-red-300"
-                    : item.priority === "Medium"
-                    ? "border-violet-300"
-                    : "border-yellow-300"
-                } border-[1px] flex justify-center items-center rounded-md p-1`}
+                // className={`w-20 border-[1px] ${
+                //   item.priority === "High"
+                //     ? "border-red-300"
+                //     : item.priority === "Medium"
+                //     ? "border-violet-300"
+                //     : "border-yellow-300"
+                // } border-[1px] flex justify-center items-center rounded-md p-1`}
+                className="text-blue-800 font-medium"
               >
                 {item.priority}
               </p>
-              {item.startTime && (
-                <p>
-                  Time:{" "}
-                  <span>
-                    {item.startTime} - {item.endTime}
-                  </span>
-                </p>
-              )}
             </div>
           </div>
         ))}

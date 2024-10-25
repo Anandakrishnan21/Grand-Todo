@@ -13,10 +13,9 @@ function ClientWrapper({ children }) {
   const showSidebar = [
     "/home",
     "/inbox",
-    "/testing",
     "/search",
-    "/today",
-    "/upcoming",
+    "/day",
+    "/coming",
   ].includes(pathname);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ function ClientWrapper({ children }) {
       )}
       <div className="w-full overflow-auto">
         <Header />
-        <div className="h-full bg-stone-50">{children}</div>
+        <div>{children}</div>
       </div>
     </div>
   );

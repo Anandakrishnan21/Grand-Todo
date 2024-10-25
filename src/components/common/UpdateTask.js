@@ -78,10 +78,10 @@ function UpdateTask({ todayTodo }) {
   return (
     <div>
       <div
-        className="p-1  border-[1px] border-neutral-300 shadow-sm rounded-full"
+        className="bg-[#87d068] text-sm flex justify-center px-3 border text-white rounded-md shadow-sm cursor-pointer"
         onClick={showModal}
       >
-        <PiPencilCircleLight size={24} />
+        <p>Edit</p>
       </div>
       <Modal open={isModalOpen} footer={null} onCancel={hideModal}>
         <Form

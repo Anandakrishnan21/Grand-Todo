@@ -39,7 +39,7 @@ export default function BarChartComponent({ todo }) {
   }, [todo]);
 
   return (
-    <div className="w-full lg:w-[500px] flex justify-center items-center h-full border-[1px] border-neutral-300 shadow-sm rounded-md rounded-lg">
+    <div className="w-full lg:w-[500px] flex justify-center items-center h-full border bg-blue-50 shadow-sm rounded-md">
       <div className="w-1/2 md:w-2/3 h-40 md:h-60 text-sm font-semibold">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={todoCounts}>

@@ -1,22 +1,17 @@
 import {
-    AiOutlineCalendar,
-    AiOutlineDashboard,
-    AiOutlineInbox,
-    AiOutlineSearch,
-  } from "react-icons/ai";
-  
+  AiOutlineCalendar,
+  AiOutlineDashboard,
+  AiOutlineInbox,
+  AiOutlineSearch,
+} from "react-icons/ai";
+import { MdOutlineUpcoming } from "react-icons/md";
+
 export const getSidebarOptions = (segment) => [
   {
     name: "Dashboard",
     href: "/home",
     icon: AiOutlineDashboard,
     current: segment === "home",
-  },
-  {
-    name: "Testing",
-    href: "/testing",
-    icon: AiOutlineDashboard,
-    current: segment === "testing",
   },
   {
     name: "Inbox",
@@ -32,14 +27,14 @@ export const getSidebarOptions = (segment) => [
   },
   {
     name: "Today",
-    href: "/today",
+    href: "/day",
     icon: AiOutlineCalendar,
-    current: segment === "today",
+    current: segment === "day",
   },
   {
     name: "Upcoming",
-    href: "/upcoming",
-    icon: AiOutlineCalendar,
-    current: segment === "upcoming",
+    href: "/coming",
+    icon: MdOutlineUpcoming,
+    current: segment === "coming",
   },
 ];

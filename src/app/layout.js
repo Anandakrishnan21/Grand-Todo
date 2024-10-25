@@ -1,9 +1,9 @@
-import { DM_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./Providers";
 import ClientWrapper from "@/components/common/ClientWrapper";
 import { SidebarProvider } from "@/context/SidebarContext";
-const dm_sans = DM_Sans({ subsets: ["latin"], weight: "400" });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: "Create Next App",
@@ -13,7 +13,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={dm_sans.className} suppressHydrationWarning={true}>
+      <body
+        className={`${inter.className} antialiased`}
+        suppressHydrationWarning={true}
+      >
         <AuthProvider>
           <SidebarProvider>
             <ClientWrapper>{children}</ClientWrapper>

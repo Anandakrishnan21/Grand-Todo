@@ -5,6 +5,7 @@ import AddTask from "./AddTask";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, Badge, Button } from "antd";
 import { getSidebarOptions } from "../utils/data";
+import { HiOutlineLogout } from "react-icons/hi";
 import { UserOutlined } from "@ant-design/icons";
 import { useSidebarContext } from "@/context/SidebarContext";
 
@@ -14,20 +15,16 @@ function classNames(...classes) {
 
 function Sidebar() {
   const segment = useSelectedLayoutSegment();
-  const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
+  const { isLargeOpen, isSmallOpen } = useSidebarContext();
   const { data: session } = useSession();
 
   const commonClasses =
     "flex flex-col overflow-y-auto scrollbar-hidden bg-neutral-50 dark:bg-neutral-950 dark:border-r-neutral-800 dark:border-[1px] p-4";
-  const commonClasses1 =
-    "bg-neutral-200 dark:bg-neutral-900 border-[1px] border-neutral-200 dark:border-neutral-700 hover:dark:border-neutral-700 duration-500 dark:text-white font-bold text-sm";
-  const commonClasses2 =
-    "border-[1px] border-neutral-50 dark:border-neutral-950 hover:bg-neutral-200 hover:dark:bg-neutral-900 dark:text-neutral-400 duration-200 font-normal";
-
   const active =
-    "bg-[#ececec] border-2 font-bold text-blue-800 transition-color duration-300";
+    "bg-blue-50 text-blue-800 font-semibold transition-border duration-300 border";
   const inactive =
-    "text-black hover:bg-[#ececec] transition-color duration-300";
+    "text-black hover:bg-blue-50 transition-color duration-300";
+
   const sidebarOptions = getSidebarOptions(segment);
 
   return (
@@ -44,7 +41,7 @@ function Sidebar() {
               <Link
                 href={option.href}
                 className={classNames(
-                  option.current ? `${commonClasses1}` : `${commonClasses2}`,
+                  option.current ? active : inactive,
                   "group flex items-center justify-center gap-x-3 rounded-md p-2 text-sm tracking-wide leading-6"
                 )}
               >
@@ -63,18 +60,18 @@ function Sidebar() {
           <Link
             href=""
             onClick={() => signOut()}
-            className="group flex justify-center gap-x-3 rounded-md p-2 text-sm tracking-wide leading-6 bg-neutral-800 text-white"
+            className="group flex justify-center gap-x-3 rounded-md p-2 text-sm tracking-wide leading-6 bg-red-500 text-white"
           >
-            {/* <HiOutlineLogout className="w-5 h-5" /> */}
+            <HiOutlineLogout className="w-5 h-5" />
           </Link>
         </ul>
       </aside>
       <aside
-        className={`${commonClasses} flex flex-col justify-between z-20 md:z-10 w-56 transition-width border-[1px] border-neutral-300 shadow-sm duration-300 dark:shadow-neutral-800 lg:sticky absolute top-0 p-2 gap-2 ${
+        className={`flex flex-col justify-between z-20 md:z-10 w-56 transition-width border-[1px] border-neutral-300 shadow-sm duration-300 dark:shadow-neutral-800 lg:sticky absolute top-0 p-2 gap-2 ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${
           isSmallOpen
-            ? "flex h-screen bg-neutral-50 dark:bg-neutral-950 max-h-screen pt-0 md:pt-[72px]"
+            ? "flex h-screen max-h-screen pt-0 md:pt-[72px]"
             : "hidden"
         }`}
       >
@@ -89,15 +86,13 @@ function Sidebar() {
               <Link
                 href={option.href}
                 className={classNames(
-                  option.current ? `${commonClasses1}` : `${commonClasses2}`,
+                  option.current ? active : inactive,
                   "group flex items-center gap-x-3 rounded-md p-2 text-sm tracking-wide leading-6"
                 )}
               >
                 <option.icon
                   className={
-                    option.current
-                      ? "h-5 w-5 shrink-0"
-                      : "text-neutral-800 dark:text-neutral-600 h-5 w-5 shrink-0"
+                    option.current ? "h-5 w-5 shrink-0" : "h-5 w-5 shrink-0"
                   }
                 />
                 {option.name}
@@ -107,7 +102,13 @@ function Sidebar() {
         </ul>
         <ul className="flex flex-col gap-3">
           <li>
-            <p className="flex items-center justify-center text-sm bg-neutral-200 border-neutral-200 dark:bg-neutral-900 duration-200 font-bold capitalize py-2 px-2 gap-2 rounded">
+            <p className="flex items-center justify-center bg-blue-50 text-blue-600 border text-sm font-bold capitalize p-1 gap-2 rounded-md">
+              <Avatar
+                style={{
+                  backgroundColor: "#1677ff",
+                }}
+                icon={<UserOutlined />}
+              />
               {session?.user?.name}
             </p>
           </li>

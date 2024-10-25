@@ -101,13 +101,13 @@ const AddTask = () => {
     <>
       <Link
         href="#"
-        className="hidden lg:flex items-start font-bold text-sm text-blue-800 gap-4 p-2"
+        className="hidden lg:flex items-center justify-center bg-black text-white rounded-md font-bold text-sm gap-4 p-1"
         onClick={showModal}
       >
         <AiOutlinePlusCircle size={20} />
         Add Todo
       </Link>
-      <FloatButton icon={<AiOutlinePlusCircle />} onClick={showModal} />
+      <FloatButton icon={<AiOutlinePlusCircle size={20} />} onClick={showModal} />
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
         <Form
           form={form}

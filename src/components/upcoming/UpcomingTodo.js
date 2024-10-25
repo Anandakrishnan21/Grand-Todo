@@ -64,8 +64,8 @@ function UpcomingTodo() {
   if (!isMounted) return null;
 
   return (
-    <div className="flex justify-center items-center p-4">
-      <div className="w-full lg:w-[80%] h-[60%] flex flex-col gap-2">
+    <div className="flex justify-center items-center p-4 pt-0 md:p-4">
+      <div className="w-full lg:w-[80%] h-[60%] flex flex-col gap-2 p-2">
         <h1 className="font-bold text-xl">Upcoming</h1>
         <span className="text-gray-600 pb-2">Tasks</span>
         {sortedTodo.length > 0 ? (

@@ -18,7 +18,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       String(today.getMonth() + 1).padStart(2, "0") +
       "-" +
       today.getFullYear();
-      
+
     setTodayTodos(todo.filter((item) => item.date === formattedDate));
   }, [todo, setTodayTodos]);
 
@@ -56,18 +56,18 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
   return (
     <>
       {todayTodos.length > 0 ? (
-        <div className="w-full space-y-4 bg-white border-[1px] border-neutral-300 shadow-sm rounded-md p-2">
+        <div className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2">
           {todayTodos.map((item) => (
             <div
               key={item._id}
-              className="flex flex-col md:flex-row justify-between gap-2"
+              className="flex flex-row justify-between gap-2"
             >
               <div className="flex items-center gap-2">
-                <RiDraggable size={20} />
+                {/* <RiDraggable size={20} /> */}
                 {item.status !== "Done" && (
                   <Delete id={item._id} setData={setTodayTodos} />
                 )}
-                <div className="flex text-sm flex-col">
+                <div className="flex text-sm flex-col gap-1">
                   <input
                     value={editingText[item._id] || item.description}
                     onFocus={() => handleFocus(item._id, item.description)}
@@ -77,39 +77,28 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
                     onBlur={() => handleBlur(item._id, "description")}
                     className={`${
                       editingItemId === item._id ? "bg-blue-400 p-1" : "p-1"
-                    } w-full font-semibold capitalize rounded-md`}
+                    } w-full font-medium capitalize rounded-md p-0`}
                   />
-                  <span className="text-gray-800">{item.tags}</span>
-                  <p>
-                    Time:{" "}
-                    <span>
-                      {item.startTime} - {item.endTime}
-                    </span>
+                  <span className="text-gray-500">{item.tags}</span>
+                  <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                    {item.startTime} - {item.endTime}
                   </p>
+                  <Select
+                    defaultValue={item.status}
+                    style={{ width: 110 }}
+                    options={[
+                      { value: "Todo", label: "Todo" },
+                      { value: "Inprogress", label: "Inprogress" },
+                      { value: "Done", label: "Done" },
+                    ]}
+                    onChange={(value) => handleBlur(item._id, "status", value)}
+                  />
                 </div>
               </div>
-              <div className="flex justify-around items-center gap-2 text-sm">
-                <p
-                  className={`w-20 border-[1px] flex justify-center items-center rounded-md p-1 ${
-                    item.priority === "high"
-                      ? "bg-red-300"
-                      : item.priority === "Medium"
-                      ? "border-violet-300"
-                      : "border-yellow-300"
-                  }`}
-                >
+              <div className="flex flex-col items-end gap-2 text-sm">
+                <p className="justify-end text-blue-800 font-medium">
                   {item.priority}
                 </p>
-                <Select
-                  defaultValue={item.status}
-                  style={{ width: 120 }}
-                  options={[
-                    { value: "Todo", label: "Todo" },
-                    { value: "Inprogress", label: "Inprogress" },
-                    { value: "Done", label: "Done" },
-                  ]}
-                  onChange={(value) => handleBlur(item._id, "status", value)}
-                />
                 <UpdateTask todayTodo={item} />
               </div>
             </div>
