@@ -58,11 +58,11 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       {todayTodos.length > 0 ? (
         <div className="flex flex-col gap-2">
           {todayTodos.map((item) => (
-            <div className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2">
-              <div
-                key={item._id}
-                className="flex flex-row justify-between gap-2"
-              >
+            <div
+              key={item._id}
+              className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2"
+            >
+              <div className="flex flex-row justify-between gap-2">
                 <div className="flex items-center gap-2">
                   {/* <RiDraggable size={20} /> */}
                   {item.status !== "Done" && (

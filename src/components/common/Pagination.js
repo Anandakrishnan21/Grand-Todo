@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-
 function Pagination({
   itemsPerPage,
   inbox,
@@ -12,7 +10,7 @@ function Pagination({
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     setPaginationInbox(inbox.slice(startIndex, endIndex));
-  }, [inbox, currentPage]);
+  }, [inbox, currentPage, setPaginationInbox, itemsPerPage]);
 
   const handleButtonLeft = () => {
     if (currentPage > 1) {
