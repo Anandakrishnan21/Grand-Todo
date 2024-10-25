@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { Select, message } from "antd";
@@ -27,27 +27,27 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
     setEditingText({ [id]: text });
   };
 
-  const handleBlur = async (id, field) => {
+  const handleBlur = async (id, field, value) => {
     setEditingItemId(null);
-    const value = editingText[id];
+    const updatedValue = value || editingText[id];
     try {
       const res = await fetch("/api/today", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, [field]: value }),
+        body: JSON.stringify({ id, [field]: updatedValue }),
       });
       if (res.ok) {
         message.success("Todo updated successfully");
+        setTodayTodos((prevTodos) =>
+          prevTodos.map((item) =>
+            item._id === id ? { ...item, [field]: updatedValue } : item
+          )
+        );
       } else {
         message.error("Failed to update todo");
       }
-      setTodayTodos((prevTodos) =>
-        prevTodos.map((item) =>
-          item._id === id ? { ...item, [field]: value } : item
-        )
-      );
     } catch (error) {
       console.error("Error updating todo:", error);
     }

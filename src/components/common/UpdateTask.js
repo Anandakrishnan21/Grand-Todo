@@ -17,8 +17,9 @@ function UpdateTask({ todayTodo }) {
   const [form] = Form.useForm();
   const [task, setTask] = useState(todayTodo?.description || "");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTimeRange, setSelectedTimeRange] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const format = "HH:mm";
 
   useEffect(() => {
     if (todayTodo) {
@@ -26,9 +27,16 @@ function UpdateTask({ todayTodo }) {
       setSelectedDate(
         todayTodo.date ? dayjs(todayTodo.date, "DD-MM-YYYY") : null
       );
-      setSelectedTime(todayTodo.due ? dayjs(todayTodo.due, "HH:mm") : null);
+      setSelectedTimeRange([
+        todayTodo.startTime ? dayjs(todayTodo.startTime, format) : null,
+        todayTodo.endTime ? dayjs(todayTodo.endTime, format) : null,
+      ]);
     }
   }, [todayTodo]);
+
+  const onTimeChange = (times) => {
+    setSelectedTimeRange(times);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -41,7 +49,12 @@ function UpdateTask({ todayTodo }) {
       id: todayTodo._id,
       description: values.description,
       date: selectedDate ? selectedDate.format("DD-MM-YYYY") : todayTodo.date,
-      due: selectedTime ? selectedTime.format("HH:mm") : todayTodo.due,
+      startTime: selectedTimeRange[0]
+        ? selectedTimeRange[0].format(format)
+        : todayTodo.startTime,
+      endTime: selectedTimeRange[1]
+        ? selectedTimeRange[1].format(format)
+        : todayTodo.endTime,
       assignee: values.assignee,
       priority: values.priority,
     };
@@ -63,7 +76,7 @@ function UpdateTask({ todayTodo }) {
         message.error("Failed to update the todo");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error updating todo:", error);
       message.error("An error occurred");
     } finally {
       setIsSubmitting(false);
@@ -92,84 +105,46 @@ function UpdateTask({ todayTodo }) {
             priority: todayTodo?.priority || "",
             description: todayTodo?.description || "",
             date: selectedDate,
-            due: selectedTime,
           }}
         >
           <div className="flex flex-col gap-2 p-3">
             <Form.Item
-              name="description2"
-              rules={[
-                {
-                  required: true,
-                  message: "Enter the description!",
-                },
-              ]}
+              name="description"
+              rules={[{ required: true, message: "Enter the description!" }]}
             >
-              <div>
-                <p>Description</p>
-                <Input
-                  id="description2"
-                  name="description2"
-                  placeholder="Task name"
-                  defaultValue={task}
-                  autoComplete="off"
-                />
-              </div>
+              <Input
+                placeholder="Task name"
+                defaultValue={task}
+                autoComplete="off"
+              />
             </Form.Item>
-            <Form.Item
-              rules={[
-                {
-                  required: false,
-                },
-              ]}
-              name="tags"
-            >
+            <Form.Item name="tags">
               <Select
                 mode="multiple"
-                style={{
-                  width: "100%",
-                }}
+                style={{ width: "100%" }}
                 placeholder="Select tags"
-                // options={options}
               />
             </Form.Item>
             <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
               <Form.Item
                 name="date"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select the date!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select the date!" }]}
               >
                 <DatePicker
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                   value={selectedDate}
                   onChange={setSelectedDate}
                 />
               </Form.Item>
               <Form.Item
                 name="assignee"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select an assignee!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select an assignee!" }]}
               >
                 <Select />
               </Form.Item>
               <Form.Item
                 name="priority"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select a priority!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select a priority!" }]}
               >
                 <Select
                   options={[
@@ -181,20 +156,13 @@ function UpdateTask({ todayTodo }) {
               </Form.Item>
               <Form.Item
                 name="time"
-                rules={[
-                  {
-                    required: true,
-                    message: "Select a time!",
-                  },
-                ]}
+                rules={[{ required: true, message: "Select a time range!" }]}
               >
-                <TimePicker
-                  style={{
-                    width: "100%",
-                  }}
-                  value={selectedTime}
-                  onChange={setSelectedTime}
-                  format="HH:mm"
+                <TimePicker.RangePicker
+                  style={{ width: "100%" }}
+                  onChange={onTimeChange}
+                  value={selectedTimeRange}
+                  format={format}
                 />
               </Form.Item>
             </div>
