@@ -74,7 +74,7 @@ const AddTask = () => {
 
       if (res.ok) {
         setIsModalOpen(false);
-        router.push("/today");
+        router.push("/day");
         form.resetFields();
         message.success("Task added successfully!");
       } else {
@@ -127,7 +127,7 @@ const AddTask = () => {
             >
               <div>
                 <p>Description</p>
-                <Input id="task" name="task" placeholder="Task name" />
+                <Input id="description" name="description" placeholder="Task name" autoComplete="off" />
               </div>
             </Form.Item>
 

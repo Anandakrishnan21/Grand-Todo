@@ -8,7 +8,6 @@ import {
   TimePicker,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { PiPencilCircleLight } from "react-icons/pi";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
@@ -98,7 +97,7 @@ function UpdateTask({ todayTodo }) {
         >
           <div className="flex flex-col gap-2 p-3">
             <Form.Item
-              name="description"
+              name="description2"
               rules={[
                 {
                   required: true,
@@ -109,10 +108,11 @@ function UpdateTask({ todayTodo }) {
               <div>
                 <p>Description</p>
                 <Input
-                  id="task"
-                  name="task"
+                  id="description2"
+                  name="description2"
                   placeholder="Task name"
                   defaultValue={task}
+                  autoComplete="off"
                 />
               </div>
             </Form.Item>

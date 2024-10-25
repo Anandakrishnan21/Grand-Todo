@@ -56,50 +56,57 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
   return (
     <>
       {todayTodos.length > 0 ? (
-        <div className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2">
+        <div className="flex flex-col gap-2">
           {todayTodos.map((item) => (
-            <div
-              key={item._id}
-              className="flex flex-row justify-between gap-2"
-            >
-              <div className="flex items-center gap-2">
-                {/* <RiDraggable size={20} /> */}
-                {item.status !== "Done" && (
-                  <Delete id={item._id} setData={setTodayTodos} />
-                )}
-                <div className="flex text-sm flex-col gap-1">
-                  <input
-                    value={editingText[item._id] || item.description}
-                    onFocus={() => handleFocus(item._id, item.description)}
-                    onChange={(e) =>
-                      setEditingText({ [item._id]: e.target.value })
-                    }
-                    onBlur={() => handleBlur(item._id, "description")}
-                    className={`${
-                      editingItemId === item._id ? "bg-blue-400 p-1" : "p-1"
-                    } w-full font-medium capitalize rounded-md p-0`}
-                  />
-                  <span className="text-gray-500">{item.tags}</span>
-                  <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
-                    {item.startTime} - {item.endTime}
-                  </p>
-                  <Select
-                    defaultValue={item.status}
-                    style={{ width: 110 }}
-                    options={[
-                      { value: "Todo", label: "Todo" },
-                      { value: "Inprogress", label: "Inprogress" },
-                      { value: "Done", label: "Done" },
-                    ]}
-                    onChange={(value) => handleBlur(item._id, "status", value)}
-                  />
+            <div className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2">
+              <div
+                key={item._id}
+                className="flex flex-row justify-between gap-2"
+              >
+                <div className="flex items-center gap-2">
+                  {/* <RiDraggable size={20} /> */}
+                  {item.status !== "Done" && (
+                    <Delete id={item._id} setData={setTodayTodos} />
+                  )}
+                  <div className="flex text-sm flex-col gap-1">
+                    <input
+                      id={item._id}
+                      name={item.id}
+                      value={editingText[item._id] || item.description}
+                      onFocus={() => handleFocus(item._id, item.description)}
+                      onChange={(e) =>
+                        setEditingText({ [item._id]: e.target.value })
+                      }
+                      onBlur={() => handleBlur(item._id, "description")}
+                      className={`${
+                        editingItemId === item._id ? "bg-blue-400 p-1" : ""
+                      } w-full font-medium capitalize rounded-md p-0`}
+                      autoComplete="off"
+                    />
+                    <span className="text-gray-500">{item.tags}</span>
+                    <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                      {item.startTime} - {item.endTime}
+                    </p>
+                    <Select
+                      defaultValue={item.status}
+                      style={{ width: 110 }}
+                      options={[
+                        { value: "Todo", label: "Todo" },
+                        { value: "Inprogress", label: "Inprogress" },
+                        { value: "Done", label: "Done" },
+                      ]}
+                      onChange={(value) =>
+                        handleBlur(item._id, "status", value)
+                      }
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="flex flex-col items-end gap-2 text-sm">
-                <p className="justify-end text-blue-800 font-medium">
-                  {item.priority}
-                </p>
-                <UpdateTask todayTodo={item} />
+                <div className="flex flex-col items-end gap-2 text-sm">
+                  <p className="justify-end text-blue-800 font-medium">
+                    {item.priority}
+                  </p>
+                  <UpdateTask todayTodo={item} />
+                </div>
               </div>
             </div>
           ))}
