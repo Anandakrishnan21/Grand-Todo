@@ -20,6 +20,7 @@ dayjs.extend(customParseFormat);
 
 const AddTask = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState(null);
   const { data: session } = useSession();
@@ -43,6 +44,33 @@ const AddTask = () => {
 
   const onTimeChange = (times) => {
     setSelectedTimeRange(times);
+  };
+
+  const handleInput = (e) => {
+    const input = e.target.value;
+    setDescription(input);
+
+    const timeRegex = /(\d{1,2})(am|pm)?/i;
+    const match = input.match(timeRegex);
+
+    if (match) {
+      let hour = parseInt(match[1], 10);
+      let period = match[2]?.toLowerCase();
+
+      if (period === "pm" && hour !== 12) hour += 12;
+      if (period === "am" && hour === 12) hour = 0;
+
+      const selectedTime = dayjs().hour(hour).minute(0).second(0);
+      const dateForTomorrow = dayjs().add(1, "day");
+
+      const finalDate = selectedTime.isBefore(dayjs())
+        ? dateForTomorrow
+        : dayjs();
+
+      form.setFieldsValue({
+        date: finalDate,
+      });
+    }
   };
 
   const handleSubmit = async (values) => {
@@ -127,7 +155,13 @@ const AddTask = () => {
             >
               <div>
                 <p>Description</p>
-                <Input id="description" name="description" placeholder="Task name" autoComplete="off" />
+                <Input
+                  id="description"
+                  name="description"
+                  placeholder="Task name"
+                  autoComplete="off"
+                  onChange={handleInput}
+                />
               </div>
             </Form.Item>
 

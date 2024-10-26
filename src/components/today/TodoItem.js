@@ -80,7 +80,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
                       onBlur={() => handleBlur(item._id, "description")}
                       className={`${
                         editingItemId === item._id ? "bg-blue-400 p-1" : ""
-                      } w-full font-medium capitalize rounded-md p-0`}
+                      } w-full md:w-96 font-medium capitalize rounded-md p-0`}
                       autoComplete="off"
                     />
                     <span className="text-gray-500">{item.tags}</span>

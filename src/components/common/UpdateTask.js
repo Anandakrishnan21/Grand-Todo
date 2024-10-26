@@ -31,8 +31,16 @@ function UpdateTask({ todayTodo }) {
         todayTodo.startTime ? dayjs(todayTodo.startTime, format) : null,
         todayTodo.endTime ? dayjs(todayTodo.endTime, format) : null,
       ]);
+      form.setFieldsValue({
+        description: todayTodo.description,
+        date: todayTodo.date ? dayjs(todayTodo.date, "DD-MM-YYYY") : null,
+        time: [
+          todayTodo.startTime ? dayjs(todayTodo.startTime, format) : null,
+          todayTodo.endTime ? dayjs(todayTodo.endTime, format) : null,
+        ],
+      });
     }
-  }, [todayTodo]);
+  }, [todayTodo, form]);
 
   const onTimeChange = (times) => {
     setSelectedTimeRange(times);
@@ -42,12 +50,42 @@ function UpdateTask({ todayTodo }) {
     setIsModalOpen(true);
   };
 
+  const handleChange = (e) => {
+    const input = e.target.value;
+    setTask(input);
+    form.setFieldsValue({ description: input });
+
+    const timeRegex = /(\d{1,2})(am|pm)?/i;
+    const match = input.match(timeRegex);
+
+    if (match) {
+      let hours = parseInt(match[1], 10);
+      let period = match[2]?.toLowerCase();
+
+      if (period === "pm" && hours !== 12) hours += 12;
+      if (period === "am" && hours === 12) hours = 0;
+
+      const selectedTime = dayjs().hour(hours).minute(0).second(0);
+      const dateForTomorrow = dayjs().add(1, "day");
+
+      const finalDate = selectedTime.isBefore(dayjs())
+        ? dateForTomorrow
+        : dayjs();
+
+      setSelectedDate(finalDate);
+      form.setFieldsValue({
+        date: finalDate,
+      });
+    }
+  };
+
   const handleSubmit = async (values) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
     const UpdateTask = {
       id: todayTodo._id,
       description: values.description,
+      tags: values.tags ? values.tags.join(" ") : "",
       date: selectedDate ? selectedDate.format("DD-MM-YYYY") : todayTodo.date,
       startTime: selectedTimeRange[0]
         ? selectedTimeRange[0].format(format)
@@ -83,6 +121,16 @@ function UpdateTask({ todayTodo }) {
     }
   };
 
+  const options = [
+    { label: "#Food", value: "#Food" },
+    { label: "#study", value: "#study" },
+    { label: "#sleep", value: "#sleep" },
+    { label: "#workout", value: "#workout" },
+    { label: "#work", value: "#work" },
+    { label: "#practice", value: "#practice" },
+    { label: "#happy", value: "#happy" },
+  ];
+
   const hideModal = () => {
     setIsModalOpen(false);
   };
@@ -103,8 +151,6 @@ function UpdateTask({ todayTodo }) {
             description: task,
             assignee: todayTodo?.assignee || "",
             priority: todayTodo?.priority || "",
-            description: todayTodo?.description || "",
-            date: selectedDate,
           }}
         >
           <div className="flex flex-col gap-2 p-3">
@@ -114,15 +160,18 @@ function UpdateTask({ todayTodo }) {
             >
               <Input
                 placeholder="Task name"
-                defaultValue={task}
+                id="task"
+                value={task}
                 autoComplete="off"
+                onChange={handleChange}
               />
             </Form.Item>
             <Form.Item name="tags">
               <Select
                 mode="multiple"
                 style={{ width: "100%" }}
-                placeholder="Select tags"
+                placeholder="select tags"
+                options={options}
               />
             </Form.Item>
             <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
