@@ -49,7 +49,7 @@ function Notification({ todo }) {
     <div className="w-72 flex flex-col font-medium cursor-pointer gap-1 p-2">
       {filteredTodo.length > 0 ? (
         filteredTodo.map((item, index) => (
-          <div className="flex items-center justify-between text-sm">
+          <div key={item._id} className="flex items-center justify-between text-sm">
             {item.priority === "High" ? (
               <LucideArrowUpWideNarrow size={16} className="text-red-600" />
             ) : item.priority === "Medium" ? (
