@@ -3,7 +3,7 @@ import React from "react";
 function Delete({ id, setData }) {
   const deleteTodo = async (id) => {
     try {
-      const res = await fetch("/api/today", {
+      const res = await fetch(`/api/today/${id}`, {
         method: "delete",
         headers: {
           "Content-Type": "application/json",

@@ -98,7 +98,7 @@ function UpdateTask({ todayTodo }) {
     };
 
     try {
-      const res = await fetch("/api/today", {
+      const res = await fetch(`/api/today/${todayTodo._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -110,6 +110,7 @@ function UpdateTask({ todayTodo }) {
         setIsModalOpen(false);
         form.resetFields();
         message.success("Todo updated successfully");
+        window.location.reload();
       } else {
         message.error("Failed to update the todo");
       }

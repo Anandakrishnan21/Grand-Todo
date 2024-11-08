@@ -35,6 +35,10 @@ const todoSchema = new Schema(
       type: String,
       default: "Todo",
     },
+    notificationTime: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

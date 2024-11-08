@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import {
+  Button,
   DatePicker,
   FloatButton,
   Form,
@@ -16,6 +17,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useSession } from "next-auth/react";
+import { Plus } from "lucide-react";
 dayjs.extend(customParseFormat);
 
 const AddTask = () => {
@@ -82,6 +84,9 @@ const AddTask = () => {
     const endTime = selectedTimeRange
       ? selectedTimeRange[1].format("HH:mm")
       : null;
+    const notificationTime = selectedTimeRange
+      ? selectedTimeRange[0].subtract(1, "hour").format("HH:mm")
+      : null;
 
     try {
       const res = await fetch("/api/today", {
@@ -97,6 +102,7 @@ const AddTask = () => {
           priority,
           startTime: startTime,
           endTime: endTime,
+          notificationTime: notificationTime,
         }),
       });
 
@@ -127,15 +133,13 @@ const AddTask = () => {
 
   return (
     <>
-      <Link
-        href="#"
-        className="hidden lg:flex items-center justify-center bg-black text-white rounded-md font-bold text-sm gap-4 p-1"
+      <Button
+        icon={<Plus size="16" />}
         onClick={showModal}
+        className="hidden lg:flex"
       >
-        <AiOutlinePlusCircle size={20} />
-        Add Todo
-      </Link>
-      {/* <FloatBtn showModal={showModal} /> */}
+        Add Task
+      </Button>
       <div>
         <FloatButton trigger="click" onClick={showModal} />
       </div>

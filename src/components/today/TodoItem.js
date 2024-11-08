@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import { RiDraggable } from "react-icons/ri";
 import { Select, message } from "antd";
@@ -31,7 +31,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
     setEditingItemId(null);
     const updatedValue = value || editingText[id];
     try {
-      const res = await fetch("/api/today", {
+      const res = await fetch(`/api/today/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,13 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
           ))}
         </div>
       ) : (
-        <FileNotFound />
+        <div className="w-full h-96 flex flex-col justify-center items-center">
+          <FileNotFound
+            width="200"
+            height="200"
+            text="No tasks yet. Ready to plan something?"
+          />
+        </div>
       )}
     </>
   );

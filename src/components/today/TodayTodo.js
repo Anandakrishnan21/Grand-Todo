@@ -35,9 +35,9 @@ function TodayTodo() {
   }
 
   return (
-    <div className="flex justify-center items-center p-4 pt-0 md:p-4">
+    <div className="flex justify-center items-center p-4 pt-4 md:p-4">
       {contextHolder}
-      <div className="w-full lg:w-[80%] flex flex-col p-2 gap-2">
+      <div className="w-full lg:w-[90%] flex flex-col p-2 gap-2">
         <div className="sticky bg-white">
           <h1 className="font-bold text-xl">Today</h1>
           <span className="text-gray-600 pb-2">{todayTodos.length} tasks</span>

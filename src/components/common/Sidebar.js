@@ -22,8 +22,7 @@ function Sidebar() {
     "flex flex-col overflow-y-auto scrollbar-hidden bg-neutral-50 dark:bg-neutral-950 dark:border-r-neutral-800 dark:border-[1px] p-4";
   const active =
     "bg-blue-50 text-blue-800 font-semibold transition-border duration-300 border";
-  const inactive =
-    "text-black hover:bg-blue-50 transition-color duration-300";
+  const inactive = "text-black hover:bg-blue-50 transition-color duration-300";
 
   const sidebarOptions = getSidebarOptions(segment);
 
@@ -35,7 +34,6 @@ function Sidebar() {
         }`}
       >
         <ul className="flex flex-col gap-3 w-full">
-          <AddTask />
           {sidebarOptions.map((option) => (
             <li key={option.name}>
               <Link
@@ -80,6 +78,7 @@ function Sidebar() {
             {/* <LogoImage />
             <X className="closeBtn" onClick={toggleSidebar} /> */}
           </div>
+          <li className="font-semibold text-lg text-red-500 text-center">Grand Todo</li>
           <AddTask />
           {sidebarOptions.map((option) => (
             <li key={option.name}>

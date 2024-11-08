@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+
 function Pagination({
   itemsPerPage,
   inbox,
@@ -6,6 +7,7 @@ function Pagination({
   setCurrentPage,
   setPaginationInbox,
 }) {
+
   useEffect(() => {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -28,7 +30,9 @@ function Pagination({
       <button
         onClick={handleButtonLeft}
         className={`${
-          currentPage === 1 ? "text-neutral-500" : "hover:border-blue-500 transition-colors duration-300"
+          currentPage === 1
+            ? "text-neutral-500"
+            : "hover:border-blue-500 transition-colors duration-300"
         } border-[1px] border-[#dbdbdb] shadow-sm p-1 px-2 rounded-md`}
       >
         Prev

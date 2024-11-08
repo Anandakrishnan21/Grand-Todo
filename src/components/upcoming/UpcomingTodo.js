@@ -64,17 +64,25 @@ function UpcomingTodo() {
   if (!isMounted) return null;
 
   return (
-    <div className="flex justify-center items-center p-4 pt-0 md:p-4">
-      <div className="w-full lg:w-[80%] h-[60%] flex flex-col gap-2 p-2">
-        <h1 className="font-bold text-xl">Upcoming</h1>
-        <span className="text-gray-600 pb-2">Tasks</span>
+    <div className="flex justify-center items-center p-4 pt-4 md:p-4">
+      <div className="w-full lg:w-[90%] h-[60%] flex flex-col gap-2 p-2">
+        <div className="sticky bg-white">
+          <h1 className="font-bold text-xl">Upcoming</h1>
+          <span className="text-gray-600 pb-2">Tasks</span>
+        </div>
         {sortedTodo.length > 0 ? (
           <UpcomingList
             todoList={sortedTodo}
             setUpcomingTodo={setUpcomingTodo}
           />
         ) : (
-          <FileNotFound />
+          <div className="w-full h-96 flex flex-col justify-center items-center">
+            <FileNotFound
+              width="200"
+              height="200"
+              text="No tasks yet. Ready to plan something?"
+            />
+          </div>
         )}
       </div>
     </div>

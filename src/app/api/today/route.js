@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 import User from "@/model/User";
 
+// post method for creating a new todo
 export const POST = async (req) => {
   try {
     const {
@@ -16,22 +17,11 @@ export const POST = async (req) => {
       startTime,
       endTime,
       status,
+      notificationTime,
     } = await req.json();
-
-    console.log({
-      description,
-      tags,
-      date,
-      assignee,
-      priority,
-      startTime,
-      endTime,
-    });
 
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
-
-    console.log("User email:", email);
 
     await connection();
 
@@ -45,9 +35,8 @@ export const POST = async (req) => {
       startTime,
       endTime,
       status,
+      notificationTime,
     });
-
-    console.log("Task Created:", todo);
 
     return NextResponse.json({ message: "Todo added" }, { status: 201 });
   } catch (error) {
@@ -56,6 +45,7 @@ export const POST = async (req) => {
   }
 };
 
+// get method to retrieve all todo
 export const GET = async (req) => {
   try {
     await connection();
@@ -63,69 +53,9 @@ export const GET = async (req) => {
     const email = session?.user?.email;
 
     const user = await User.findOne({ email });
-    const todo = await Todo.find({ email: user.email });
+    const todo = await Todo.find({ email: user.email }).sort({ createdAt: -1 });
     return new NextResponse(JSON.stringify(todo), { status: 200 });
   } catch (error) {
     return new NextResponse("Error in fetching data" + error, { status: 500 });
-  }
-};
-
-export const DELETE = async (req) => {
-  try {
-    const { id } = await req.json();
-    await connection();
-    await Todo.findByIdAndDelete(id);
-    const todo = await Todo.find();
-    return new NextResponse(JSON.stringify(todo), { status: 200 });
-  } catch (error) {
-    return new NextResponse("Error in deleting data" + error, { status: 500 });
-  }
-};
-
-export const PUT = async (req) => {
-  try {
-    const {
-      id,
-      description,
-      tags,
-      date,
-      assignee,
-      priority,
-      startTime,
-      endTime,
-      status,
-    } = await req.json();
-
-    await connection();
-
-    const updateTodo = await Todo.findByIdAndUpdate(
-      id,
-      {
-        description,
-        tags,
-        date,
-        assignee,
-        priority,
-        startTime,
-        endTime,
-        status,
-      },
-      { new: true }
-    );
-
-    if (!updateTodo) {
-      return NextResponse.json({ message: "Todo not found" }, { status: 404 });
-    }
-
-    return NextResponse.json(
-      { message: "Todo updated successfully", todo: updateTodo },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error in update data:", error);
-    return NextResponse.json(
-      { message: "Error in update data", error: error.message },
-      { status: 500 }
-    );
   }
 };
