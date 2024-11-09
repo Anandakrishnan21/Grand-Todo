@@ -139,7 +139,7 @@ function UpdateTask({ todayTodo }) {
   return (
     <div>
       <div
-        className="bg-[#87d068] text-sm flex justify-center px-3 border text-white rounded-md shadow-sm cursor-pointer"
+        className="bg-[#87d068] text-sm flex justify-center px-3 border text-white rounded-lg cursor-pointer"
         onClick={showModal}
       >
         <p>Edit</p>

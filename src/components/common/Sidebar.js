@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
-import AddTask from "./AddTask";
+import AddTask from "./form/AddTask";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, Badge, Button } from "antd";
 import { getSidebarOptions } from "../utils/data";

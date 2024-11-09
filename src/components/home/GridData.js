@@ -13,51 +13,63 @@ function GridData({ todo }) {
 
   const percentage = Math.round((count / totalTodo) * 100);
 
+  const data = [
+    {
+      id: 1,
+      icon: GroupIcon,
+      iconColor: "bg-yellow-200",
+      text: "Total Groups",
+      count: 0,
+      icon2: ArrowUpCircleIcon,
+      icon2Color: "text-black",
+      percentage: "0%",
+    },
+    {
+      id: 2,
+      icon: MdOutlineTask,
+      iconColor: "bg-blue-200",
+      text: "Total Added Tasks",
+      count: totalTodo,
+      icon2: ArrowUpCircleIcon,
+      icon2Color: "text-green-500",
+      percentage: "100%",
+    },
+    {
+      id: 3,
+      icon: MdDone,
+      iconColor: "bg-green-200",
+      text: "Total Done Tasks",
+      count: count,
+      icon2: ArrowUpCircleIcon,
+      icon2Color: percentage > 50 ? "text-green-500" : "text-red-500",
+      percentage: percentage + "%",
+    },
+  ];
+
   return (
     <div className="w-full flex h-full gap-2">
-      <div className="w-1/3 flex flex-col gap-4 border-[1px] border-[#dbdbdb] rounded-md shadow-sm p-2">
-        <div className="w-8 h-8 flex justify-center items-center rounded-full bg-yellow-200">
-          <GroupIcon size={20} />
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold pb-2">0</h2>
-          <p>Total Groups</p>
-        </div>
-        <div className="flex items-center font-medium gap-2">
-          <ArrowUpCircleIcon />
-          0%
-        </div>
-      </div>
-      <div className="w-1/3 flex flex-col gap-4 border-[1px] border-[#dbdbdb] rounded-md shadow-sm p-2">
-        <div className="w-8 h-8 flex justify-center items-center rounded-full bg-blue-200">
-          <MdOutlineTask size={20} />
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold pb-2">{totalTodo}</h2>
-          <p>Total Added Tasks</p>
-        </div>
-        <div className="flex items-center font-medium gap-2 text-green-500">
-          <ArrowUpCircleIcon />
-          100%
-        </div>
-      </div>
-      <div className="w-1/3 flex flex-col gap-4 border-[1px] border-[#dbdbdb] rounded-md shadow-sm p-2">
-        <div className="w-8 h-8 flex justify-center items-center rounded-full bg-green-200">
-          <MdDone size={20} />
-        </div>
-        <div>
-          <h2 className="text-2xl font-semibold pb-2">{count}</h2>
-          <p>Total Done Tasks</p>
-        </div>
+      {data.map((item) => (
         <div
-          className={`${
-            percentage > 50 ? "text-green-500" : "text-red-500"
-          } flex items-center font-medium gap-2`}
+          key={item.id}
+          className="w-1/3 flex flex-col gap-4 border-[1px] border-[#dbdbdb] rounded-lg p-2"
         >
-          <ArrowUpCircleIcon />
-          {percentage}%
+          <div
+            className={`w-8 h-8 flex justify-center items-center rounded-full ${item.iconColor}`}
+          >
+            <item.icon size={20} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold pb-2">{item.count}</h2>
+            <p>{item.text}</p>
+          </div>
+          <div
+            className={`flex items-center font-medium gap-2 ${item.icon2Color}`}
+          >
+            <item.icon2 />
+            {item.percentage}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }

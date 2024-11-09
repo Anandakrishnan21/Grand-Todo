@@ -54,7 +54,7 @@ function RecentTodo() {
   const date = new Date().getDate();
 
   return (
-    <div className="w-full lg:w-1/2 lg:h-full flex flex-col justify-between gap-2 border-[1px] border-[#dbdbdb] rounded-md shadow-sm p-4">
+    <div className="cardGrp justify-between">
       <div className="flex justify-between items-center">
         <h1 className="font-semibold">Recent Todo</h1>
         <Button>
@@ -70,7 +70,7 @@ function RecentTodo() {
           todo.map((item) => (
             <div
               key={item._id}
-              className="flex items-center justify-between border rounded-md shadow-sm text-sm p-2 gap-2"
+              className="flex items-center justify-between border rounded-lg text-sm p-2 gap-2"
             >
               <Checkbox />
               <p className="w-40 md:w-60 font-medium truncate">
@@ -87,7 +87,7 @@ function RecentTodo() {
               >
                 {item.priority}
               </span>
-              <p className="bg-blue-50 text-blue-600 border p-[2px] px-1 rounded-md">
+              <p className="bg-blue-50 text-blue-600 border p-[2px] px-1 rounded-lg">
                 {item.date}
               </p>
               <ArrowRightCircleIcon
@@ -102,7 +102,7 @@ function RecentTodo() {
             <FileNotFound
               width="100"
               height="100"
-              text="Not Yet created a group"
+              text="Not Yet created a task"
             />
           </div>
         )}

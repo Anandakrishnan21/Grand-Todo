@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import Navbar from "./Navbar";
 import { Avatar, Popover } from "antd";
-import AddTask from "./AddTask";
+import AddTask from "../form/AddTask";
 import Notification from "./Notification";
 
 function Header() {

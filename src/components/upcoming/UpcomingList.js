@@ -1,6 +1,6 @@
 import React from "react";
-import Delete from "@/components/common/Delete";
-import UpdateTask from "@/components/common/UpdateTask";
+import Delete from "@/components/common/button/Delete";
+import UpdateTask from "@/components/common/form/UpdateTask";
 
 function UpcomingList({ todoList, setUpcomingTodo }) {
   return (
@@ -12,7 +12,7 @@ function UpcomingList({ todoList, setUpcomingTodo }) {
             {todos.map((todo, index) => (
               <div
                 key={index}
-                className="w-full flex justify-between text-sm bg-white border-[1px] gap-2 border-[#dbdbdb] shadow-sm rounded-md p-2"
+                className="cardDiv flex justify-between text-sm gap-2"
               >
                 <div className="flex items-center gap-2">
                   <Delete
@@ -26,7 +26,7 @@ function UpcomingList({ todoList, setUpcomingTodo }) {
                       {todo.tags}
                     </span>
                     {todo.startTime && (
-                      <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                      <p className="date">
                         {todo.startTime} - {todo.endTime}
                       </p>
                     )}

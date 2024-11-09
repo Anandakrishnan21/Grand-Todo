@@ -1,9 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { RiDraggable } from "react-icons/ri";
 import { Select, message } from "antd";
-import Delete from "@/components/common/Delete";
-import UpdateTask from "@/components/common/UpdateTask";
+import Delete from "@/components/common/button/Delete";
+import UpdateTask from "@/components/common/form/UpdateTask";
 import FileNotFound from "../common/FileNotFound";
 
 function TodoItem({ todayTodos, todo, setTodayTodos }) {
@@ -58,17 +57,13 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
       {todayTodos.length > 0 ? (
         <div className="flex flex-col gap-2">
           {todayTodos.map((item) => (
-            <div
-              key={item._id}
-              className="w-full space-y-4 bg-white border-[1px] border-[#dbdbdb] shadow-sm rounded-md p-2"
-            >
+            <div key={item._id} className="cardDiv space-y-4">
               <div className="flex flex-row justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  {/* <RiDraggable size={20} /> */}
+                <div className="flex items-center gap-2 text-sm">
                   {item.status !== "Done" && (
                     <Delete id={item._id} setData={setTodayTodos} />
                   )}
-                  <div className="flex text-sm flex-col gap-1">
+                  <div className="flex flex-col gap-1">
                     <input
                       id={item._id}
                       name={item.id}
@@ -84,7 +79,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
                       autoComplete="off"
                     />
                     <span className="text-gray-500">{item.tags}</span>
-                    <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                    <p className="date">
                       {item.startTime} - {item.endTime}
                     </p>
                     <Select
@@ -101,7 +96,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
                     />
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-2 text-sm">
+                <div className="flex flex-col items-end gap-2">
                   <p className="justify-end text-blue-800 font-medium">
                     {item.priority}
                   </p>
@@ -112,7 +107,7 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
           ))}
         </div>
       ) : (
-        <div className="w-full h-96 flex flex-col justify-center items-center">
+        <div className="fileNotFound">
           <FileNotFound
             width="200"
             height="200"

@@ -1,6 +1,6 @@
 import { useSelectedLayoutSegment } from "next/navigation";
 import React from "react";
-import { getSidebarOptions } from "../utils/data";
+import { getSidebarOptions } from "../../utils/data";
 import Link from "next/link";
 
 function classNames(...classes) {

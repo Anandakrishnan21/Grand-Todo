@@ -7,35 +7,28 @@ import FileNotFound from "../common/FileNotFound";
 function UpcomingTodo() {
   const [upcomingTodo, setUpcomingTodo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
   const today = new Date();
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isMounted) {
-      const fetchData = async () => {
-        try {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          const res = await fetch("/api/today", {
-            cache: "no-cache",
-          });
-          if (!res.ok) {
-            console.error("Failed to fetch data");
-            return;
-          }
-          const data = await res.json();
-          setUpcomingTodo(data);
-          setIsLoading(false);
-        } catch (error) {
-          console.log(error);
+    const fetchData = async () => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const res = await fetch("/api/today", {
+          cache: "no-cache",
+        });
+        if (!res.ok) {
+          console.error("Failed to fetch data");
+          return;
         }
-      };
-      fetchData();
-    }
-  }, [isMounted]);
+        const data = await res.json();
+        setUpcomingTodo(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const sortedTodo = useMemo(() => {
     const groupedTodo = {};
@@ -61,12 +54,10 @@ function UpcomingTodo() {
     return <Loading />;
   }
 
-  if (!isMounted) return null;
-
   return (
     <div className="flex justify-center items-center p-4 pt-4 md:p-4">
-      <div className="w-full lg:w-[90%] h-[60%] flex flex-col gap-2 p-2">
-        <div className="sticky bg-white">
+      <div className="outerDiv">
+        <div>
           <h1 className="font-bold text-xl">Upcoming</h1>
           <span className="text-gray-600 pb-2">Tasks</span>
         </div>
@@ -76,7 +67,7 @@ function UpcomingTodo() {
             setUpcomingTodo={setUpcomingTodo}
           />
         ) : (
-          <div className="w-full h-96 flex flex-col justify-center items-center">
+          <div className="fileNotFound">
             <FileNotFound
               width="200"
               height="200"

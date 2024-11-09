@@ -62,7 +62,7 @@ function Notification({ todo }) {
           </div>
         ))
       ) : (
-        <div className="flex items-center gap-1">
+        <div className="flex flex-col items-center gap-1">
           <Image
             src="/images/inbox.png"
             width="100"
@@ -82,7 +82,7 @@ function Notification({ todo }) {
       trigger="click"
       open={open}
       onOpenChange={handleOpenChange}
-      className="mr-10"
+      className="md:mr-10"
     >
       <div className="relative hover:bg-blue-100 rounded-md transition-colors duration-200 p-1">
         <IoNotificationsOutline />

@@ -35,3 +35,27 @@ body {
 .iconDiv {
   @apply h-20 w-1/3 flex flex-col font-semibold justify-center items-center bg-white border-[1px] border-neutral-300 rounded-md
 }
+
+.outerDiv{
+  @apply w-screen lg:w-[90%] flex flex-col gap-2 p-2
+}
+
+.cardDiv{
+  @apply w-full border-[1px] border-[#dbdbdb] rounded-lg p-2
+}
+
+.dashboard{
+  @apply w-full md:w-[90%] flex flex-col md:flex-row gap-2 justify-between items-center px-2 pt-4
+}
+
+.date{
+  @apply w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-lg border
+}
+
+.fileNotFound{
+  @apply w-full h-96 flex flex-col justify-center items-center
+}
+
+.cardGrp{
+  @apply w-full lg:w-1/2 lg:h-full flex flex-col gap-2 border-[1px] border-[#dbdbdb] rounded-lg p-4
+}

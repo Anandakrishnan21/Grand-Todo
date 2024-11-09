@@ -2,7 +2,7 @@
 import Loading from "@/app/Loading";
 import { CircleX, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Pagination from "../common/Pagination";
+import Pagination from "../common/button/Pagination";
 import FileNotFound from "../common/FileNotFound";
 import { Input } from "antd";
 
@@ -58,7 +58,7 @@ function InboxPageContent() {
   }
 
   return (
-    <div className="w-screen lg:w-[90%] flex flex-col gap-2 p-2">
+    <div className="outerDiv">
       <div>
         <h1 className="font-bold text-xl">Inbox</h1>
         <span className="text-gray-600 pb-2">{filterInbox.length} tasks</span>
@@ -85,7 +85,7 @@ function InboxPageContent() {
             .map((item) => (
               <div
                 key={item.id || item.description}
-                className="text-sm flex justify-between bg-white border-[1px] gap-2 border-[#dbdbdb] shadow-sm p-4 rounded-md"
+                className="cardDiv text-sm flex justify-between gap-2 p-4"
               >
                 <div className="flex gap-2 items-center">
                   <div
@@ -106,7 +106,7 @@ function InboxPageContent() {
                     </span>
                     <span className="text-neutral-500">{item.tags}</span>
                     {item.startTime && (
-                      <p className="w-28 flex justify-center bg-blue-50 text-blue-600 p-1 rounded-md border">
+                      <p className="date">
                         {item.startTime} - {item.endTime}
                       </p>
                     )}
@@ -124,7 +124,7 @@ function InboxPageContent() {
           />
         </>
       ) : (
-        <div className="h-full flex flex-col gap-2 justify-center items-center">
+        <div className="fileNotFound">
           <FileNotFound width="200" height="200" text="Todo not found" />
         </div>
       )}

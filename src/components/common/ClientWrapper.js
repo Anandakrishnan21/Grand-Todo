@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { redirect, usePathname } from "next/navigation";
 import Sidebar from "./Sidebar";
 import { useSession } from "next-auth/react";
-import Header from "./Header";
+import Header from "./header/Header";
 
 function ClientWrapper({ children }) {
   const pathname = usePathname();
