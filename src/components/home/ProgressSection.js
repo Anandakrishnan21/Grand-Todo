@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function ProgressSection({ todo }) {
   return (
-    <div className="w-full md:w-1/2 h-full md:h-60 flex flex-col bg-white border-[1px] border-[#dbdbdb] rounded-lg p-4">
+    <div className="w-full md:w-1/2 h-full md:h-60 flex flex-col border-[1px] border-gray-200 rounded-lg p-4">
       <h1 className="flex font-semibold">Daily UnCompleted Tasks</h1>
       <div className="flex flex-col-reverse md:flex-row justify-center items-center text-sm md:text-base">
         <div className="w-full flex flex-col text-sm gap-2">

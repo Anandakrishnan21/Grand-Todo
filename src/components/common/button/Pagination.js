@@ -33,7 +33,7 @@ function Pagination({
           currentPage === 1
             ? "text-neutral-500"
             : "hover:border-blue-500 transition-colors duration-300"
-        } border-[1px] border-[#dbdbdb] shadow-sm p-1 px-2 rounded-md`}
+        } border-[1px] border-gray-200 shadow-sm p-1 px-2 rounded-md`}
       >
         Prev
       </button>
@@ -43,7 +43,7 @@ function Pagination({
           currentPage < Math.ceil(inbox.length / itemsPerPage)
             ? "hover:border-blue-500 transition-colors duration-300"
             : "text-neutral-500"
-        } border-[1px] border-[#dbdbdb] shadow-sm p-1 px-2 rounded-md`}
+        } border-[1px] border-gray-200 shadow-sm p-1 px-2 rounded-md`}
       >
         Next
       </button>

@@ -9,7 +9,7 @@ function Group() {
         <h1 className="font-semibold">Recent Groups</h1>
         <AddGroup />
       </div>
-      <div className="fileNotFound">
+      <div className="h-full flex flex-col gap-2 justify-center items-center">
         <FileNotFound width="100" height="100" text="Not Yet created a group" />
       </div>
     </div>

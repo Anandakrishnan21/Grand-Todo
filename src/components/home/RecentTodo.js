@@ -92,7 +92,7 @@ function RecentTodo() {
               </p>
               <ArrowRightCircleIcon
                 color="blue"
-                size={16}
+                size="20"
                 className="hidden md:flex"
               />
             </div>

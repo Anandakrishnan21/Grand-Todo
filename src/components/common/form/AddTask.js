@@ -49,7 +49,7 @@ const AddTask = () => {
   };
 
   const handleInput = (e) => {
-    const input = e.target.value;
+    const input = e.target.value.replace(/[^a-zA-Z0-9 ()\[\],\-=/]/g, "");
     setDescription(input);
 
     const timeRegex = /(\d{1,2})(am|pm)?/i;
@@ -163,6 +163,7 @@ const AddTask = () => {
                   id="description"
                   name="description"
                   placeholder="Task name"
+                  value={description}
                   autoComplete="off"
                   onChange={handleInput}
                 />

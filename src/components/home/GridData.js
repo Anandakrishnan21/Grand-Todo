@@ -51,7 +51,7 @@ function GridData({ todo }) {
       {data.map((item) => (
         <div
           key={item.id}
-          className="w-1/3 flex flex-col gap-4 border-[1px] border-[#dbdbdb] rounded-lg p-2"
+          className="w-1/3 flex flex-col gap-4 border-[1px] border-gray-200 rounded-lg p-2"
         >
           <div
             className={`w-8 h-8 flex justify-center items-center rounded-full ${item.iconColor}`}
