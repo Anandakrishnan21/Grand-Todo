@@ -22,7 +22,7 @@ function UpdateTask({ todayTodo }) {
   const format = "HH:mm";
 
   useEffect(() => {
-    if (todayTodo) {
+    if (form && todayTodo) {
       setTask(todayTodo.description || "");
       setSelectedDate(
         todayTodo.date ? dayjs(todayTodo.date, "DD-MM-YYYY") : null
@@ -51,7 +51,7 @@ function UpdateTask({ todayTodo }) {
   };
 
   const handleChange = (e) => {
-    const input = e.target.value;
+    const input = e.target.value.replace(/[^a-zA-Z0-9 ()\[\],\-=/]/g, "");
     setTask(input);
     form.setFieldsValue({ description: input });
 

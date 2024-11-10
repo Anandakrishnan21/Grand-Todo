@@ -13,7 +13,7 @@ function ClientWrapper({ children }) {
   const showSidebar = [
     "/home",
     "/inbox",
-    "/search",
+    "/group",
     "/day",
     "/coming",
   ].includes(pathname);

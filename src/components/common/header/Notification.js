@@ -49,7 +49,10 @@ function Notification({ todo }) {
     <div className="w-72 flex flex-col font-medium cursor-pointer gap-1 p-2">
       {filteredTodo.length > 0 ? (
         filteredTodo.map((item, index) => (
-          <div key={item._id} className="flex items-center justify-between text-sm">
+          <div
+            key={item._id}
+            className="flex items-center justify-between text-sm"
+          >
             {item.priority === "High" ? (
               <LucideArrowUpWideNarrow size={16} className="text-red-600" />
             ) : item.priority === "Medium" ? (
@@ -65,8 +68,8 @@ function Notification({ todo }) {
         <div className="flex flex-col items-center gap-1">
           <Image
             src="/images/inbox.png"
-            width="100"
-            height="100"
+            width={100}
+            height={100}
             alt="msg-not-found image"
           />
           <p>Message not found</p>

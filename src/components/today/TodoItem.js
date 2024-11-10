@@ -58,15 +58,14 @@ function TodoItem({ todayTodos, todo, setTodayTodos }) {
         <div className="flex flex-col gap-2">
           {todayTodos.map((item) => (
             <div key={item._id} className="cardDiv space-y-4">
-              <div className="flex flex-row justify-between gap-2">
-                <div className="flex items-center gap-2 text-sm">
+              <div className="flex flex-row justify-between text-sm gap-2">
+                <div className="flex items-center gap-2">
                   {item.status !== "Done" && (
                     <Delete id={item._id} setData={setTodayTodos} />
                   )}
                   <div className="flex flex-col gap-1">
                     <input
                       id={item._id}
-                      name={item.id}
                       value={editingText[item._id] || item.description}
                       onFocus={() => handleFocus(item._id, item.description)}
                       onChange={(e) =>

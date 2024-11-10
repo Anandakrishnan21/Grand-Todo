@@ -2,9 +2,9 @@ import {
   AiOutlineCalendar,
   AiOutlineDashboard,
   AiOutlineInbox,
-  AiOutlineSearch,
+  AiOutlineUsergroupAdd,
 } from "react-icons/ai";
-import { MdOutlineUpcoming } from "react-icons/md";
+import { MdOutlineGroups, MdOutlineUpcoming } from "react-icons/md";
 
 export const getSidebarOptions = (segment) => [
   {
@@ -20,10 +20,10 @@ export const getSidebarOptions = (segment) => [
     current: segment === "inbox",
   },
   {
-    name: "Search",
-    href: "/search",
-    icon: AiOutlineSearch,
-    current: segment === "search",
+    name: "Group",
+    href: "/group",
+    icon: AiOutlineUsergroupAdd,
+    current: segment === "group",
   },
   {
     name: "Today",

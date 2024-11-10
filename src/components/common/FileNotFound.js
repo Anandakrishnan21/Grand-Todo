@@ -9,6 +9,7 @@ function FileNotFound({ width, height, text }) {
         width={width}
         height={height}
         alt="data-not-found image"
+        priority 
       />
       <p className="md:text-lg font-medium text-center">{text}</p>
     </>

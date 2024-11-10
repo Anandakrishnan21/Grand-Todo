@@ -73,7 +73,7 @@ function RecentTodo() {
               className="flex items-center justify-between border rounded-lg text-sm p-2 gap-2"
             >
               <Checkbox />
-              <p className="w-40 md:w-60 font-medium truncate">
+              <p className="w-40 md:w-60 capitalize font-medium truncate">
                 {item.description}
               </p>
               <span
