@@ -10,13 +10,11 @@ function ClientWrapper({ children }) {
   const pathname = usePathname();
   const { status } = useSession();
 
-  const showSidebar = [
-    "/home",
-    "/inbox",
-    "/group",
-    "/day",
-    "/coming",
-  ].includes(pathname);
+  const showSidebarPaths = ["/home", "/inbox", "/group", "/day", "/coming"];
+
+  const showSidebar =
+    showSidebarPaths.includes(pathname) ||
+    /^\/group\/groupTodo\/[a-zA-Z0-9-_]+$/.test(pathname);
 
   useEffect(() => {
     if (status === "unauthenticated" && showSidebar) {
