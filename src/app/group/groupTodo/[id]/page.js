@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 function GroupTodo() {
   const [group, setGroup] = useState([]);
+  const [name, setName] = useState("");
   const { id } = useParams();
 
   useEffect(() => {
@@ -27,11 +28,14 @@ function GroupTodo() {
     fetchData();
   }, [id]);
 
-  console.log("GroupTodo:" + group);
+  useEffect(() => {
+    const groupName = group.map((item) => item.group);
+    setName(groupName);
+  }, [group]);
 
   return (
-    <div>
-      <GroupForm group={group} />
+    <div className="p-2">
+      <GroupForm group={group} name={name} />
     </div>
   );
 }

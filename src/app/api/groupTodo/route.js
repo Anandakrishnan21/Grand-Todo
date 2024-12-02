@@ -16,6 +16,7 @@ export const POST = async (req) => {
       status,
       notificationTime,
       members,
+      groupName,
       progress
     } = await req.json();
 
@@ -32,6 +33,7 @@ export const POST = async (req) => {
       status,
       notificationTime,
       members,
+      groupName,
       progress
     });
 

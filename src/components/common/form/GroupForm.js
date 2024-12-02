@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import { Plus } from "lucide-react";
 dayjs.extend(customParseFormat);
 
-const GroupForm = ({ group }) => {
+const GroupForm = ({ group, name }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
@@ -105,6 +105,7 @@ const GroupForm = ({ group }) => {
           date: dueDate,
           assignee,
           priority,
+          groupName: name,
           startTime,
           endTime,
           notificationTime,
@@ -168,15 +169,6 @@ const GroupForm = ({ group }) => {
                 />
               </div>
             </Form.Item>
-            {group.length > 0
-              ? group.map((item) =>
-                  item.members.map((member) => (
-                    <Form.Item>
-                      <Input id="group" name="group" value={member} readOnly />
-                    </Form.Item>
-                  ))
-                )
-              : null}
 
             <Form.Item name="tags">
               <Select
@@ -224,6 +216,8 @@ const GroupForm = ({ group }) => {
                 rules={[{ required: true, message: "Select a time!" }]}
               >
                 <TimePicker.RangePicker
+                  id="time"
+                  name="time"
                   style={{ width: "100%" }}
                   onChange={onTimeChange}
                   value={selectedTimeRange}

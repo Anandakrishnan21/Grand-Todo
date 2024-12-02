@@ -45,6 +45,10 @@ const groupTodoSchema = new Schema(
         default: "todo",
       },
     }],
+    groupName:{
+      type: String,
+      required: true,
+    }
   },
   { timestamps: true }
 );

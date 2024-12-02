@@ -49,7 +49,7 @@ function GroupPage() {
               .map((item) => (
                 <div
                   key={item._id}
-                  className="w-1/3 flex flex-col gap-2 text-sm border-[1px] border-gray-300 cursor-pointer rounded-lg p-2"
+                  className="w-full lg:w-1/3 flex flex-col gap-2 text-sm border-[1px] border-gray-300 cursor-pointer rounded-lg p-2"
                   onClick={() => handleGroup(item)}
                 >
                   <p
@@ -67,8 +67,9 @@ function GroupPage() {
                   </div>
                   <div className="flex justify-between">
                     <Avatar.Group>
-                      {item.members.map((member) => (
+                      {item.members.map((member, index) => (
                         <Avatar
+                          key={index}
                           style={{
                             backgroundColor: "#f56a00",
                             width: "25px",
@@ -84,7 +85,7 @@ function GroupPage() {
                       href={`/group/groupTodo/${item._id}`}
                       className="flex gap-1 justify-center items-center border-[1px] border-gray-300 hover:border-gray-400 duration-300 px-2 rounded-lg"
                     >
-                      <IoIosArrowRoundForward size="24" />
+                      Next
                     </Link>
                   </div>
                 </div>

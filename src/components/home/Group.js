@@ -9,7 +9,7 @@ function Group() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/group", {
+        const res = await fetch("/api/group/limit/5", {
           cache: "no-cache",
         });
         if (!res.ok) {
@@ -47,8 +47,9 @@ function Group() {
               <p>{item.group}</p>
             </div>
             <Avatar.Group>
-              {item.members.map((members) => (
+              {item.members.map((members, index) => (
                 <Avatar
+                  key={index}
                   style={{
                     backgroundColor: "#f56a00",
                     width: "25px",
