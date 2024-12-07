@@ -1,11 +1,13 @@
 "use client";
 import { Button, ColorPicker, Form, Input, message, Modal } from "antd";
 import { Plus, CircleX } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 function AddGroup() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: session } = useSession();
   const [form] = Form.useForm();
   const router = useRouter();
 
@@ -29,6 +31,7 @@ function AddGroup() {
         body: JSON.stringify({
           group: values.group,
           members: values.members,
+          admin: session?.user?.name,
           color,
         }),
       });

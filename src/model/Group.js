@@ -10,14 +10,18 @@ const groupSchema = new Schema(
       type: Array,
       required: true,
     },
-    email:{
+    admin: {
       type: String,
       required: true,
     },
-    color:{
+    email: {
       type: String,
       required: true,
-    }
+    },
+    color: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

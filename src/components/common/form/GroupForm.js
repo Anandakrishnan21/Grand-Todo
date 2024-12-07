@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   Button,
   DatePicker,
-  FloatButton,
   Form,
   message,
   Modal,
@@ -139,8 +138,8 @@ const GroupForm = ({ group, name }) => {
   ];
 
   return (
-    <>
-      <Button icon={<Plus size="16" />} onClick={showModal}>
+    <div className="flex justify-end">
+      <Button className="w-36" icon={<Plus size="16"/>} onClick={showModal}>
         Add Group Task
       </Button>
       <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
@@ -244,7 +243,7 @@ const GroupForm = ({ group, name }) => {
           </div>
         </Form>
       </Modal>
-    </>
+    </div>
   );
 };
 

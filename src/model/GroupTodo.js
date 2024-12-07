@@ -2,6 +2,10 @@ import mongoose, { models, Schema } from "mongoose";
 
 const groupTodoSchema = new Schema(
   {
+    groupName: {
+      type: String,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -35,23 +39,22 @@ const groupTodoSchema = new Schema(
       type: String,
       required: true,
     },
-    members: [{
-      email: {
-        type: String,
-        required: true,
+    members: [
+      {
+        email: {
+          type: String,
+          required: true,
+        },
+        progress: {
+          type: String,
+          default: "Todo",
+        },
       },
-      progress: {
-        type: String,
-        default: "todo",
-      },
-    }],
-    groupName:{
-      type: String,
-      required: true,
-    }
+    ],
   },
   { timestamps: true }
 );
 
-const GroupTodo = models.GroupTodo || mongoose.model("Group Todo", groupTodoSchema);
+const GroupTodo =
+  models.GroupTodo || mongoose.model("GroupTodo", groupTodoSchema);
 export default GroupTodo;

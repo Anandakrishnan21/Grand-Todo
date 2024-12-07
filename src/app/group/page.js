@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { IoIosArrowRoundForward } from "react-icons/io";
 
 function GroupPage() {
   const [groups, setGroups] = useState([]);
@@ -52,14 +51,19 @@ function GroupPage() {
                   className="w-full lg:w-1/3 flex flex-col gap-2 text-sm border-[1px] border-gray-300 cursor-pointer rounded-lg p-2"
                   onClick={() => handleGroup(item)}
                 >
-                  <p
-                    className="capitalize text-base font-semibold"
-                    style={{
-                      color: item.color,
-                    }}
-                  >
-                    {item.group}
-                  </p>
+                  <div className="flex justify-between">
+                    <p
+                      className="capitalize text-base font-semibold"
+                      style={{
+                        color: item.color,
+                      }}
+                    >
+                      {item.group}
+                    </p>
+                    <span className="flex justify-center items-center bg-blue-50 text-xs font-medium px-2 rounded-md">
+                      {item.admin}
+                    </span>
+                  </div>
                   <div>
                     <span>
                       No of members in the group {item.members.length}

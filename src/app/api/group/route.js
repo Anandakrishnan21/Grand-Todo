@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 
 export const POST = async (req) => {
   try {
-    const { group, members, color } = await req.json();
+    const { group, members, color, admin } = await req.json();
     const session = await getServerSession(authOptions);
     const email = session?.user?.email;
 
@@ -16,6 +16,7 @@ export const POST = async (req) => {
       group,
       members,
       email,
+      admin,
       color,
     });
 
