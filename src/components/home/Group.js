@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import FileNotFound from "../common/FileNotFound";
 import AddGroup from "../common/form/AddGroup";
 import { Avatar } from "antd";
+import { useSession } from "next-auth/react";
 
 function Group() {
   const [groups, setGroups] = useState([]);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +27,8 @@ function Group() {
     fetchData();
   }, []);
 
+  console.log(groups);
+
   return (
     <div className="cardGrp">
       <div className="flex justify-between items-center">
@@ -32,36 +36,42 @@ function Group() {
         <AddGroup />
       </div>
       {groups.length > 0 ? (
-        groups.map((item) => (
-          <div
-            key={item._id}
-            className="flex items-center justify-between border-[1px] border-gray-200 rounded-lg p-2"
-          >
-            <div className="flex gap-2 text-sm font-medium items-center">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{
-                  backgroundColor: item.color,
-                }}
-              />
-              <p>{item.group}</p>
-            </div>
-            <Avatar.Group>
-              {item.members.map((members, index) => (
-                <Avatar
-                  key={index}
+        groups
+          .filter(
+            (group) =>
+              group.members.includes(session?.user?.email) ||
+              group.admin === session?.user?.name
+          )
+          .map((item) => (
+            <div
+              key={item._id}
+              className="flex items-center justify-between border-[1px] border-gray-200 rounded-lg p-2"
+            >
+              <div className="flex gap-2 text-sm font-medium items-center">
+                <div
+                  className="w-3 h-3 rounded-full"
                   style={{
-                    backgroundColor: "#f56a00",
-                    width: "25px",
-                    height: "25px",
+                    backgroundColor: item.color,
                   }}
-                >
-                  {members.charAt(0).toUpperCase()}
-                </Avatar>
-              ))}
-            </Avatar.Group>
-          </div>
-        ))
+                />
+                <p>{item.group}</p>
+              </div>
+              <Avatar.Group>
+                {item.members.map((members, index) => (
+                  <Avatar
+                    key={index}
+                    style={{
+                      backgroundColor: "#f56a00",
+                      width: "25px",
+                      height: "25px",
+                    }}
+                  >
+                    {members.charAt(0).toUpperCase()}
+                  </Avatar>
+                ))}
+              </Avatar.Group>
+            </div>
+          ))
       ) : (
         <>
           <div className="h-full flex flex-col gap-2 justify-center items-center">

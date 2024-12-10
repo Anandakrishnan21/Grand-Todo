@@ -45,8 +45,6 @@ function GroupTask({ name, currentTab }) {
     );
   });
 
-  console.log(groupTodo);
-
   return (
     <div>
       {filteredTodo.length > 0 ? (
@@ -67,20 +65,27 @@ function GroupTask({ name, currentTab }) {
                     {todo.startTime} - {todo.endTime}
                   </p>
                 )}
-                <Select
-                  defaultValue={
-                    todo.members.find(
-                      (member) => member.email === session?.user?.email
-                    )?.progress || ""
-                  }
-                  style={{ width: 110 }}
-                  options={[
-                    { value: "Todo", label: "Todo" },
-                    { value: "Inprogress", label: "Inprogress" },
-                    { value: "Done", label: "Done" },
-                  ]}
-                  onChange={(value) => handleBlur(item._id, "status", value)}
-                />
+
+                {todo.members.find(
+                  (member) => member.email === session?.user?.email
+                ) ? (
+                  <Select
+                    defaultValue={
+                      todo.members.find(
+                        (member) => member.email === session?.user?.email
+                      )?.progress || ""
+                    }
+                    style={{ width: 110 }}
+                    options={[
+                      { value: "Todo", label: "Todo" },
+                      { value: "Inprogress", label: "Inprogress" },
+                      { value: "Done", label: "Done" },
+                    ]}
+                    onChange={(value) =>
+                      handleBlur(member._id, "status", value)
+                    }
+                  />
+                ) : null}
               </div>
               <p className="text-blue-800 font-medium">{todo.priority}</p>
             </div>

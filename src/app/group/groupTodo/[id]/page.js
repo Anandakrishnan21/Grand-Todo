@@ -40,9 +40,9 @@ function GroupTodo() {
   return (
     <div className="flex justify-center items-center p-4 pt-4">
       <div className="outerDiv">
-        <div className="flex gap-2">
+        <div className="flex text-sm font-medium gap-2">
           <div
-            className={`w-28 flex justify-center p-1 rounded-lg border cursor-pointer transition-colors duration-300 ${
+            className={`flex justify-center p-1 px-2 rounded-lg border cursor-pointer transition-colors duration-300 ${
               date === "today"
                 ? "bg-blue-50 text-blue-600"
                 : "hover:bg-blue-50"
@@ -52,7 +52,7 @@ function GroupTodo() {
             Today
           </div>
           <div
-            className={`w-28 flex justify-center p-1 rounded-lg border cursor-pointer transition-colors duration-300 ${
+            className={`flex justify-center p-1 px-2 rounded-lg border cursor-pointer transition-colors duration-300 ${
               date === "upcoming"
                 ? "bg-blue-50 text-blue-600"
                 : "hover:bg-blue-50"
