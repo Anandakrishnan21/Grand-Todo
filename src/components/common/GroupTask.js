@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FileNotFound from "./FileNotFound";
-import { Select } from "antd";
+import { Select, message } from "antd"; // Imported Ant Design message for notifications
 import { useSession } from "next-auth/react";
 
 function GroupTask({ name, currentTab }) {
@@ -13,16 +13,19 @@ function GroupTask({ name, currentTab }) {
         const res = await fetch("/api/groupTodo", {
           cache: "no-cache",
         });
+
         if (!res.ok) {
-          console.error("error on fetching groupTodo");
+          console.error("Error fetching groupTodo");
+          return;
         }
 
         const data = await res.json();
         setGroupTodo(data);
       } catch (error) {
-        console.error("error on fetching groupTodo");
+        console.error("Error fetching groupTodo:", error);
       }
     };
+
     fetchData();
   }, []);
 
@@ -45,12 +48,38 @@ function GroupTask({ name, currentTab }) {
     );
   });
 
+  const handleBlur = async (id, field, value) => {
+    try {
+      const res = await fetch(`/api/groupTodo/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ [field]: value }),
+      });
+
+      if (res.ok) {
+        setGroupTodo((prev) =>
+          prev.map((todo) =>
+            todo._id === id ? { ...todo, [field]: value } : todo
+          )
+        );
+        message.success("Todo updated successfully!");
+      } else {
+        message.error("Failed to update todo");
+      }
+    } catch (error) {
+      console.error("Error updating todo:", error);
+      message.error("An error occurred while updating");
+    }
+  };
+
   return (
     <div>
       {filteredTodo.length > 0 ? (
         filteredTodo.map((todo, index) => (
           <div
-            key={index}
+            key={todo._id || index}
             className="cardDiv text-sm flex justify-between gap-2 p-4"
           >
             <div className="w-full flex flex-row gap-2 text-sm justify-between">
@@ -82,7 +111,15 @@ function GroupTask({ name, currentTab }) {
                       { value: "Done", label: "Done" },
                     ]}
                     onChange={(value) =>
-                      handleBlur(member._id, "status", value)
+                      handleBlur(
+                        todo._id,
+                        "members",
+                        todo.members.map((member) =>
+                          member.email === session?.user?.email
+                            ? { ...member, progress: value }
+                            : member
+                        )
+                      )
                     }
                   />
                 ) : null}
