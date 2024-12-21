@@ -1,27 +1,25 @@
 "use client";
-import { Button, ColorPicker, Form, Input, message, Modal } from "antd";
-import { Plus, CircleX } from "lucide-react";
+import { ColorPicker, Form, Input, message } from "antd";
+import { Plus, CircleX, CirclePlusIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function AddGroup() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { data: session } = useSession();
   const [form] = Form.useForm();
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const handleModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-    form.resetFields();
-  };
-
   const handleSubmit = async (values) => {
-    const color = values.color;
     try {
       const res = await fetch("/api/group", {
         method: "POST",
@@ -32,12 +30,11 @@ function AddGroup() {
           group: values.group,
           members: values.members,
           admin: session?.user?.name,
-          color,
+          color: values.color,
         }),
       });
 
       if (res.ok) {
-        setIsModalOpen(false);
         router.push("/group");
         form.resetFields();
         message.success("Group added successfully!");
@@ -52,111 +49,98 @@ function AddGroup() {
   };
 
   return (
-    <>
-      <Button icon={<Plus size={16} />} onClick={handleModal}>
-        Create group
-      </Button>
-      <Modal
-        title="Create Group"
-        open={isModalOpen}
-        onCancel={handleCancel}
-        footer={null}
-      >
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <CirclePlusIcon size="20" />
+          Create group
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Create a new group</DialogTitle>
+        </DialogHeader>
         <Form
           form={form}
           onFinish={handleSubmit}
-          initialValues={{ color: "#a0a0a0" }}
+          initialValues={{ color: "#1677ff", members: [""] }}
+          layout="vertical"
         >
-          <div className="flex flex-col gap-2 p-3">
-            <Form.Item
-              name="group"
-              rules={[{ required: true, message: "Enter the group name" }]}
-            >
-              <div>
-                <p>Group name</p>
-                <Input placeholder="Group name" autoComplete="off" />
-              </div>
-            </Form.Item>
-            <Form.List name="members" initialValue={[""]}>
-              {(fields, { add, remove }) => (
-                <>
-                  <p>Group members</p>
-                  {fields.map(({ key, name, fieldKey }) => (
-                    <div
-                      key={key}
-                      className="w-full flex flex-cols items-center gap-2"
-                    >
-                      <Form.Item
-                        name={name}
-                        className="w-full"
-                        fieldKey={fieldKey}
-                        rules={[
-                          { required: true, message: "Enter a member's email" },
-                        ]}
-                      >
-                        <Input
-                          placeholder="Enter the member's email"
-                          suffix={
-                            fields.length > 1 ? (
-                              <CircleX
-                                size={16}
-                                onClick={() => remove(name)}
-                                className="cursor-pointer"
-                              />
-                            ) : null
-                          }
-                        />
-                      </Form.Item>
-                    </div>
-                  ))}
-                  <Button
-                    type="dashed"
-                    style={{
-                      width: "50%",
-                    }}
-                    onClick={() => add()}
-                    icon={<Plus size={16} />}
+          <Form.Item
+            label="Group name"
+            name="group"
+            rules={[{ required: true, message: "Enter the group name" }]}
+          >
+            <Input placeholder="Group name" autoComplete="off" />
+          </Form.Item>
+
+          <Form.List name="members">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, fieldKey }) => (
+                  <Form.Item
+                    key={key}
+                    label={key === 0 ? "Group members" : ""}
+                    name={name}
+                    fieldKey={fieldKey}
+                    rules={[
+                      { required: true, message: "Enter a member's email" },
+                    ]}
                   >
-                    Add Member
-                  </Button>
-                </>
-              )}
-            </Form.List>
-            <Form.Item
-              name="color"
-              rules={[{ required: true, message: "Please select a color!" }]}
-            >
-              <div>
-                <p>Choose the color theme</p>
-                <ColorPicker
-                  format="hex"
-                  value={form.getFieldValue("color")}
-                  onChange={(newColor) => {
-                    const hexColor = newColor.toHexString();
-                    form.setFieldValue("color", hexColor);
-                  }}
-                />
-              </div>
-            </Form.Item>
-          </div>
-          <div className="flex justify-end gap-2 p-3">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="p-1 px-2 rounded-md border-[1px] hover:border-blue-400 border-gray-200 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out transform"
-            >
-              Cancel
-            </button>
-            <button
+                    <div className="flex items-center gap-2">
+                      <Input placeholder="Member's email" />
+                      {fields.length > 1 && (
+                        <CircleX
+                          size={16}
+                          onClick={() => remove(name)}
+                          className="cursor-pointer"
+                        />
+                      )}
+                    </div>
+                  </Form.Item>
+                ))}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  type="button"
+                  onClick={() => add()}
+                  icon={<Plus size={16} />}
+                >
+                  Add Member
+                </Button>
+              </>
+            )}
+          </Form.List>
+
+          <Form.Item
+            label="Theme"
+            name="color"
+            rules={[{ required: true, message: "Please select a color!" }]}
+          >
+            <ColorPicker
+              defaultValue="#1677ff"
+              format="hex"
+              onChange={(newColor) =>
+                form.setFieldValue("color", newColor.toHexString())
+              }
+              showText
+              allowClear
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+            />
+          </Form.Item>
+
+          <DialogFooter>
+            <Button
               type="submit"
-              className="p-1 px-2 rounded-md bg-blue-400 text-white active:shadow-[0_3px_10px_rgba(59,130,246,0.5)] transition-shadow duration-300 ease-in-out transform"
+              size="sm"
+              className="bg-blue-500 hover:bg-blue-400 hover:duration-300 transition-colors"
             >
               Submit
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </Form>
-      </Modal>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 }
 

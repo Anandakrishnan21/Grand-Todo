@@ -34,10 +34,10 @@ const LoginPageContent = () => {
         Welcome to <span className="font-bold text-red-500">Grand Todo</span>
       </p>
       <div className="w-full md:w-1/2 lg:w-1/3 px-4">
-        <Form onFinish={onFinish}>
+        <Form onFinish={onFinish} layout="vertical">
           <Form.Item
-            name="email"
             label="Email"
+            name="email"
             rules={[
               {
                 required: true,
@@ -53,8 +53,8 @@ const LoginPageContent = () => {
           </Form.Item>
 
           <Form.Item
-            name="password"
             label="Password"
+            name="password"
             rules={[
               {
                 required: true,

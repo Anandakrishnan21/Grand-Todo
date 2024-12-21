@@ -69,7 +69,7 @@ function InboxPageContent() {
         onChange={handleChange}
         value={input}
         suffix={
-          input != "" ? (
+          input !== "" ? (
             <CircleX
               size={16}
               onClick={handleClear}

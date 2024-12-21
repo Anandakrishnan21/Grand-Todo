@@ -33,7 +33,7 @@ function RegistrationPageContent() {
         Welcome to <span className="font-bold text-red-500">Grand Todo</span>
       </p>
       <div className="w-full md:w-1/2 lg:w-1/3 px-4">
-        <Form onFinish={onFinish}>
+        <Form onFinish={onFinish} layout="vertical">
           <Form.Item
             name="name"
             label="Full Name"

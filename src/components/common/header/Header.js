@@ -59,6 +59,7 @@ function Header() {
                   style={{
                     backgroundColor: "#1677ff",
                   }}
+                  size={24}
                   gap={2}
                 >
                   {session?.user?.name?.charAt(0).toUpperCase()}

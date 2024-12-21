@@ -1,27 +1,24 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Button,
-  DatePicker,
-  FloatButton,
-  Form,
-  message,
-  Modal,
-  Select,
-  TimePicker,
-} from "antd";
-import Link from "next/link";
-import Input from "antd/es/input/Input";
+import { DatePicker, Form, Input, message, Select, TimePicker } from "antd";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
-import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useSession } from "next-auth/react";
-import { Plus } from "lucide-react";
+import { CirclePlusIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 dayjs.extend(customParseFormat);
 
 const AddTask = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState(null);
@@ -29,16 +26,6 @@ const AddTask = () => {
   const [form] = Form.useForm();
   const format = "HH:mm";
   const router = useRouter();
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = (e) => {
-    e.preventDefault();
-    setIsModalOpen(false);
-    form.resetFields();
-  };
 
   const onDateChange = (date) => {
     setSelectedDate(date);
@@ -107,7 +94,6 @@ const AddTask = () => {
       });
 
       if (res.ok) {
-        setIsModalOpen(false);
         router.push("/day");
         form.resetFields();
         message.success("Task added successfully!");
@@ -132,18 +118,17 @@ const AddTask = () => {
   ];
 
   return (
-    <>
-      <Button
-        icon={<Plus size="16" />}
-        onClick={showModal}
-        className="hidden lg:flex"
-      >
-        Add Task
-      </Button>
-      <div>
-        <FloatButton trigger="click" onClick={showModal} />
-      </div>
-      <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">
+          <CirclePlusIcon size="20" />
+          Add task
+        </Button>
+      </DialogTrigger>
+      <DialogContent style={{ zIndex: 1050 }} className="sm:max-w-[450px]">
+        <DialogHeader>
+          <DialogTitle>Create a new task</DialogTitle>
+        </DialogHeader>
         <Form
           form={form}
           onFinish={handleSubmit}
@@ -151,36 +136,35 @@ const AddTask = () => {
             assignee: session?.user?.name,
             priority: "Low",
           }}
+          layout="vertical"
         >
           <div className="flex flex-col gap-2 p-3">
             <Form.Item
+              label="Description"
               name="description"
               rules={[{ required: true, message: "Enter the description!" }]}
             >
-              <div>
-                <p>Description</p>
-                <Input
-                  id="description"
-                  name="description"
-                  placeholder="Task name"
-                  value={description}
-                  autoComplete="off"
-                  onChange={handleInput}
-                />
-              </div>
+              <Input
+                id="description"
+                name="description"
+                placeholder="Task name"
+                value={description}
+                autoComplete="off"
+                onChange={handleInput}
+              />
             </Form.Item>
 
-            <Form.Item name="tags">
+            <Form.Item label="Tags" name="tags">
               <Select
                 mode="multiple"
-                style={{ width: "100%" }}
-                placeholder="select tags"
                 options={options}
+                getPopupContainer={(triggerNode) => triggerNode.parentNode}
               />
             </Form.Item>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
               <Form.Item
+                label="Date"
                 name="date"
                 rules={[{ required: true, message: "Select the date!" }]}
               >
@@ -192,6 +176,7 @@ const AddTask = () => {
               </Form.Item>
 
               <Form.Item
+                label="Assignee"
                 name="assignee"
                 rules={[{ required: true, message: "Select an assignee!" }]}
               >
@@ -199,6 +184,7 @@ const AddTask = () => {
               </Form.Item>
 
               <Form.Item
+                label="Priority"
                 name="priority"
                 rules={[{ required: true, message: "Select a priority!" }]}
               >
@@ -208,10 +194,11 @@ const AddTask = () => {
                     { value: "Medium", label: "Medium" },
                     { value: "High", label: "High" },
                   ]}
+                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
                 />
               </Form.Item>
-
               <Form.Item
+                label="Time"
                 name="time"
                 rules={[{ required: true, message: "Select a time!" }]}
               >
@@ -224,25 +211,18 @@ const AddTask = () => {
               </Form.Item>
             </div>
           </div>
-
-          <div className="flex justify-end gap-2 p-3">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="p-1 px-2 rounded-md border-[1px] hover:border-blue-400 border-gray-200 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out transform"
-            >
-              Cancel
-            </button>
-            <button
+          <DialogFooter>
+            <Button
               type="submit"
-              className="p-1 px-2 rounded-md bg-blue-400 text-white active:shadow-[0_3px_10px_rgba(59,130,246,0.5)] transition-shadow duration-300 ease-in-out transform"
+              size="sm"
+              className="bg-blue-500 hover:bg-blue-400 hover:duration-300 transition-colors"
             >
               Submit
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </Form>
-      </Modal>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 

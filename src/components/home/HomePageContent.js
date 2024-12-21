@@ -5,8 +5,6 @@ import Loading from "@/app/Loading";
 import ProgressSection from "./ProgressSection";
 import RecentTodo from "./RecentTodo";
 import GridData from "./GridData";
-import AddGroup from "../common/form/AddGroup";
-import FileNotFound from "../common/FileNotFound";
 import Group from "./Group";
 
 function HomePageContent() {
@@ -35,10 +33,11 @@ function HomePageContent() {
     };
     fetchData();
   }, []);
-
+ 
   if (isLoading) {
     return <Loading />;
   }
+
   return (
     <div className="flex items-center flex-col p-4 gap-2">
       {session && (
@@ -48,7 +47,9 @@ function HomePageContent() {
               <h1 className="text-xl md:text-2xl font-semibold">
                 Hi {session.user.name}, welcome back
               </h1>
-              <p>Here you will find your todo analytics !</p>
+              <p className="leading-7">
+                Here you will find your todo analytics !
+              </p>
               <GridData todo={todo} />
             </div>
             <ProgressSection todo={todo} />

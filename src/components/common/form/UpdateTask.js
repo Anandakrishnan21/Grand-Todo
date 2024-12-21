@@ -1,16 +1,18 @@
-import {
-  DatePicker,
-  Form,
-  Input,
-  message,
-  Modal,
-  Select,
-  TimePicker,
-} from "antd";
+import { DatePicker, Form, Input, message, Select, TimePicker } from "antd";
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CirclePlusIcon } from "lucide-react";
 
 function UpdateTask({ todayTodo }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -137,14 +139,19 @@ function UpdateTask({ todayTodo }) {
   };
 
   return (
-    <div>
-      <div
-        className="bg-[#87d068] text-sm flex justify-center px-3 border text-white rounded-lg cursor-pointer"
-        onClick={showModal}
-      >
-        <p>Edit</p>
-      </div>
-      <Modal open={isModalOpen} footer={null} onCancel={hideModal}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          variant="link"
+          className="p-0"
+        >
+          Edit
+        </Button>
+      </DialogTrigger>
+      <DialogContent style={{ zIndex: 1050 }} className="sm:max-w-[450px]">
+        <DialogHeader>
+          <DialogTitle>Update the task</DialogTitle>
+        </DialogHeader>
         <Form
           form={form}
           onFinish={handleSubmit}
@@ -173,6 +180,7 @@ function UpdateTask({ todayTodo }) {
                 style={{ width: "100%" }}
                 placeholder="select tags"
                 options={options}
+                getPopupContainer={(triggerNode) => triggerNode.parentNode}
               />
             </Form.Item>
             <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
@@ -202,6 +210,7 @@ function UpdateTask({ todayTodo }) {
                     { value: "Medium", label: "Medium" },
                     { value: "High", label: "High" },
                   ]}
+                  getPopupContainer={(triggerNode) => triggerNode.parentNode}
                 />
               </Form.Item>
               <Form.Item
@@ -217,27 +226,18 @@ function UpdateTask({ todayTodo }) {
               </Form.Item>
             </div>
           </div>
-          <div className="flex justify-end gap-2 p-3">
-            <button
-              type="button"
-              onClick={hideModal}
-              className="p-1 px-2 rounded-md border-[1px] hover:border-blue-400 border-gray-200 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out transform"
-            >
-              Cancel
-            </button>
-            <button
+          <DialogFooter>
+            <Button
               type="submit"
-              disabled={isSubmitting}
-              className={`p-1 px-2 rounded-md bg-blue-400 text-white ${
-                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-              } active:shadow-[0_3px_10px_rgba(59,130,246,0.5)] transition-shadow duration-300 ease-in-out transform`}
+              size="sm"
+              className="bg-blue-500 hover:bg-blue-400 hover:duration-300 transition-colors"
             >
-              Submit
-            </button>
-          </div>
+              Update
+            </Button>
+          </DialogFooter>
         </Form>
-      </Modal>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 

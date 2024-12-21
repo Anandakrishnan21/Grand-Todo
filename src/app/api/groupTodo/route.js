@@ -6,6 +6,7 @@ import GroupTodo from "@/model/GroupTodo";
 export const POST = async (req) => {
   try {
     const {
+      groupId,
       description,
       tags,
       date,
@@ -16,13 +17,13 @@ export const POST = async (req) => {
       status,
       notificationTime,
       members,
-      groupName,
-      progress
+      progress,
     } = await req.json();
 
     await connection();
 
     const todo = await GroupTodo.create({
+      groupId,
       description,
       tags,
       date,
@@ -33,8 +34,7 @@ export const POST = async (req) => {
       status,
       notificationTime,
       members,
-      groupName,
-      progress
+      progress,
     });
 
     return NextResponse.json({ message: "Todo added" }, { status: 201 });

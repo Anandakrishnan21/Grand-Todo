@@ -1,24 +1,24 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Button,
-  DatePicker,
-  Form,
-  message,
-  Modal,
-  Select,
-  TimePicker,
-} from "antd";
+import { DatePicker, Form, message, Select, TimePicker } from "antd";
 import Input from "antd/es/input/Input";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Plus } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CirclePlusIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 dayjs.extend(customParseFormat);
 
-const GroupForm = ({ group, name }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const GroupForm = ({ group, id }) => {
   const [description, setDescription] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState(null);
@@ -26,16 +26,6 @@ const GroupForm = ({ group, name }) => {
   const [form] = Form.useForm();
   const format = "HH:mm";
   const router = useRouter();
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleCancel = (e) => {
-    e.preventDefault();
-    setIsModalOpen(false);
-    form.resetFields();
-  };
 
   const onDateChange = (date) => {
     setSelectedDate(date);
@@ -104,7 +94,7 @@ const GroupForm = ({ group, name }) => {
           date: dueDate,
           assignee,
           priority,
-          groupName: name,
+          groupId: id,
           startTime,
           endTime,
           notificationTime,
@@ -113,7 +103,6 @@ const GroupForm = ({ group, name }) => {
       });
 
       if (res.ok) {
-        setIsModalOpen(false);
         router.refresh();
         form.resetFields();
         message.success("Task added successfully!");
@@ -139,25 +128,32 @@ const GroupForm = ({ group, name }) => {
 
   return (
     <div className="flex justify-end">
-      <Button className="w-36" icon={<Plus size="16"/>} onClick={showModal}>
-        Add Group Task
-      </Button>
-      <Modal open={isModalOpen} onCancel={handleCancel} footer={null}>
-        <Form
-          form={form}
-          onFinish={handleSubmit}
-          initialValues={{
-            assignee: session?.user?.name,
-            priority: "Low",
-          }}
-        >
-          <div className="flex flex-col gap-2 p-3">
-            <Form.Item
-              name="description"
-              rules={[{ required: true, message: "Enter the description!" }]}
-            >
-              <div>
-                <p>Description</p>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">
+            <CirclePlusIcon size="20" />
+            Add task
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[450px]">
+          <DialogHeader>
+            <DialogTitle>Create a group task</DialogTitle>
+          </DialogHeader>
+          <Form
+            form={form}
+            onFinish={handleSubmit}
+            initialValues={{
+              assignee: session?.user?.name,
+              priority: "Low",
+            }}
+            layout="vertical"
+          >
+            <div className="flex flex-col gap-2 p-3">
+              <Form.Item
+                label="Description"
+                name="description"
+                rules={[{ required: true, message: "Enter the description!" }]}
+              >
                 <Input
                   id="description"
                   name="description"
@@ -166,83 +162,77 @@ const GroupForm = ({ group, name }) => {
                   autoComplete="off"
                   onChange={handleInput}
                 />
-              </div>
-            </Form.Item>
-
-            <Form.Item name="tags">
-              <Select
-                mode="multiple"
-                style={{ width: "100%" }}
-                placeholder="select tags"
-                options={options}
-              />
-            </Form.Item>
-
-            <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
-              <Form.Item
-                name="date"
-                rules={[{ required: true, message: "Select the date!" }]}
-              >
-                <DatePicker
-                  style={{ width: "100%" }}
-                  onChange={onDateChange}
-                  value={selectedDate ? dayjs(selectedDate) : null}
-                />
               </Form.Item>
 
-              <Form.Item
-                name="assignee"
-                rules={[{ required: true, message: "Select an assignee!" }]}
-              >
-                <Select />
-              </Form.Item>
-
-              <Form.Item
-                name="priority"
-                rules={[{ required: true, message: "Select a priority!" }]}
-              >
+              <Form.Item label="Tags" name="tags">
                 <Select
-                  options={[
-                    { value: "Low", label: "Low" },
-                    { value: "Medium", label: "Medium" },
-                    { value: "High", label: "High" },
-                  ]}
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="time"
-                rules={[{ required: true, message: "Select a time!" }]}
-              >
-                <TimePicker.RangePicker
-                  id="time"
-                  name="time"
+                  mode="multiple"
                   style={{ width: "100%" }}
-                  onChange={onTimeChange}
-                  value={selectedTimeRange}
-                  format={format}
+                  placeholder="select the Tags"
+                  options={options}
                 />
               </Form.Item>
-            </div>
-          </div>
 
-          <div className="flex justify-end gap-2 p-3">
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="p-1 px-2 rounded-md border-[1px] hover:border-blue-400 border-gray-200 active:shadow-[0_3px_10px_rgb(0,0,0,0.2)] transition-shadow duration-300 ease-in-out transform"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="p-1 px-2 rounded-md bg-blue-400 text-white active:shadow-[0_3px_10px_rgba(59,130,246,0.5)] transition-shadow duration-300 ease-in-out transform"
-            >
-              Submit
-            </button>
-          </div>
-        </Form>
-      </Modal>
+              <div className="grid grid-cols-2 lg:grid-cols-4 justify-between gap-2">
+                <Form.Item
+                  label="Date"
+                  name="date"
+                  rules={[{ required: true, message: "Select the date!" }]}
+                >
+                  <DatePicker
+                    style={{ width: "100%" }}
+                    onChange={onDateChange}
+                    value={selectedDate ? dayjs(selectedDate) : null}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Assignee"
+                  name="assignee"
+                  rules={[{ required: true, message: "Select an assignee!" }]}
+                >
+                  <Select />
+                </Form.Item>
+
+                <Form.Item
+                  label="Priority"
+                  name="priority"
+                  rules={[{ required: true, message: "Select a priority!" }]}
+                >
+                  <Select
+                    options={[
+                      { value: "Low", label: "Low" },
+                      { value: "Medium", label: "Medium" },
+                      { value: "High", label: "High" },
+                    ]}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="Time"
+                  name="time"
+                  rules={[{ required: true, message: "Select a time!" }]}
+                >
+                  <TimePicker.RangePicker
+                    style={{ width: "100%" }}
+                    onChange={onTimeChange}
+                    value={selectedTimeRange}
+                    format={format}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button
+                type="submit"
+                size="sm"
+                className="bg-blue-500 hover:bg-blue-400 hover:duration-300 transition-colors"
+              >
+                Submit
+              </Button>
+            </DialogFooter>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

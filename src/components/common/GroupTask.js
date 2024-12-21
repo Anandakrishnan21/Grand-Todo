@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import FileNotFound from "./FileNotFound";
-import { Select, message } from "antd"; // Imported Ant Design message for notifications
+import { Select, message } from "antd";
 import { useSession } from "next-auth/react";
 
-function GroupTask({ name, currentTab }) {
+function GroupTask({ id, currentTab }) {
   const [groupTodo, setGroupTodo] = useState([]);
   const { data: session } = useSession();
 
@@ -42,7 +42,7 @@ function GroupTask({ name, currentTab }) {
       today.getFullYear();
 
     return (
-      todo.groupName === name &&
+      todo.groupId === id &&
       ((isToday && todo.date === formattedDate) ||
         (isUpcoming && todo.date > formattedDate))
     );
@@ -69,13 +69,12 @@ function GroupTask({ name, currentTab }) {
         message.error("Failed to update todo");
       }
     } catch (error) {
-      console.error("Error updating todo:", error);
       message.error("An error occurred while updating");
     }
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {filteredTodo.length > 0 ? (
         filteredTodo.map((todo, index) => (
           <div

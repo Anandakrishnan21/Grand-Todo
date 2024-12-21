@@ -91,9 +91,8 @@ function RecentTodo() {
                 {item.date}
               </p>
               <ArrowRightCircleIcon
-                color="blue"
                 size="20"
-                className="hidden md:flex"
+                className="hidden md:flex text-blue-500"
               />
             </div>
           ))

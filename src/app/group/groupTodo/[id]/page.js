@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 function GroupTodo() {
   const [group, setGroup] = useState([]);
-  const [name, setName] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [date, setDate] = useState("today");
   const { id } = useParams();
 
@@ -30,10 +30,10 @@ function GroupTodo() {
 
   useEffect(() => {
     if (group.length > 0) {
-      const groupName = group.map((item) => item.group).join(", ");
-      setName(groupName);
+      const groupId = group.map((item) => item._id).join(", ");
+      setIdentifier(groupId);
     } else {
-      setName("");
+      setIdentifier("");
     }
   }, [group]);
 
@@ -43,9 +43,7 @@ function GroupTodo() {
         <div className="flex text-sm font-medium gap-2">
           <div
             className={`flex justify-center p-1 px-2 rounded-lg border cursor-pointer transition-colors duration-300 ${
-              date === "today"
-                ? "bg-blue-50 text-blue-600"
-                : "hover:bg-blue-50"
+              date === "today" ? "bg-blue-50 text-blue-600" : "hover:bg-blue-50"
             }`}
             onClick={() => setDate("today")}
           >
@@ -62,8 +60,8 @@ function GroupTodo() {
             Upcoming
           </div>
         </div>
-        <GroupForm group={group} name={name} />
-        <GroupTask name={name} currentTab={date} />
+        <GroupForm group={group} id={identifier} />
+        <GroupTask id={identifier} currentTab={date} />
       </div>
     </div>
   );

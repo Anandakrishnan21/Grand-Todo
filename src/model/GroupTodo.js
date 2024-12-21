@@ -2,7 +2,7 @@ import mongoose, { models, Schema } from "mongoose";
 
 const groupTodoSchema = new Schema(
   {
-    groupName: {
+    groupId: {
       type: String,
       required: true,
     },
