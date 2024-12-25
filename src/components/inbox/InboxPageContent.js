@@ -8,7 +8,7 @@ import { Input } from "antd";
 
 function InboxPageContent() {
   const [inbox, setInbox] = useState([]);
-  const [input, setInput] = useState([]);
+  const [input, setInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationInbox, setPaginationInbox] = useState([]);
   const [filterInbox, setFilterInbox] = useState([]);

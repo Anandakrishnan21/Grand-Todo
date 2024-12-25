@@ -1,4 +1,5 @@
 "use client";
+import DeleteIcon from "@/components/common/button/DeleteIcon";
 import { Avatar } from "antd";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -60,9 +61,14 @@ function GroupPage() {
                     >
                       {item.group}
                     </p>
-                    <span className="flex justify-center items-center bg-blue-50 text-xs font-medium px-2 rounded-md">
-                      {item.admin}
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="flex justify-center items-center bg-blue-50 text-xs font-medium px-2 rounded-md">
+                        {item.admin}
+                      </span>
+                      {item.email === session?.user?.email ? (
+                        <DeleteIcon setGroups={setGroups} id={item._id} />
+                      ) : null}
+                    </div>
                   </div>
                   <div>
                     <span>

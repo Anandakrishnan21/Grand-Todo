@@ -3,7 +3,7 @@ import FileNotFound from "../common/FileNotFound";
 import AddGroup from "../common/form/AddGroup";
 import { Avatar, Spin } from "antd";
 import { useSession } from "next-auth/react";
-import { LucideTrash2 } from "lucide-react";
+import DeleteIcon from "../common/button/DeleteIcon";
 
 function Group() {
   const [groups, setGroups] = useState([]);
@@ -28,17 +28,6 @@ function Group() {
 
     fetchData();
   }, []);
-
-  const handleDelete = async (id) => {
-    try {
-      const res = await fetch(`/api/group/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete group");
-
-      setGroups((prev) => prev.filter((item) => item._id !== id));
-    } catch (error) {
-      console.error("Error deleting group:", error);
-    }
-  };
 
   return (
     <div className="cardGrp">
@@ -85,11 +74,7 @@ function Group() {
                   ))}
                 </Avatar.Group>
                 {item.email === session?.user?.email && (
-                  <LucideTrash2
-                    size={16}
-                    className="text-blue-500 cursor-pointer"
-                    onClick={() => handleDelete(item._id)}
-                  />
+                  <DeleteIcon setGroups={setGroups} id={item._id} />
                 )}
               </div>
             </div>
